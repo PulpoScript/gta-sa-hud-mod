@@ -14,6 +14,9 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 - Decir qué es seguro y qué no. **No afirmar opcodes ni direcciones sin verificarlos.**
 - Código completo y listo para pegar, con comentarios por secciones. **Ponerlo en el chat, en un bloque de código, no como archivo adjunto**: el autor lo copia directamente a Sanny Builder. **Siempre el código completo**, también cuando el cambio sea pequeño: nunca solo los bloques que cambian.
 - Para cada prueba: qué probar y qué resultado esperar, en una tabla corta.
+- **Respuestas de Claude cortas**, salvo que el autor pida una explicación detallada.
+- **Código: el autor lo copia desde GitHub** (Raw de `src/UI.txt`). No pegar el código completo en el chat salvo que lo pida.
+- **Documentación de `docs/` solo al cerrar cada versión** (`0.2.0`, `0.3.0`…). En los pasos `-dev` solo se tocan el código y el CHANGELOG.
 - Respuestas cortas a las pruebas: "funciona" o qué falló. **No pedirle diagnósticos largos** salvo que algo falle sin explicación.
 - Mantener el repositorio documentado (README, `docs/`, CHANGELOG) con cada cambio.
 - **Dar crédito siempre:** toda fuente de la que se tome información (direcciones, estructuras, trucos) se añade a [CREDITOS.md](CREDITOS.md) con su autor y qué se usó.

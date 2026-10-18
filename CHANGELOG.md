@@ -8,7 +8,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). N
 
 - Créditos completos de las fuentes consultadas (`docs/CREDITOS.md`) y aviso legal en el README.
 
-### 0.2.0-dev.7 — Modo 2: hora solo con la tecla "."
+### 0.2.0-dev.8 — Pulsación larga de "." a 0,8 s
+
+- Mantener "." 0,8 s (antes 2 s) para ver todo el HUD.
+
+### 0.2.0-dev.7 — Modo 2: hora solo con la tecla "." (probado)
 
 - La hora ya no va con el dinero ni aparece al cambiar la hora del juego.
 - Tecla ".": toque corto → hora 5 s; mantener 2 s → todo el HUD.

@@ -3,7 +3,7 @@
 
 // #####################################################################
 //  UI — Control del HUD para GTA San Andreas PC 1.0 US
-//  Versión: 0.2.0-dev.7 (beta) — Modo 1 completo; Modo 2 en desarrollo
+//  Versión: 0.2.0-dev.8 (beta) — Modo 1 completo; Modo 2 en desarrollo
 //  (dinero ✓, arma ✓, salud ✓, radar ✓, paso 5: hora con la tecla "." y
 //  entrada al modo). Historial: CHANGELOG.md
 //  Requiere: CLEO 4.4 + plugin CLEO+. Compilado con Sanny Builder 4.
@@ -36,8 +36,8 @@
 //      Hora: solo con la tecla ".".
 //      Al entrar en el Modo 2 se ve todo unos 3 s y luego se va ocultando.
 //    Tecla "." (Modo 2): consulta.
-//      Toque corto (menos de 2 s): al soltar, se ve la hora 5 s.
-//      Mantener 2 s o más: se ve todo el HUD; al soltar, se oculta a los 3 s.
+//      Toque corto (menos de 0,8 s): al soltar, se ve la hora 5 s.
+//      Mantener 0,8 s o más: se ve todo el HUD; al soltar, se oculta a los 3 s.
 //    Modo 3: solo el selector; su lógica aún no existe.
 //
 //  MAPA DEL CÓDIGO (buscar las etiquetas entre corchetes)
@@ -303,10 +303,10 @@ while true
             0@ = 1
             // Sin add_one_off_sound: el cuadro de texto ya hace su propio
             // "bip"; con los dos sonaban dos sonidos a la vez.
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.7 activado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.8 activado"
         else
             0@ = 0
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.7 desactivado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.8 desactivado"
         end
         while 0AB0: key_pressed 0x7A           // antirrebote: esperar a soltar
             wait 0
@@ -361,8 +361,8 @@ while true
 
     // =================================================================
     //  [CONSULTA] Tecla "." (0xBE, VK_OEM_PERIOD) — solo en el Modo 2
-    //  Toque corto (menos de 2 s): al soltar, la hora se ve 5 s.
-    //  Mantener 2 s o más: todo el HUD se ve mientras siga pulsada (los
+    //  Toque corto (menos de 0,8 s): al soltar, la hora se ve 5 s.
+    //  Mantener 0,8 s o más: todo el HUD se ve mientras siga pulsada (los
     //  tiempos de cada elemento quedan "a 3 s de ocultarse" en cada frame);
     //  al soltar, todo se oculta a los 3 s, la hora incluida.
     //  18@ guarda el estado (ver VARIABLES, [MODO 2]).
@@ -377,7 +377,7 @@ while true
             if 18@ > 0                                   // ya estaba pulsada
             then
                 0062: 21@ -= 18@                         // tiempo pulsada
-                if 21@ > 2000                            // pulsación larga
+                if 21@ > 800                            // pulsación larga
                 then
                     gosub @MostrarTodo3s
                 end
@@ -389,7 +389,7 @@ while true
             then
                 0085: 9@ = 21@
                 0062: 9@ -= 18@                          // tiempo que estuvo pulsada
-                if 9@ > 2000
+                if 9@ > 800
                 then
                     21@ -= 2000                          // larga: hora 3 s más
                 end                                      // corta: hora 5 s
@@ -844,7 +844,7 @@ while true
         end
     end
     // Modo 2: la hora solo se ve con la tecla "." (ver [CONSULTA]):
-    //   18@ > 0: pulsada; visible si lleva más de 2 s (pulsación larga)
+    //   18@ > 0: pulsada; visible si lleva más de 0,8 s (pulsación larga)
     //   18@ < 0: visible 5 s desde el momento -18@
     //   18@ = 0: oculta
     if and
@@ -856,7 +856,7 @@ while true
         if 18@ > 0
         then
             0062: 21@ -= 18@                             // tiempo pulsada
-            if 21@ > 2000
+            if 21@ > 800
             then
                 28@ = 0
             end
@@ -964,7 +964,7 @@ return
 //   salud (27@ = momento, oculta a 5000) -> 27@ = ahora - 2000
 //   radar (11@ = momento, oculta a 8000) -> 11@ = ahora - 5000
 // Se usa al entrar en el Modo 2 y, en cada frame, con la tecla "." pulsada
-// más de 2 s. La hora no se toca aquí: va aparte con 18@.
+// más de 0,8 s. La hora no se toca aquí: va aparte con 18@.
 // Usa como temporal: 21@.
 :MostrarTodo3s
 32@ = 2000
