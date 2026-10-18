@@ -16,6 +16,7 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 - Para cada prueba: qué probar y qué resultado esperar, en una tabla corta.
 - Respuestas cortas a las pruebas: "funciona" o qué falló. **No pedirle diagnósticos largos** salvo que algo falle sin explicación.
 - Mantener el repositorio documentado (README, `docs/`, CHANGELOG) con cada cambio.
+- **Dar crédito siempre:** toda fuente de la que se tome información (direcciones, estructuras, trucos) se añade a [CREDITOS.md](CREDITOS.md) con su autor y qué se usó.
 
 ## Estado al cerrar esta sesión
 

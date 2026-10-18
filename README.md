@@ -13,6 +13,9 @@ Script CLEO para **GTA San Andreas PC 1.0 US** que permite mostrar y ocultar a v
 - [Estado del proyecto](#estado-del-proyecto)
 - [Documentación técnica](#documentación-técnica)
 - [Estructura del repositorio](#estructura-del-repositorio)
+- [Créditos](#créditos)
+- [Aviso legal](#aviso-legal)
+- [Licencia](#licencia)
 
 ## Requisitos
 
@@ -90,6 +93,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 | [docs/VARIABLES.md](docs/VARIABLES.md) | Para qué sirve cada variable local (`0@` a `31@`) |
 | [docs/SANNY-BUILDER-4.md](docs/SANNY-BUILDER-4.md) | Sintaxis que funciona, errores conocidos y cómo verificar una compilación |
 | [docs/INVESTIGACION.md](docs/INVESTIGACION.md) | Hora, forma del radar y cómo mover o redimensionar elementos: qué está verificado y qué falta |
+| [docs/CREDITOS.md](docs/CREDITOS.md) | Fuentes consultadas y qué información se tomó de cada una |
 | [docs/TRASPASO.md](docs/TRASPASO.md) | Resumen para retomar el proyecto en una sesión nueva |
 | [docs/MODO2.md](docs/MODO2.md) | Concepto, ideas y plan del Modo 2 (HUD dinámico) |
 | [docs/VERSIONES.md](docs/VERSIONES.md) | Esquema de numeración de versiones y plan hasta la 1.0.0 |
@@ -115,6 +119,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
     ├── VARIABLES.md
     ├── SANNY-BUILDER-4.md
     ├── INVESTIGACION.md
+    ├── CREDITOS.md
     ├── TRASPASO.md
     ├── MODO2.md
     ├── VERSIONES.md
@@ -124,6 +129,19 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 ```
 
 Los `.cs` compilados no se suben al repositorio (ver `.gitignore`). Se publicarán como archivos adjuntos de cada release.
+
+## Créditos
+
+Este mod se apoya en el trabajo de la comunidad de modding de GTA San Andreas; no descubre nada por sí mismo. Las direcciones de memoria y el funcionamiento interno del juego salen de **[plugin-sdk](https://github.com/DK22Pac/plugin-sdk)** (DK22Pac), **[gta-reversed](https://github.com/gta-reversed/gta-reversed)**, **[WidescreenFixesPack](https://github.com/ThirteenAG/WidescreenFixesPack)** (ThirteenAG), el truco del dinero de **Silent** (GTAForums) y la **[GTAMods Wiki](https://gtamods.com/wiki/Memory_Addresses_(SA))**. El mod funciona gracias a **[CLEO](https://cleo.li/)**, **[CLEO+](https://www.mixmods.com.br/2022/05/cleoplus/)** (Junior_Djjr) y **[Sanny Builder](https://sannybuilder.com/)**.
+
+No se ha copiado código de ninguno de estos proyectos: solo se consultaron datos. Detalle de qué se tomó de cada fuente y dónde se usa: [docs/CREDITOS.md](docs/CREDITOS.md).
+
+## Aviso legal
+
+- Este proyecto **no está afiliado, respaldado ni patrocinado por Rockstar Games ni por Take-Two Interactive**. "Grand Theft Auto", "GTA" y "San Andreas" son marcas de sus respectivos propietarios.
+- El repositorio **no contiene ni aceptará** archivos del juego ni material con derechos de Rockstar o Take-Two: ni el ejecutable (`gta_sa.exe`), ni texturas (`.txd`), modelos, audio, scripts originales (`main.scm`) u otros recursos del juego.
+- Para usar el mod hace falta **una copia legal de GTA San Andreas para PC** (versión 1.0 US).
+- El mod modifica la memoria del juego mientras se ejecuta, pero **no modifica ningún archivo del juego**. Se ofrece sin garantía (ver la licencia): úsalo bajo tu responsabilidad y haz copia de tus partidas guardadas.
 
 ## Licencia
 

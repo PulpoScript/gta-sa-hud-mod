@@ -4,6 +4,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). N
 
 ## [Sin publicar]
 
+### Documentación
+
+- Créditos completos de las fuentes consultadas (`docs/CREDITOS.md`) y aviso legal en el README.
+
 ### 0.2.0-dev.3 — Modo 2, paso 3: salud + blindaje
 
 - En el Modo 2, salud y blindaje se muestran 5 s al recibir daño o al subir.

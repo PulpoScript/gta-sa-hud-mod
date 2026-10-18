@@ -7,6 +7,9 @@
 //  (dinero ✓, arma ✓, paso 3: salud + blindaje). Historial: CHANGELOG.md
 //  Requiere: CLEO 4.4 + plugin CLEO+. Compilado con Sanny Builder 4.
 //  Repositorio: https://github.com/PulpoScript/gta-sa-hud-mod
+//  Créditos: datos de plugin-sdk, gta-reversed, WidescreenFixesPack,
+//  Silent (GTAForums) y GTAMods Wiki. Detalle en docs/CREDITOS.md.
+//  No afiliado a Rockstar Games ni a Take-Two (ver Aviso legal, README).
 // #####################################################################
 //
 //  CONTROLES
