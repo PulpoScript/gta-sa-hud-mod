@@ -24,6 +24,9 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | M1 | F11 | Sonido y "Truco activado" |
 | M2 | F11 otra vez | Sonido y "Truco desactivado"; todo el HUD visible |
 | M3 | Shift + 0 (×3) | "Modo 2", "Modo 3", "Modo 1" |
+| M4 | Modo 1: ocultar varios elementos → Shift + 0 | "Modo 2" y todo el HUD vuelve a verse |
+| M5 | En Modo 2 o 3: Shift + 1 a 5 | No pasa nada |
+| M6 | Volver al Modo 1 | Todo visible; Shift + 1 a 5 funcionan de nuevo |
 
 ## Modo 1: un elemento cada vez (con el mod activo)
 
@@ -48,3 +51,4 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | Fecha | Versión | Resultado |
 |---|---|---|
 | 2026-10 | Modo 1 + selector | A1–A2, M1–M3, E1–E5, R1 y R3 verificados por el autor |
+| 2026-10 | Reinicio al cambiar de modo | Pendiente: M4–M6 |

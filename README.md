@@ -39,12 +39,12 @@ Aún no hay archivos compilados publicados, así que hay que compilar el script.
 | Tecla | Acción |
 |---|---|
 | **F11** | Enciende o apaga el mod. *Temporal, solo para pruebas; se eliminará en la versión final.* |
-| **Shift + 0** | Cambia de modo: 1 → 2 → 3 → 1. Muestra "Modo N" en pantalla. |
-| **Shift + 1** | Modo 1: mostrar u ocultar el **radar** |
-| **Shift + 2** | Modo 1: mostrar u ocultar el **icono de arma y la munición** |
-| **Shift + 3** | Modo 1: mostrar u ocultar las **barras de salud y blindaje** |
-| **Shift + 4** | Modo 1: mostrar u ocultar el **dinero** |
-| **Shift + 5** | Modo 1: mostrar u ocultar la **hora** |
+| **Shift + 0** | Cambia de modo: 1 → 2 → 3 → 1. Muestra "Modo N" en pantalla y devuelve el HUD a su estado de fábrica (todo visible). |
+| **Shift + 1** | Solo en Modo 1: mostrar u ocultar el **radar** |
+| **Shift + 2** | Solo en Modo 1: mostrar u ocultar el **icono de arma y la munición** |
+| **Shift + 3** | Solo en Modo 1: mostrar u ocultar las **barras de salud y blindaje** |
+| **Shift + 4** | Solo en Modo 1: mostrar u ocultar el **dinero** |
+| **Shift + 5** | Solo en Modo 1: mostrar u ocultar la **hora** |
 
 Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 
@@ -56,7 +56,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 | 2 | Por definir | ⏳ Solo selector |
 | 3 | Por definir | ⏳ Solo selector |
 
-**Comportamiento actual conocido:** Shift + 1 a 5 funcionan en cualquier modo. Falta decidir cómo se separan del Modo 2 y 3 (ver [Pendientes](#pendientes)).
+**Al cambiar de modo**, el HUD vuelve a su estado de fábrica (todo visible) y el nuevo modo empieza desde cero. Las elecciones del Modo 1 no se conservan: al volver a él, todo está visible.
 
 ## Estado del proyecto
 
@@ -67,14 +67,12 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 - [x] Paso 3: barras de salud + blindaje
 - [x] Paso 4: dinero
 - [x] Paso 5: hora
-- [x] Selector de modos (Shift + 0)
+- [x] Selector de modos (Shift + 0), con reinicio del HUD al cambiar
+- [x] Shift + 1 a 5 limitados al Modo 1
 - [x] Restauración automática si se carga partida con elementos ocultos
 
 ### Pendientes
 
-- [ ] Decidir cómo conviven Shift + 1 a 5 con los Modos 2 y 3:
-  - **Opción A:** solo funcionan en el Modo 1 y, en los otros modos, el HUD vuelve a mostrarse completo.
-  - **Opción B:** solo funcionan en el Modo 1 y, al cambiar de modo, el HUD se queda como estaba.
 - [ ] Definir y programar el Modo 2
 - [ ] Definir y programar el Modo 3
 - [ ] Versión final: quitar F11 y arrancar con el mod activo (`0@ = 1`)
@@ -98,6 +96,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 .
 ├── README.md            Este archivo
 ├── CHANGELOG.md         Registro de cambios
+├── LICENSE              Licencia MIT
 ├── src/
 │   └── MiMod.txt        Código fuente (Sanny Builder 4)
 └── docs/
@@ -110,3 +109,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 ```
 
 Los `.cs` compilados no se suben al repositorio (ver `.gitignore`). Se publicarán como archivos adjuntos de cada release.
+
+## Licencia
+
+[MIT](LICENSE). Puedes usar, modificar y redistribuir el código siempre que mantengas el aviso de copyright. Se ofrece sin garantía.

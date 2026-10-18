@@ -88,7 +88,13 @@ Las variables de **disponible** (`8@`, `11@`, `16@`, `18@` y `22@`) protegen cad
 
 ## Selector de modos
 
-`19@` guarda el modo (1, 2 o 3). Con el mod activo, Shift + 0 lo hace avanzar en ciclo y muestra "Modo N". De momento solo cambia y anuncia el modo: la lógica de los elementos todavía no lo consulta.
+`19@` guarda el modo (1, 2 o 3). Con el mod activo, Shift + 0 lo hace avanzar en ciclo y muestra "Modo N".
+
+**Reinicio al cambiar de modo:** el selector pone a 0 todos los *pedidos* del Modo 1 (`1@`, `4@`, `12@`, `23@` y `26@`). En ese mismo frame, cada sección calcula *deseado = 0* y restaura lo que estuviera oculto. Así el HUD queda en su estado de fábrica y el nuevo modo empieza desde cero.
+
+**Teclas del Modo 1:** la parte "Tecla" de cada elemento exige `0@ == 1` **y** `19@ == 1`. En los Modos 2 y 3, Shift + 1 a 5 no hacen nada.
+
+**Para añadir un modo:** su regla se suma al cálculo del *estado deseado* de cada elemento (por ejemplo, `deseado = 1` si `19@ == 2` y se cumple su condición). La parte que escribe en memoria no cambia.
 
 ## Modo de pruebas (F11)
 

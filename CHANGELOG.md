@@ -12,3 +12,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). A
 - Verificación de bytes originales al arrancar y restauración automática al cargar partida con elementos ocultos.
 - Aviso en pantalla y desactivación del elemento afectado si el ejecutable no es 1.0 US.
 - Documentación completa en `docs/`.
+- Licencia MIT.
+
+### Cambiado
+
+- Al cambiar de modo con Shift + 0, el HUD vuelve a su estado de fábrica (todo visible).
+- Shift + 1 a 5 solo funcionan en el Modo 1.

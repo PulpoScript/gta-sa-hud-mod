@@ -41,7 +41,9 @@ Se pone a 0 el flag `CHud::bDrawClock` (`0xBAA400`). Al ser un dato y no código
 
 ## Selector de modos
 
-Shift + 0 hace avanzar `19@` en ciclo y anuncia "Modo N". La lógica del Modo 1 no se modificó, así que Shift + 1 a 5 siguen funcionando en todos los modos (pendiente de decidir).
+Shift + 0 hace avanzar `19@` en ciclo y anuncia "Modo N". En la primera versión no se tocó la lógica del Modo 1, así que Shift + 1 a 5 funcionaban en todos los modos.
+
+**Decisión:** al cambiar de modo, el HUD vuelve a su estado de fábrica y el nuevo modo empieza desde cero. Shift + 1 a 5 quedan limitados al Modo 1. Se implementó borrando los *pedidos* en el selector: el patrón de estados restaura todo solo.
 
 ## Lecciones generales
 

@@ -9,7 +9,9 @@
 //  CONTROLES
 //    F11        Enciende / apaga el mod (TEMPORAL, solo para testing).
 //    Shift + 0  Cambia de modo: 1 -> 2 -> 3 -> 1 (muestra "Modo N").
-//    Modo 1 (manual), cada tecla alterna mostrar / ocultar:
+//               Al cambiar, el HUD vuelve a su estado de fábrica.
+//    Modo 1 (manual), cada tecla alterna mostrar / ocultar
+//    (Shift + 1 a 5 solo funcionan en el Modo 1):
 //      Shift + 1  Radar
 //      Shift + 2  Icono de arma + munición
 //      Shift + 3  Barras de salud + blindaje
@@ -233,7 +235,8 @@ while true
 
     // =================================================================
     //  [MODO] Shift + 0 — cambia de modo: 1 -> 2 -> 3 -> 1
-    //  Solo con el mod activo. Anuncia el modo nuevo en pantalla.
+    //  Solo con el mod activo. Al cambiar, el HUD vuelve a su estado de
+    //  fábrica (todo visible) y se anuncia el modo nuevo en pantalla.
     // =================================================================
 
     // ---- Tecla ----
@@ -254,6 +257,13 @@ while true
                     19@ = 1
                 end
             end
+            // HUD a estado de fábrica: se borran los pedidos del Modo 1.
+            // Las secciones de cada elemento restauran lo oculto este mismo frame.
+            1@ = 0      // radar
+            4@ = 0      // arma + munición
+            12@ = 0     // salud + blindaje
+            23@ = 0     // dinero
+            26@ = 0     // hora
             add_one_off_sound 0.0 {y} 0.0 {z} 0.0 {soundId} 1058
             0ACE: show_formatted_text_box "Modo %d" 19@
             while 0AB0: key_pressed 0x30       // antirrebote
@@ -267,8 +277,10 @@ while true
     //  Técnica: opcode del juego 0581: display_radar.
     // =================================================================
 
-    // ---- Tecla: alterna el pedido del usuario ----
-    if 0@ == 1
+    // ---- Tecla: alterna el pedido del usuario (solo en Modo 1) ----
+    if and
+        0@ == 1
+        19@ == 1
     then
         if and
             0AB0: key_pressed 0x10   // Shift
@@ -320,8 +332,10 @@ while true
     //  Cada parte solo se toca si se verificó al arrancar (8@, 11@).
     // =================================================================
 
-    // ---- Tecla: alterna el pedido del usuario ----
-    if 0@ == 1
+    // ---- Tecla: alterna el pedido del usuario (solo en Modo 1) ----
+    if and
+        0@ == 1
+        19@ == 1
     then
         if and
             0AB0: key_pressed 0x10   // Shift
@@ -388,8 +402,10 @@ while true
     //  Cada parte solo se toca si se verificó al arrancar (16@, 18@).
     // =================================================================
 
-    // ---- Tecla: alterna el pedido del usuario ----
-    if 0@ == 1
+    // ---- Tecla: alterna el pedido del usuario (solo en Modo 1) ----
+    if and
+        0@ == 1
+        19@ == 1
     then
         if and
             0AB0: key_pressed 0x10   // Shift
@@ -456,8 +472,10 @@ while true
     //  Solo si se verificó al arrancar (22@).
     // =================================================================
 
-    // ---- Tecla: alterna el pedido del usuario ----
-    if 0@ == 1
+    // ---- Tecla: alterna el pedido del usuario (solo en Modo 1) ----
+    if and
+        0@ == 1
+        19@ == 1
     then
         if and
             0AB0: key_pressed 0x10   // Shift
@@ -513,8 +531,10 @@ while true
     //  0 = oculto. Es memoria de datos: se escribe con vp False.
     // =================================================================
 
-    // ---- Tecla: alterna el pedido del usuario ----
-    if 0@ == 1
+    // ---- Tecla: alterna el pedido del usuario (solo en Modo 1) ----
+    if and
+        0@ == 1
+        19@ == 1
     then
         if and
             0AB0: key_pressed 0x10   // Shift
