@@ -539,15 +539,17 @@ while true
 
     // ---- Modo 2: detectar si el dinero cambió (en cualquier modo) ----
     // No se comparan dos variables entre sí (error 0014 en SB4): se
-    // calcula la diferencia y se compara con 0.
+    // calcula la diferencia y se compara con 0. Las operaciones entre dos
+    // variables llevan el número de opcode (0062 / 005A) para indicar que
+    // son enteras; sin él, SB4 también da el error 0014.
     31@ = read_memory 0xB7CE50 {size} 4 {vp} False
-    31@ -= 10@                     // diferencia con el frame anterior
+    0062: 31@ -= 10@               // diferencia con el frame anterior (resta entera @ -= @)
     if 31@ == 0
     then
         31@ = 0                    // sin cambios: nada que hacer
     else
         32@ = 0                    // cambió: reiniciar el temporizador
-        10@ += 31@                 // guardar el dinero actual
+        005A: 10@ += 31@           // guardar el dinero actual (suma entera @ += @)
     end
 
     // ---- Estado deseado: oculto solo si mod activo, en Modo 1, pedido y verificado ----
