@@ -1,4 +1,4 @@
-# MiMod: control del HUD para GTA San Andreas
+# Control del HUD para GTA San Andreas
 
 Script CLEO para **GTA San Andreas PC 1.0 US** que permite mostrar y ocultar a voluntad cada parte de la interfaz (HUD): radar, arma, barras, dinero y hora.
 
