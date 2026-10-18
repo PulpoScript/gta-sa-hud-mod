@@ -68,6 +68,12 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | R-6 | Conseguir nivel de búsqueda | Visible mientras dure la búsqueda |
 | R-7 | Modo 1: Shift + 2 y Shift + 3 | Siguen ocultando arma y barras (indicadores unidos) |
 
+| C-1 | Entrar en el Modo 2 (Shift + 0) | Se ve todo unos 3 s y luego se oculta |
+| C-2 | Mantener "." | Se ve todo mientras la mantienes; al soltar, se oculta a los 3 s |
+| C-3 | Ganar o gastar dinero | Aparecen dinero **y hora** |
+| C-4 | Esperar a que cambie la hora del juego | Aparecen dinero y hora 5 s |
+| C-5 | En el Modo 1 o 3, pulsar "." | No pasa nada |
+
 ## Restauración
 
 | # | Acción | Resultado esperado |
@@ -89,3 +95,4 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | 2026-10 | 0.2.0-dev.3: salud en Modo 2 | H1–H4 verificados por el autor |
 | 2026-10 | 0.2.0-dev.4: aviso de poca salud | H5–H6 verificados por el autor |
 | 2026-10 | 0.2.0-dev.5: radar en Modo 2 | R-1 a R-7 verificados por el autor |
+| 2026-10 | 0.2.0-dev.6: hora, consulta y entrada al modo | Pendiente: C-1 a C-5 |

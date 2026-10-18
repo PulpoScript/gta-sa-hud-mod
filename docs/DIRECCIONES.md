@@ -21,6 +21,7 @@ Todas corresponden a **GTA San Andreas PC 1.0 US**. En otras versiones del ejecu
 | Indicador "en vehículo" | `CPed::bInVehicle` (bit 0 del byte) | jugador + `0x46D` | — | bit | — | solo lectura |
 | Estado de movimiento | `CPed::m_nMoveState` (`7` = esprintar) | jugador + `0x534` | — | `int` | — | solo lectura |
 | Nivel de búsqueda | `CPed::m_pPlayerData` (`+0x480`) → `CPlayerData::m_pWanted` (`+0x0`) → `CWanted::m_nWantedLevel` (`+0x2C`) | cadena de punteros | — | `uint` | — | solo lectura |
+| Hora del juego | `CClock::ms_nGameClockHours` | `0xB70153` | 12002643 | byte | — | solo lectura |
 | Reloj del juego | `CTimer::m_snTimeInMilliseconds` | `0xB7CB84` | 12045188 | `uint` (ms) | — | solo lectura |
 | Dinero del jugador (lectura, Modo 2) | `CPlayerInfo::m_nMoney` de `CWorld::Players[0]` | `0xB7CE50` | 12045904 | `int` (dato) | — | solo lectura |
 

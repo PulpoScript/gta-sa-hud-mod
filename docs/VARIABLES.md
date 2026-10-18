@@ -22,7 +22,7 @@ Los scripts CLEO tienen variables locales `0@` a `31@`. Así se usan:
 | `15@` | Barras | verificación | Byte leído al arrancar en `0x589270` |
 | `16@` | Barras | disponible | Salud **y** blindaje verificados (originales 131 y 131) |
 | `17@` | Barras | verificación | Byte leído al arrancar en `0x5890A0` |
-| `18@` | — | — | **Libre** |
+| `18@` | Modo 2 | hora | Hora del juego del frame anterior (para detectar el cambio de hora) |
 | `19@` | Modo | estado | Modo actual (1, 2, 3) |
 | `20@` | Dinero | verificación | 4 bytes leídos al arrancar en `0x58F607` |
 | `21@` | Dinero | verificación | 1 byte leído al arrancar en `0x58F60B` |
@@ -37,7 +37,7 @@ Los scripts CLEO tienen variables locales `0@` a `31@`. Así se usan:
 | `30@` | Hora | verificación | Byte leído al arrancar en `0xBAA400` |
 | `31@` | Modo 2 | salud | Firma de salud + blindaje del frame anterior |
 
-Libres: **`18@`**. Además, las variables de verificación del arranque se reutilizan en el bucle:
+Libres: **ninguna**. Además, las variables de verificación del arranque se reutilizan en el bucle:
 
 | Variable | Al arrancar | Después (Modo 2, subrutina `FirmaArmas`) |
 |---|---|---|

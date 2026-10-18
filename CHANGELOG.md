@@ -8,6 +8,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). N
 
 - Créditos completos de las fuentes consultadas (`docs/CREDITOS.md`) y aviso legal en el README.
 
+### 0.2.0-dev.6 — Modo 2, paso 5: hora, consulta y entrada al modo
+
+- En el Modo 2, la hora se ve junto con el dinero, y ambos aparecen 5 s al pasar una hora del juego.
+- Tecla de consulta ".": mientras se mantiene pulsada se ve todo el HUD.
+- Al entrar en el Modo 2 se ve todo unos 3 s.
+
 ### 0.2.0-dev.5 — Modo 2, paso 4: radar (probado)
 
 - En el Modo 2, el radar se ve dentro de un vehículo, con nivel de búsqueda o al esprintar, y se oculta 8 s después de la última de esas situaciones.

@@ -26,7 +26,7 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 | Selector de modos (Shift + 0) | ✅ Probado: cambia y anuncia el modo |
 | HUD de fábrica al salir del Modo 1 y **recuerdo** de las elecciones al volver | ✅ Probado |
 | Versión **0.1.0** en cabecera y mensajes de F11; sin sonido doble | ⚠️ Programado, sin probar |
-| Modo 2 (dinámico) | 🚧 Concepto en [MODO2.md](MODO2.md). Dinero ✅ (`0.2.0-dev.1`). Arma ✅ (`0.2.0-dev.2`). Salud ✅ (`0.2.0-dev.3`). Aviso de poca salud ✅ (`0.2.0-dev.4`). Radar ✅ (`0.2.0-dev.5`). Falta: hora |
+| Modo 2 (dinámico) | 🚧 Concepto en [MODO2.md](MODO2.md). Dinero ✅ (`0.2.0-dev.1`). Arma ✅ (`0.2.0-dev.2`). Salud ✅ (`0.2.0-dev.3`). Aviso de poca salud ✅ (`0.2.0-dev.4`). Radar ✅ (`0.2.0-dev.5`). Hora, tecla "." y entrada al modo ⚠️ (`0.2.0-dev.6`, sin probar). Si se confirma, publicar `0.2.0` |
 | Modo 3 | ⏳ Sin definir |
 | Script de exploración (`experimentos/explorar_hud.txt`) | ⚠️ Escrito, sin compilar ni probar |
 | Radar cuadrado / rectangular y mover elementos | 🔎 Investigado, ver [INVESTIGACION.md](INVESTIGACION.md) |
