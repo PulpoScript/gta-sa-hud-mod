@@ -10,6 +10,7 @@ Script CLEO para **GTA San Andreas PC 1.0 US** que permite mostrar y ocultar a v
 - [Instalación](#instalación)
 - [Controles](#controles)
 - [Modos](#modos)
+- [Cómo se comporta en el juego](#cómo-se-comporta-en-el-juego)
 - [Estado del proyecto](#estado-del-proyecto)
 - [Documentación técnica](#documentación-técnica)
 - [Estructura del repositorio](#estructura-del-repositorio)
@@ -61,6 +62,53 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 | 3 | Por definir | ⏳ Solo selector |
 
 **Al cambiar de modo**, el HUD vuelve a su estado de fábrica (todo visible) y el nuevo modo empieza desde cero. **El Modo 1 recuerda sus elecciones:** al volver a él, se oculta otra vez lo que tenías oculto.
+
+## Cómo se comporta en el juego
+
+### Al empezar
+
+El mod arranca **apagado**: el HUD se ve como siempre. Pulsa **F11** para encenderlo ("UI v0.2.0 activado"). Empieza en el **Modo 1**. Con **Shift + 0** cambias de modo y aparece "UI - Modo N" en pantalla.
+
+### Modo 1: manual
+
+Tú decides qué se ve. Cada combinación oculta un elemento y, si la pulsas otra vez, lo vuelve a mostrar. Un elemento oculto **se queda oculto** hasta que lo vuelvas a pulsar, pase lo que pase en el juego.
+
+| Tecla | Elemento |
+|---|---|
+| Shift + 1 | Radar |
+| Shift + 2 | Icono de arma + munición |
+| Shift + 3 | Barras de salud + blindaje |
+| Shift + 4 | Dinero |
+| Shift + 5 | Hora |
+
+Si cambias a otro modo y luego vuelves, el Modo 1 recuerda lo que tenías oculto.
+
+### Modo 2: dinámico
+
+La pantalla queda limpia. Cada elemento **aparece solo cuando pasa algo** y se oculta al rato. Shift + 1 a 5 no hacen nada en este modo.
+
+| Elemento | Aparece cuando… | Se oculta… |
+|---|---|---|
+| Dinero | Ganas o gastas dinero | 5 s después del último cambio |
+| Arma + munición | Cambias de arma, consigues un arma o munición, o disparas | 5 s después del último cambio |
+| Salud + blindaje | Recibes daño o se recuperan | 5 s después; **se quedan fijas** si la salud baja de 25 |
+| Radar | Vas en un vehículo, tienes nivel de búsqueda o esprintas | 8 s después de la última de esas situaciones |
+| Hora | Solo si la pides con la tecla "." | 5 s después |
+
+**Tecla "." (consulta):**
+- **Toque corto:** muestra solo la hora durante 5 s.
+- **Mantener 0,8 s:** muestra **todo** el HUD mientras la mantengas. Al soltarla, todo se oculta a los 3 s.
+
+Al entrar en el Modo 2 se ve todo unos 3 s, para orientarte, y luego cada elemento se va ocultando.
+
+### Modo 3
+
+Aún no está definido. Por ahora el HUD se ve completo, como en el juego original.
+
+### Al apagar el mod o cargar partida
+
+- **F11 (apagar):** todo el HUD vuelve a verse al instante.
+- **Cargar partida:** el mod restaura cualquier elemento que se hubiera quedado oculto. Si detecta un ejecutable que no es 1.0 US, avisa en pantalla y no toca ese elemento.
 
 ## Estado del proyecto
 
