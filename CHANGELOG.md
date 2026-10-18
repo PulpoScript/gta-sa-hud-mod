@@ -4,7 +4,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). N
 
 ## [Sin publicar]
 
-### 0.2.0-dev.2 — Modo 2, paso 2: arma + munición
+### 0.2.0-dev.3 — Modo 2, paso 3: salud + blindaje
+
+- En el Modo 2, salud y blindaje se muestran 5 s al recibir daño o al subir.
+- Se mide el tiempo con el reloj del juego (`0xB7CB84`), porque no quedan temporizadores de CLEO.
+- La hora se restaura siempre a su valor de fábrica (1), lo que libera una variable.
+
+### 0.2.0-dev.2 — Modo 2, paso 2: arma + munición (probado)
 
 - En el Modo 2, el arma y la munición se muestran 5 s al cambiar de arma, conseguir un arma o munición o disparar.
 - Las variables de verificación del arranque se reutilizan en el bucle.

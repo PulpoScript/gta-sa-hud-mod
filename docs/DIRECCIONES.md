@@ -17,6 +17,8 @@ Todas corresponden a **GTA San Andreas PC 1.0 US**. En otras versiones del ejecu
 | Puntero al jugador (lectura, Modo 2) | `CWorld::Players[0].m_pPed` | `0xB7CD98` | 12045720 | puntero | — | solo lectura |
 | Ranura del arma en la mano | `CPed::m_nSelectedWepSlot` | jugador + `0x718` | — | byte | — | solo lectura |
 | Armas del jugador | `CPed::m_aWeapons[13]` (`CWeapon`, `0x1C` bytes: tipo `+0x0`, munición total `+0xC`) | jugador + `0x5A0` | — | dato | — | solo lectura |
+| Salud y blindaje del jugador | `CPed::m_fHealth` / `CPed::m_fArmour` (`float`) | jugador + `0x540` / `0x548` | — | dato | — | solo lectura |
+| Reloj del juego | `CTimer::m_snTimeInMilliseconds` | `0xB7CB84` | 12045188 | `uint` (ms) | — | solo lectura |
 | Dinero del jugador (lectura, Modo 2) | `CPlayerInfo::m_nMoney` de `CWorld::Players[0]` | `0xB7CE50` | 12045904 | `int` (dato) | — | solo lectura |
 
 El radar no usa memoria: se controla con el opcode `0581: display_radar`.

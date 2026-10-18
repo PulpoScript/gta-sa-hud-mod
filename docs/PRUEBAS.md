@@ -53,6 +53,11 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | W3 | Recoger un arma o munición, o usar un truco de armas | Aparece el icono |
 | W4 | Disparar | Aparece el icono mientras disparas (recargar sola probablemente no lo muestra) |
 
+| H1 | En el Modo 2, esperar 5 s sin daño | Salud y blindaje desaparecen |
+| H2 | Recibir daño (caída, pelea) | Aparecen y se ocultan 5 s después del último daño |
+| H3 | Curarse o ponerse blindaje (`HESOYAM`) | Aparecen |
+| H4 | Shift + 5 en el Modo 1 (hora) | Sigue ocultando y mostrando la hora |
+
 ## Restauración
 
 | # | Acción | Resultado esperado |
@@ -70,4 +75,5 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | 2026-10 | Recuerdo del Modo 1 | M3–M7 verificados por el autor (ciclo 1→2→3→1 y recuerdo del Modo 1) |
 | 2026-10 | 0.1.0: un solo sonido y versión en pantalla | Pendiente: M1–M3 |
 | 2026-10 | 0.2.0-dev.1: dinero en Modo 2 | D1–D3 verificados por el autor; 5 s aprobados |
-| 2026-10 | 0.2.0-dev.2: arma en Modo 2 | Pendiente: W1–W4 |
+| 2026-10 | 0.2.0-dev.2: arma en Modo 2 | W1–W4 verificados por el autor |
+| 2026-10 | 0.2.0-dev.3: salud en Modo 2 | Pendiente: H1–H4 |

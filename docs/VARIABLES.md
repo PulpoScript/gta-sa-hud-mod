@@ -31,22 +31,22 @@ Los scripts CLEO tienen variables locales `0@` a `31@`. Así se usan:
 | `24@` | Dinero | deseado | 1 = debe estar oculto |
 | `25@` | Dinero | aplicado | 1 = oculto en el juego |
 | `26@` | Hora | pedido | El usuario pidió ocultar la hora (Shift + 5) |
-| `27@` | Hora | guardado | Valor de `bDrawClock` antes de ocultar |
+| `27@` | Modo 2 | salud | Momento (reloj del juego, ms) del último cambio de salud o blindaje |
 | `28@` | Hora | deseado | 1 = debe estar oculta |
 | `29@` | Hora | aplicado | 1 = oculta en el juego |
 | `30@` | Hora | verificación | Byte leído al arrancar en `0xBAA400` |
-| `31@` | Modo 2 | temporal | Diferencia de dinero en el frame actual |
+| `31@` | Modo 2 | salud | Firma de salud + blindaje del frame anterior |
 
 Libres: **ninguna**, pero las variables de verificación del arranque se reutilizan en el bucle:
 
 | Variable | Al arrancar | Después (Modo 2, subrutina `FirmaArmas`) |
 |---|---|---|
 | `6@` | byte del icono | puntero al jugador (temporal) |
-| `9@` | byte de la munición | valor leído (temporal) |
+| `9@` | byte de la munición | valor leído; firma de salud; diferencia del dinero (temporal) |
 | `15@` | byte de la salud | cursor de ranuras (temporal) |
-| `17@` | byte del blindaje | dirección de munición (temporal) |
+| `17@` | byte del blindaje | dirección de munición; blindaje leído (temporal) |
 | `20@` | 4 bytes del dinero | firma actual de las armas |
-| `21@` | 1 byte del dinero | contador de ranuras (temporal) |
+| `21@` | 1 byte del dinero | contador de ranuras; tiempo desde el último cambio de salud (temporal) |
 | `30@` | flag de la hora | firma de las armas del frame anterior |
 
 `32@` y `33@` son temporizadores de CLEO: suben solos, en milisegundos. `32@` = tiempo desde el último cambio de dinero y `33@` = tiempo desde el último cambio en las armas (Modo 2). En el descompilado aparecen como `TIMERA` y `TIMERB`.

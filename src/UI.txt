@@ -3,8 +3,8 @@
 
 // #####################################################################
 //  UI — Control del HUD para GTA San Andreas PC 1.0 US
-//  Versión: 0.2.0-dev.2 (beta) — Modo 1 completo; Modo 2 en desarrollo
-//  (paso 1: dinero ✓, paso 2: arma). Historial: CHANGELOG.md
+//  Versión: 0.2.0-dev.3 (beta) — Modo 1 completo; Modo 2 en desarrollo
+//  (dinero ✓, arma ✓, paso 3: salud + blindaje). Historial: CHANGELOG.md
 //  Requiere: CLEO 4.4 + plugin CLEO+. Compilado con Sanny Builder 4.
 //  Repositorio: https://github.com/PulpoScript/gta-sa-hud-mod
 // #####################################################################
@@ -25,6 +25,7 @@
 //      Dinero: se muestra 5 s al ganar o perder dinero.
 //      Arma + munición: se muestra 5 s al cambiar de arma, conseguir un
 //      arma o munición, o disparar.
+//      Salud + blindaje: se muestran 5 s al recibir daño o al subir.
 //    Modo 3: solo el selector; su lógica aún no existe.
 //
 //  MAPA DEL CÓDIGO (buscar las etiquetas entre corchetes)
@@ -38,7 +39,7 @@
 //      [SALUD + BLINDAJE] ..... Shift + 3
 //      [DINERO] ............... Shift + 4
 //      [HORA] ................. Shift + 5
-//    SUBRUTINAS (al final) .... FirmaArmas
+//    SUBRUTINAS (al final) .... FirmaArmas, FirmaSalud
 //    Cada elemento tiene tres bloques: "Tecla", "Estado deseado" y
 //    "Aplicar". Los Modos 2 y 3 solo deben tocar "Estado deseado"
 //    (ver las marcas "PUNTO DE EXTENSIÓN" y docs/ARQUITECTURA.md).
@@ -131,14 +132,15 @@
 
 // [HORA]
 26@ = 0     // pedido: hora oculta (Shift+5)
-27@ = 1     // valor de CHud::bDrawClock guardado al ocultar (para restaurar)
+27@ = 0     // (Modo 2) momento del último cambio de salud/blindaje, en ms
 28@ = 0     // deseado: 1 = oculto
 29@ = 0     // aplicado: 1 = oculto en el juego
 30@ = 0     // byte leído al arrancar en 0xBAA400
 
 // [MODO 2]
 10@ = 0     // dinero del frame anterior (para detectar cambios)
-31@ = 0     // temporal: diferencia de dinero en este frame
+31@ = 0     // firma de salud + blindaje del frame anterior
+//  27@ = momento (reloj del juego, ms) del último cambio de salud/blindaje
 //  32@ = temporizador de CLEO (sube solo, en milisegundos): tiempo
 //        desde el último cambio de dinero.
 //  33@ = temporizador: tiempo desde el último cambio en las armas.
@@ -146,6 +148,9 @@
 //    20@ = firma actual del inventario    30@ = firma del frame anterior
 //    6@ = puntero del jugador   15@ = cursor   17@ = dirección
 //    9@ = valor leído           21@ = contador de ranuras
+//  9@, 15@, 17@ y 21@ también son temporales en FirmaSalud, en la
+//  diferencia del dinero y en el cálculo del tiempo de la salud.
+//  Reloj del juego: CTimer::m_snTimeInMilliseconds = 0xB7CB84 (plugin-sdk).
 
 // =====================================================================
 //  INICIO: verificar bytes originales antes de parchear
@@ -255,6 +260,11 @@ gosub @FirmaArmas
 0085: 30@ = 20@                    // copia entera @ = @
 33@ = 0                            // al cargar, el arma se ve 5 s
 
+// Firma inicial de salud + blindaje y momento actual.
+gosub @FirmaSalud
+0085: 31@ = 9@
+27@ = read_memory 0xB7CB84 {size} 4 {vp} False   // al cargar, se ven 5 s
+
 // =====================================================================
 //  BUCLE PRINCIPAL (se ejecuta una vez por frame)
 // =====================================================================
@@ -271,10 +281,10 @@ while true
             0@ = 1
             // Sin add_one_off_sound: el cuadro de texto ya hace su propio
             // "bip"; con los dos sonaban dos sonidos a la vez.
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.2 activado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.3 activado"
         else
             0@ = 0
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.2 desactivado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.3 desactivado"
         end
         while 0AB0: key_pressed 0x7A           // antirrebote: esperar a soltar
             wait 0
@@ -501,6 +511,19 @@ while true
         end
     end
 
+    // ---- Modo 2: detectar cambios de salud o blindaje (en cualquier modo) ----
+    // No quedan temporizadores de CLEO: se guarda en 27@ el momento del
+    // último cambio según el reloj del juego (0xB7CB84, ms).
+    gosub @FirmaSalud
+    0062: 9@ -= 31@                // diferencia con el frame anterior
+    if 9@ == 0
+    then
+        9@ = 0                     // sin cambios: nada que hacer
+    else
+        27@ = read_memory 0xB7CB84 {size} 4 {vp} False   // momento del cambio
+        005A: 31@ += 9@            // guardar la firma actual
+    end
+
     // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
     // PUNTO DE EXTENSIÓN (Modos 2 y 3): la regla de cada modo se añade
     // aquí, con su propio "if 19@ == 2" que ponga el deseado a 1 cuando
@@ -511,6 +534,18 @@ while true
         19@ == 1
     then
         if 12@ == 1
+        then
+            13@ = 1
+        end
+    end
+    // Modo 2: ocultas salvo durante 5 s tras un cambio de salud o blindaje.
+    if and
+        0@ == 1
+        19@ == 2
+    then
+        21@ = read_memory 0xB7CB84 {size} 4 {vp} False   // ahora
+        0062: 21@ -= 27@           // tiempo desde el último cambio
+        if 21@ > 5000
         then
             13@ = 1
         end
@@ -581,14 +616,14 @@ while true
     // calcula la diferencia y se compara con 0. Las operaciones entre dos
     // variables llevan el número de opcode (0062 / 005A) para indicar que
     // son enteras; sin él, SB4 también da el error 0014.
-    31@ = read_memory 0xB7CE50 {size} 4 {vp} False
-    0062: 31@ -= 10@               // diferencia con el frame anterior (resta entera @ -= @)
-    if 31@ == 0
+    9@ = read_memory 0xB7CE50 {size} 4 {vp} False
+    0062: 9@ -= 10@                // diferencia con el frame anterior (resta entera @ -= @)
+    if 9@ == 0
     then
-        31@ = 0                    // sin cambios: nada que hacer
+        9@ = 0                     // sin cambios: nada que hacer
     else
         32@ = 0                    // cambió: reiniciar el temporizador
-        005A: 10@ += 31@           // guardar el dinero actual (suma entera @ += @)
+        005A: 10@ += 9@            // guardar el dinero actual (suma entera @ += @)
     end
 
     // ---- Estado deseado: oculto solo si mod activo, en Modo 1, pedido y verificado ----
@@ -681,22 +716,21 @@ while true
         end
     end
 
-    // ---- Aplicar solo si cambió: ocultar (guardar valor actual) ----
+    // ---- Aplicar solo si cambió: ocultar ----
     if and
         28@ == 1
         29@ == 0
     then
-        27@ = read_memory 0xBAA400 {size} 1 {vp} False
         write_memory 0xBAA400 {size} 1 {value} 0 {vp} False
         29@ = 1
     end
 
-    // ---- Aplicar solo si cambió: mostrar (restaurar valor guardado) ----
+    // ---- Aplicar solo si cambió: mostrar (valor de fábrica: 1) ----
     if and
         28@ == 0
         29@ == 1
     then
-        write_memory 0xBAA400 {size} 1 {value} 27@ {vp} False
+        write_memory 0xBAA400 {size} 1 {value} 1 {vp} False
         29@ = 0
     end
 
@@ -738,5 +772,26 @@ then
         15@ += 0x1C                              // siguiente ranura
         21@ -= 1
     end
+end
+return
+
+// ---- FirmaSalud ----
+// Devuelve en 9@ una "firma" de salud + blindaje: suma de los bits de
+// los dos float. Si cualquiera cambia (daño, curación, chaleco), cambia.
+// Datos (plugin-sdk, VALIDATE_OFFSET), solo lectura:
+//   CPed + 0x540 = m_fHealth (float), CPed + 0x548 = m_fArmour (float)
+// Usa como temporales: 6@, 15@, 17@.
+:FirmaSalud
+9@ = 0
+6@ = read_memory 0xB7CD98 {size} 4 {vp} False   // puntero al jugador
+if 6@ > 0                                        // sin jugador: firma 0
+then
+    0085: 15@ = 6@
+    15@ += 0x540
+    9@ = read_memory 15@ {size} 4 {vp} False    // salud (bits del float)
+    0085: 15@ = 6@
+    15@ += 0x548
+    17@ = read_memory 15@ {size} 4 {vp} False   // blindaje (bits del float)
+    005A: 9@ += 17@
 end
 return
