@@ -79,4 +79,4 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | 2026-10 | 0.2.0-dev.1: dinero en Modo 2 | D1–D3 verificados por el autor; 5 s aprobados |
 | 2026-10 | 0.2.0-dev.2: arma en Modo 2 | W1–W4 verificados por el autor |
 | 2026-10 | 0.2.0-dev.3: salud en Modo 2 | H1–H4 verificados por el autor |
-| 2026-10 | 0.2.0-dev.4: aviso de poca salud | Pendiente: H5–H6 |
+| 2026-10 | 0.2.0-dev.4: aviso de poca salud | H5–H6 verificados por el autor |

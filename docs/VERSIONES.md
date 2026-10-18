@@ -29,7 +29,7 @@ Las versiones `-dev` no se publican como release: son estados intermedios en Git
 | `0.2.0-dev.1` | Modo 2, paso 1: dinero | ✅ Probado |
 | `0.2.0-dev.2` | Modo 2, paso 2: arma + munición | ✅ Probado |
 | `0.2.0-dev.3` | Modo 2, paso 3: salud + blindaje | ✅ Probado |
-| `0.2.0-dev.4` | Modo 2: aviso de poca salud | ⚠️ Sin probar |
+| `0.2.0-dev.4` | Modo 2: aviso de poca salud | ✅ Probado |
 | `0.2.0-dev.N` | Resto de elementos del Modo 2 | ⏳ |
 | `0.2.0` | Modo 2 completo | ⏳ |
 | `0.3.0` | Modo 3 completo | ⏳ |

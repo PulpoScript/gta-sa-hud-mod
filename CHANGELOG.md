@@ -8,7 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). N
 
 - Créditos completos de las fuentes consultadas (`docs/CREDITOS.md`) y aviso legal en el README.
 
-### 0.2.0-dev.4 — Modo 2: aviso de poca salud
+### 0.2.0-dev.4 — Modo 2: aviso de poca salud (probado)
 
 - En el Modo 2, salud y blindaje se quedan visibles mientras la salud esté por debajo de 25.
 
