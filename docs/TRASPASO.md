@@ -57,7 +57,7 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 2. **Mod CLEO a 2 modos:** quitar el Modo 3 de `src/UI.txt` (Shift + 0 alterna 1 ↔ 2, cabecera y textos), actualizar README y `docs/`, y plan de versiones hacia la `1.0.0` (falta quitar F11). Ver [VERSIONES.md](VERSIONES.md).
 3. **Mod ASI (Modo 3):** ✅ entorno listo (2026-10-18): VS Community 2026 + MSVC v143, plugin-sdk en `E:\dev\plugin-sdk`, `GTA_SA_DIR` = `E:\GTA_SA_1.0\GTA_SA_1.0`, `Plugin_SA` compila en Release. Siguiente: crear el proyecto (¿repositorio aparte?: preguntar) y empezar por un `.asi` mínimo que cargue y avise en pantalla.
 4. ✅ **Mod que redirige el arma X y la munición X:** `modloader\_ESSENTIALS\Widescreen Fix by ThirteenAG\GTASA.WidescreenFix.asi`. El ASI tendrá que convivir con él. Otros mods del autor que tocan la pantalla: SilentPatchSA, skygfx, III.VC.SA.WindowedMode, MobileSubtitles.
-5. **Repositorio del ASI:** `PulpoScript/gta-sa-immersived-hud` (público, MIT). Claude no puede crear repositorios (403): lo crea el autor vacío y Claude sube README, LICENSE y `.gitignore` de Visual Studio.
+5. ✅ **Repositorio del ASI:** https://github.com/PulpoScript/gta-sa-immersived-hud (público, MIT; README, `.gitignore` y `.gitattributes` subidos). Claude no puede crear repositorios (403): los crea el autor. **Commits en ese repositorio: autor `TentaCode <128027722+PulpoScript@users.noreply.github.com>`, sin mencionar a Claude** (pedido del autor). Siguiente: proyecto mínimo de plugin-sdk que muestre un mensaje en el juego.
 
 ## Lecciones clave (no repetir errores)
 
