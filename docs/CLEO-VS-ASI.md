@@ -28,6 +28,10 @@ Las primeras versiones (`0.x`) siguen en CLEO. Este documento compara CLEO con u
 - **Para mover elementos, cambiar su forma o dibujar un HUD propio, ASI es claramente mejor.** En CLEO cada uno de esos cambios es un parche frágil; en ASI es código normal.
 - **Recomendación:** terminar los Modos 2 y 3 en CLEO (versiones `0.x`) y, si después se quiere personalizar posiciones o formas, empezar una versión **2.0 en ASI**. La lógica de estados del mod (pedido → deseado → aplicado) se traslada tal cual a C++.
 
+## Decisión del autor
+
+Este mod **se queda en CLEO** como prototipo: sirve para probar y pulir ideas rápido. El mod definitivo se hará más adelante como un **proyecto ASI aparte**, aprovechando lo aprendido aquí.
+
 ## Qué instalar para hacer mods ASI
 
 ### Imprescindible

@@ -33,7 +33,7 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 
 - **Solo 3 modos.** Se probó un Modo 4 con radar cuadrado (parche `ret` en `CRadar::DrawRadarMask` `0x585700`, byte original **85**; el mapa se veía cuadrado, pero el aro seguía redondo) y el autor decidió descartarlo. Nunca se subió a GitHub.
 - **Versiones:** ver [VERSIONES.md](VERSIONES.md). La actual es 0.1.0; el Modo 2 se desarrollará como `0.2.0-dev.N`.
-- **CLEO o ASI:** las versiones 0.x siguen en CLEO. Ver [CLEO-VS-ASI.md](CLEO-VS-ASI.md).
+- **CLEO o ASI:** este mod se queda en CLEO. Sirve de **prototipo** para materializar y pulir ideas; el mod definitivo se hará más adelante como un proyecto ASI aparte. Ver [CLEO-VS-ASI.md](CLEO-VS-ASI.md).
 
 ## Próximos pasos, en orden
 
