@@ -14,7 +14,7 @@ Los scripts CLEO tienen variables locales `0@` a `31@`. Así se usan:
 | `7@` | Arma | deseado | 1 = debe estar oculto |
 | `8@` | Arma | disponible | Icono verificado (original 161) |
 | `9@` | Arma | verificación | Byte leído al arrancar en `0x5893B0` |
-| `10@` | — | — | **Sin uso** |
+| `10@` | Modo 2 | dinero | Dinero del frame anterior, para detectar cambios |
 | `11@` | Arma | disponible | Munición verificada (original 83) |
 | `12@` | Barras | pedido | El usuario pidió ocultar las barras (Shift + 3) |
 | `13@` | Barras | deseado | 1 = deben estar ocultas |
@@ -35,8 +35,8 @@ Los scripts CLEO tienen variables locales `0@` a `31@`. Así se usan:
 | `28@` | Hora | deseado | 1 = debe estar oculta |
 | `29@` | Hora | aplicado | 1 = oculta en el juego |
 | `30@` | Hora | verificación | Byte leído al arrancar en `0xBAA400` |
-| `31@` | — | — | **Libre** |
+| `31@` | Modo 2 | temporal | Diferencia de dinero en el frame actual |
 
-Libres: **`10@`** y **`31@`**. Si se necesitan más variables para los Modos 2 y 3, habrá que reutilizar alguna o usar variables globales.
+Libres: **ninguna**. Para más elementos del Modo 2 habrá que compartir variables y temporizadores o dividir el mod en varios scripts (ver [MODO2.md](MODO2.md)).
 
-`32@` y `33@` existen en CLEO, pero son temporizadores que el juego incrementa solo: no sirven como variables normales.
+`32@` y `33@` son temporizadores de CLEO: suben solos, en milisegundos. `32@` = tiempo desde el último cambio de dinero (Modo 2). `33@` está libre.

@@ -39,6 +39,15 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | E4 | Shift + 4 / otra vez | Solo el dinero se oculta / vuelve |
 | E5 | Shift + 5 / otra vez | La hora se oculta y **se queda oculta** / vuelve |
 
+## Modo 2 (con el mod activo y en "UI - Modo 2")
+
+| # | Acción | Resultado esperado |
+|---|---|---|
+| D1 | Entrar en el Modo 2 sin tocar el dinero | A los 5 s del último cambio de dinero, el dinero desaparece |
+| D2 | Ganar o gastar dinero (comprar algo, `HESOYAM`) | El dinero aparece y se oculta 5 s después del último cambio |
+| D3 | Cambiar al Modo 1 o 3 | El dinero se ve siempre (salvo que el Modo 1 lo tenga oculto) |
+| D4 | Cargar partida en el Modo 2 | El dinero se ve unos 5 s y se oculta |
+
 ## Restauración
 
 | # | Acción | Resultado esperado |

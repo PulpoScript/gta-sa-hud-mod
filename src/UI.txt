@@ -3,7 +3,8 @@
 
 // #####################################################################
 //  UI — Control del HUD para GTA San Andreas PC 1.0 US
-//  Versión: 0.1.0 (beta) — Modo 1 completo. Historial: CHANGELOG.md
+//  Versión: 0.2.0-dev.1 (beta) — Modo 1 completo; Modo 2 en desarrollo
+//  (paso 1: dinero). Historial: CHANGELOG.md
 //  Requiere: CLEO 4.4 + plugin CLEO+. Compilado con Sanny Builder 4.
 //  Repositorio: https://github.com/PulpoScript/gta-sa-hud-mod
 // #####################################################################
@@ -20,7 +21,9 @@
 //      Shift + 3  Barras de salud + blindaje
 //      Shift + 4  Dinero
 //      Shift + 5  Hora
-//    Modos 2 y 3: solo el selector; su lógica aún no existe.
+//    Modo 2 (dinámico): cada elemento aparece solo cuando pasa algo.
+//      Hecho: dinero (se muestra 5 s al ganar o perder dinero).
+//    Modo 3: solo el selector; su lógica aún no existe.
 //
 //  MAPA DEL CÓDIGO (buscar las etiquetas entre corchetes)
 //    VARIABLES ................ qué guarda cada variable (ver docs/VARIABLES.md)
@@ -83,7 +86,7 @@
 //  VARIABLES
 //  Convención por elemento: "pedido" (tecla), "deseado" (calculado),
 //  "aplicado" (lo que ya se escribió en el juego).
-//  Libres: 10@, 31@.
+//  Libres: ninguna (10@ y 31@: Modo 2, dinero). 32@ es un temporizador.
 // =====================================================================
 0@ = 0      // mod activo (0 = apagado, 1 = encendido)
 
@@ -127,6 +130,12 @@
 28@ = 0     // deseado: 1 = oculto
 29@ = 0     // aplicado: 1 = oculto en el juego
 30@ = 0     // byte leído al arrancar en 0xBAA400
+
+// [MODO 2]
+10@ = 0     // dinero del frame anterior (para detectar cambios)
+31@ = 0     // temporal: diferencia de dinero en este frame
+//  32@ = temporizador de CLEO (sube solo, en milisegundos): tiempo
+//        desde el último cambio de dinero.
 
 // =====================================================================
 //  INICIO: verificar bytes originales antes de parchear
@@ -224,6 +233,12 @@ then
     write_memory 0xBAA400 {size} 1 {value} 1 {vp} False
 end
 
+// ---- [MODO 2] ----
+// Dinero real del jugador: CWorld::Players (0xB7CD98) + m_nMoney (0xB8)
+// = 0xB7CE50, entero de 4 bytes (plugin-sdk, VALIDATE_OFFSET). Solo lectura.
+10@ = read_memory 0xB7CE50 {size} 4 {vp} False
+32@ = 0                            // al cargar, el dinero se ve 5 s
+
 // =====================================================================
 //  BUCLE PRINCIPAL (se ejecuta una vez por frame)
 // =====================================================================
@@ -240,10 +255,10 @@ while true
             0@ = 1
             // Sin add_one_off_sound: el cuadro de texto ya hace su propio
             // "bip"; con los dos sonaban dos sonidos a la vez.
-            0ACE: show_formatted_text_box "UI v0.1.0 activado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.1 activado"
         else
             0@ = 0
-            0ACE: show_formatted_text_box "UI v0.1.0 desactivado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.1 desactivado"
         end
         while 0AB0: key_pressed 0x7A           // antirrebote: esperar a soltar
             wait 0
@@ -522,6 +537,19 @@ while true
         end
     end
 
+    // ---- Modo 2: detectar si el dinero cambió (en cualquier modo) ----
+    // No se comparan dos variables entre sí (error 0014 en SB4): se
+    // calcula la diferencia y se compara con 0.
+    31@ = read_memory 0xB7CE50 {size} 4 {vp} False
+    31@ -= 10@                     // diferencia con el frame anterior
+    if 31@ == 0
+    then
+        31@ = 0                    // sin cambios: nada que hacer
+    else
+        32@ = 0                    // cambió: reiniciar el temporizador
+        10@ += 31@                 // guardar el dinero actual
+    end
+
     // ---- Estado deseado: oculto solo si mod activo, en Modo 1, pedido y verificado ----
     // PUNTO DE EXTENSIÓN (Modos 2 y 3): la regla de cada modo se añade
     // aquí, con su propio "if 19@ == 2" que ponga el deseado a 1 cuando
@@ -534,6 +562,17 @@ while true
         if and
             23@ == 1
             22@ == 1
+        then
+            24@ = 1
+        end
+    end
+    // Modo 2: oculto salvo durante 5 s tras un cambio de dinero.
+    if and
+        0@ == 1
+        19@ == 2
+        22@ == 1
+    then
+        if 32@ > 5000
         then
             24@ = 1
         end

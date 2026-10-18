@@ -53,7 +53,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 | Modo | Nombre | Estado |
 |---|---|---|
 | 1 | Manual | ✅ Completo: cada elemento se alterna con Shift + número |
-| 2 | Por definir | ⏳ Solo selector |
+| 2 | Dinámico: cada elemento aparece solo cuando pasa algo ([concepto](docs/MODO2.md)) | 🚧 En desarrollo: dinero hecho (sin probar) |
 | 3 | Por definir | ⏳ Solo selector |
 
 **Al cambiar de modo**, el HUD vuelve a su estado de fábrica (todo visible) y el nuevo modo empieza desde cero. **El Modo 1 recuerda sus elecciones:** al volver a él, se oculta otra vez lo que tenías oculto.
@@ -91,6 +91,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 | [docs/SANNY-BUILDER-4.md](docs/SANNY-BUILDER-4.md) | Sintaxis que funciona, errores conocidos y cómo verificar una compilación |
 | [docs/INVESTIGACION.md](docs/INVESTIGACION.md) | Hora, forma del radar y cómo mover o redimensionar elementos: qué está verificado y qué falta |
 | [docs/TRASPASO.md](docs/TRASPASO.md) | Resumen para retomar el proyecto en una sesión nueva |
+| [docs/MODO2.md](docs/MODO2.md) | Concepto, ideas y plan del Modo 2 (HUD dinámico) |
 | [docs/VERSIONES.md](docs/VERSIONES.md) | Esquema de numeración de versiones y plan hasta la 1.0.0 |
 | [docs/CLEO-VS-ASI.md](docs/CLEO-VS-ASI.md) | Comparación entre seguir en CLEO o pasar a un plugin ASI |
 | [docs/PRUEBAS.md](docs/PRUEBAS.md) | Lista de pruebas en el juego y resultados esperados |
@@ -115,6 +116,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
     ├── SANNY-BUILDER-4.md
     ├── INVESTIGACION.md
     ├── TRASPASO.md
+    ├── MODO2.md
     ├── VERSIONES.md
     ├── CLEO-VS-ASI.md
     ├── PRUEBAS.md

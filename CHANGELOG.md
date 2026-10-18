@@ -4,6 +4,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). N
 
 ## [Sin publicar]
 
+### 0.2.0-dev.1 — Modo 2, paso 1: dinero
+
+- En el Modo 2, el dinero solo se muestra durante 5 s tras ganar o perder dinero.
+- Concepto y plan del Modo 2 en `docs/MODO2.md`.
+
 ## [0.1.0] - 2026-10-18 (beta)
 
 ### Añadido

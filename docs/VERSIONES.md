@@ -25,8 +25,9 @@ Las versiones `-dev` no se publican como release: son estados intermedios en Git
 
 | Versión | Contenido | Estado |
 |---|---|---|
-| `0.1.0` | Modo 1 completo + selector de modos + recuerdo del Modo 1 | ✅ Probado |
-| `0.2.0-dev.N` | Construcción del Modo 2, paso a paso | ⏳ |
+| `0.1.0` | Modo 1 completo + selector de modos + recuerdo del Modo 1 | ✅ Probado (falta confirmar el sonido único) |
+| `0.2.0-dev.1` | Modo 2, paso 1: dinero | ⚠️ Sin probar |
+| `0.2.0-dev.N` | Resto de elementos del Modo 2 | ⏳ |
 | `0.2.0` | Modo 2 completo | ⏳ |
 | `0.3.0` | Modo 3 completo | ⏳ |
 | `1.0.0` | Versión final: sin F11, mod activo al arrancar, primera release pública | ⏳ |
