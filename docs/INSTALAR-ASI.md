@@ -18,6 +18,7 @@ Guía para preparar el PC antes de empezar el mod ASI. Sigue los pasos en orden 
 
 1. Descárgalo de https://visualstudio.microsoft.com/es/vs/community/
 2. En el instalador, marca la carga de trabajo **"Desarrollo para el escritorio con C++"**.
+   - Si te instala **Visual Studio 2026** también sirve. En ese caso, en la pestaña **Componentes individuales** marca además **"MSVC v143 – VS 2022 C++ x64/x86 build tools"**: plugin-sdk genera proyectos para VS 2022 y así compilan sin cambios (sin verificar con VS 2026).
 3. Instala y reinicia el PC.
 
 Comprobación: abre Visual Studio y verás **Crear un proyecto**, con plantillas de C++.
