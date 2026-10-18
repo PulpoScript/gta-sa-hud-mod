@@ -796,10 +796,6 @@ while true
         end
     end
 
-    // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
-    // PUNTO DE EXTENSIÓN (Modos 2 y 3): la regla de cada modo se añade
-    // aquí, con su propio "if 19@ == 2" que ponga el deseado a 1 cuando
-    // corresponda. No tocar "Tecla" ni "Aplicar".
     // ---- Modo 2: detectar el cambio de hora del juego (en cualquier modo) ----
     // Al pasar una hora se reinicia el temporizador del dinero (32@), así
     // que dinero y hora aparecen juntos 5 s, como un bloque de "estado".
@@ -813,6 +809,10 @@ while true
         005A: 18@ += 9@            // guardar la hora actual
     end
 
+    // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
+    // PUNTO DE EXTENSIÓN (Modos 2 y 3): la regla de cada modo se añade
+    // aquí, con su propio "if 19@ == 2" que ponga el deseado a 1 cuando
+    // corresponda. No tocar "Tecla" ni "Aplicar".
     28@ = 0
     if and
         0@ == 1
