@@ -51,7 +51,7 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | W1 | En el Modo 2, esperar 5 s sin tocar armas | El icono del arma desaparece |
 | W2 | Cambiar de arma (rueda o Q/E) | Aparece el icono y se oculta a los 5 s |
 | W3 | Recoger un arma o munición, o usar un truco de armas | Aparece el icono |
-| W4 | Disparar o recargar | Aparece el icono mientras disparas |
+| W4 | Disparar | Aparece el icono mientras disparas (recargar sola probablemente no lo muestra) |
 
 ## Restauración
 

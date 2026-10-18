@@ -24,7 +24,7 @@
 //    Modo 2 (dinámico): cada elemento aparece solo cuando pasa algo.
 //      Dinero: se muestra 5 s al ganar o perder dinero.
 //      Arma + munición: se muestra 5 s al cambiar de arma, conseguir un
-//      arma o munición, disparar o recargar.
+//      arma o munición, o disparar.
 //    Modo 3: solo el selector; su lógica aún no existe.
 //
 //  MAPA DEL CÓDIGO (buscar las etiquetas entre corchetes)

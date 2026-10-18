@@ -15,7 +15,7 @@ Cada elemento usa un **temporizador**: un "evento" lo reinicia, y el elemento se
 | # | Elemento | Se muestra cuando… (idea del autor) | Ideas para pulir | Estado |
 |---|---|---|---|---|
 | 1 | **Dinero** | Se gana o se pierde dinero | Mostrar también en tiendas. La hora podría ir con el dinero, como un bloque de "estado" | ✅ `0.2.0-dev.1`, probado (5 s aprobados) |
-| 2 | **Arma + munición** | Se obtiene o cambia de arma, o se recoge munición | También al **apuntar, disparar o recargar** (como GTA V), y con poca munición | ⚠️ `0.2.0-dev.2`, sin probar (cubre cambiar, conseguir, munición, disparar y recargar; apuntar queda pendiente) |
+| 2 | **Arma + munición** | Se obtiene o cambia de arma, o se recoge munición | También al **apuntar, disparar o recargar** (como GTA V), y con poca munición | ⚠️ `0.2.0-dev.2`, sin probar (cubre cambiar, conseguir, munición y disparar; recargar no cambia la munición total y apuntar queda pendiente) |
 | 3 | **Salud + blindaje** | Se recibe daño o se regeneran | Que **se queden fijas con poca salud** (por ejemplo, < 25 %), como aviso | ⏳ |
 | 4 | **Radar** | Se oculta tras X tiempo quieto o en la misma zona; se muestra conduciendo | Mostrar también con **nivel de búsqueda**, al correr o al tener un objetivo de misión | ⏳ |
 | 5 | **Hora** | Por definir | Junto con el dinero, o solo al "consultar" | ⏳ |
@@ -30,7 +30,7 @@ Cada elemento usa un **temporizador**: un "evento" lo reinicia, y el elemento se
 ## Paso 2: arma + munición (0.2.0-dev.2)
 
 - **Datos** (plugin-sdk, `VALIDATE_OFFSET`, solo lectura): puntero al jugador en `0xB7CD98`; ranura en la mano en jugador + `0x718` (1 byte); 13 ranuras en jugador + `0x5A0`, de `0x1C` bytes cada una, con el tipo en `+0x0` y la munición total en `+0xC`.
-- **Firma:** la subrutina `FirmaArmas` suma la ranura en la mano y el tipo y la munición de las 13 ranuras. Cualquier cambio (otra arma, arma nueva, munición, disparo, recarga) cambia la suma. Dos cambios que se anulen en el mismo frame no se detectarían, pero en la práctica no pasa.
+- **Firma:** la subrutina `FirmaArmas` suma la ranura en la mano y el tipo y la munición de las 13 ranuras. Cualquier cambio (otra arma, arma nueva, munición, disparo) cambia la suma. Recargar probablemente no, porque la munición total incluye el cargador. Dos cambios que se anulen en el mismo frame no se detectarían, pero en la práctica no pasa.
 - **Regla:** en el Modo 2, el arma se oculta si `33@ > 5000`.
 - **Seguridad:** si el puntero al jugador es 0, no se lee nada.
 
