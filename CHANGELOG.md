@@ -8,7 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). N
 
 - Créditos completos de las fuentes consultadas (`docs/CREDITOS.md`) y aviso legal en el README.
 
-### 0.2.0-dev.5 — Modo 2, paso 4: radar
+### 0.2.0-dev.5 — Modo 2, paso 4: radar (probado)
 
 - En el Modo 2, el radar se ve dentro de un vehículo, con nivel de búsqueda o al esprintar, y se oculta 8 s después de la última de esas situaciones.
 - Los indicadores "verificado" de icono + munición y de salud + blindaje se unen en uno por pareja, lo que libera dos variables.
