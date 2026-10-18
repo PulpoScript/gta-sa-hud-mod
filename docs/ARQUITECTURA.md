@@ -1,6 +1,6 @@
 # Arquitectura
 
-Explica cómo funciona `src/MiMod.txt` por dentro.
+Explica cómo funciona `src/UI.txt` por dentro.
 
 ## Visión general
 

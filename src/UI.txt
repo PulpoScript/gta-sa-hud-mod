@@ -2,7 +2,7 @@
 {$USE CLEO+}
 
 // #####################################################################
-//  MiMod — Control del HUD para GTA San Andreas PC 1.0 US
+//  UI — Control del HUD para GTA San Andreas PC 1.0 US
 //  Requiere: CLEO 4.4 + plugin CLEO+. Compilado con Sanny Builder 4.
 // #####################################################################
 //

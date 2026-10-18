@@ -29,9 +29,9 @@ Si el ejecutable no es 1.0 US, el script **no parchea nada**. Desactiva por su c
 
 Aún no hay archivos compilados publicados, así que hay que compilar el script.
 
-1. Abre `src/MiMod.txt` en **Sanny Builder 4**.
-2. Compila. Se genera `MiMod.cs`.
-3. Copia `MiMod.cs` a la carpeta `CLEO\` del juego.
+1. Abre `src/UI.txt` en **Sanny Builder 4**.
+2. Compila. Se genera `UI.cs`.
+3. Copia `UI.cs` a la carpeta `CLEO\` del juego.
 4. Comprueba que en `CLEO\` haya **una sola** copia del mod y que su fecha sea la de la compilación que acabas de hacer.
 
 ## Controles
@@ -98,7 +98,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 ├── CHANGELOG.md         Registro de cambios
 ├── LICENSE              Licencia MIT
 ├── src/
-│   └── MiMod.txt        Código fuente (Sanny Builder 4)
+│   └── UI.txt           Código fuente (Sanny Builder 4)
 └── docs/
     ├── ARQUITECTURA.md
     ├── DIRECCIONES.md

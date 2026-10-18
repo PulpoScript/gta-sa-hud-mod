@@ -5,7 +5,7 @@ No hay pruebas automáticas: todo se prueba a mano en el juego. Esta lista sirve
 ## Preparación
 
 - Cierra el juego del todo antes de cada prueba, para que no quede ningún parche en memoria.
-- Comprueba que en `CLEO\` solo haya un `MiMod.cs` y que sea el recién compilado.
+- Comprueba que en `CLEO\` solo haya un `UI.cs` y que sea el recién compilado.
 - Lleva un arma de fuego para ver la munición. Usa `HESOYAM` para tener blindaje.
 
 ## Arranque

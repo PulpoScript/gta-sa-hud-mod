@@ -18,3 +18,4 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). A
 
 - Al cambiar de modo con Shift + 0, el HUD vuelve a su estado de fábrica (todo visible).
 - Shift + 1 a 5 solo funcionan en el Modo 1.
+- El código fuente se llama ahora `src/UI.txt` y se compila como `UI.cs`. Hay que borrar el `MiMod.cs` antiguo de `CLEO\` para no tener dos copias.
