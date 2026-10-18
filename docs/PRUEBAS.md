@@ -57,6 +57,8 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | H2 | Recibir daño (caída, pelea) | Aparecen y se ocultan 5 s después del último daño |
 | H3 | Curarse o ponerse blindaje (`HESOYAM`) | Aparecen |
 | H4 | Shift + 5 en el Modo 1 (hora) | Sigue ocultando y mostrando la hora |
+| H5 | Bajar de 25 de salud (barra casi vacía) | Las barras **se quedan visibles** aunque pasen 5 s |
+| H6 | Curarse por encima de 25 | A los 5 s se ocultan otra vez |
 
 ## Restauración
 
@@ -76,4 +78,5 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | 2026-10 | 0.1.0: un solo sonido y versión en pantalla | Pendiente: M1–M3 |
 | 2026-10 | 0.2.0-dev.1: dinero en Modo 2 | D1–D3 verificados por el autor; 5 s aprobados |
 | 2026-10 | 0.2.0-dev.2: arma en Modo 2 | W1–W4 verificados por el autor |
-| 2026-10 | 0.2.0-dev.3: salud en Modo 2 | Pendiente: H1–H4 |
+| 2026-10 | 0.2.0-dev.3: salud en Modo 2 | H1–H4 verificados por el autor |
+| 2026-10 | 0.2.0-dev.4: aviso de poca salud | Pendiente: H5–H6 |

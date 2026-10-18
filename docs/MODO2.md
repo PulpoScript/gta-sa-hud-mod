@@ -16,7 +16,7 @@ Cada elemento usa un **temporizador**: un "evento" lo reinicia, y el elemento se
 |---|---|---|---|---|
 | 1 | **Dinero** | Se gana o se pierde dinero | Mostrar también en tiendas. La hora podría ir con el dinero, como un bloque de "estado" | ✅ `0.2.0-dev.1`, probado (5 s aprobados) |
 | 2 | **Arma + munición** | Se obtiene o cambia de arma, o se recoge munición | También al **apuntar, disparar o recargar** (como GTA V), y con poca munición | ✅ `0.2.0-dev.2`, probado (cambiar, conseguir, munición y disparar; recargar no cambia la munición total y apuntar queda pendiente) |
-| 3 | **Salud + blindaje** | Se recibe daño o se regeneran | Que **se queden fijas con poca salud** (por ejemplo, < 25 %), como aviso | ⚠️ `0.2.0-dev.3`, sin probar (daño y subida; "fijas con poca salud" pendiente de decidir) |
+| 3 | **Salud + blindaje** | Se recibe daño o se regeneran | Que **se queden fijas con poca salud** (por ejemplo, < 25 %), como aviso | ✅ `0.2.0-dev.3` probado (daño y subida). ⚠️ `0.2.0-dev.4`: fijas con salud < 25, sin probar |
 | 4 | **Radar** | Se oculta tras X tiempo quieto o en la misma zona; se muestra conduciendo | Mostrar también con **nivel de búsqueda**, al correr o al tener un objetivo de misión | ⏳ |
 | 5 | **Hora** | Por definir | Junto con el dinero, o solo al "consultar" | ⏳ |
 
@@ -32,7 +32,7 @@ Cada elemento usa un **temporizador**: un "evento" lo reinicia, y el elemento se
 - **Datos** (plugin-sdk, solo lectura): salud en jugador + `0x540` y blindaje en jugador + `0x548`, ambos `float`.
 - **Firma:** la subrutina `FirmaSalud` suma los bits de los dos float. Cualquier cambio (daño, curación, chaleco) la cambia.
 - **Tiempo:** al cambiar se guarda en `27@` el reloj del juego. Las barras se ocultan cuando `reloj actual − 27@ > 5000`.
-- **Idea pendiente:** mantenerlas visibles con poca salud. Como los float positivos se ordenan igual que sus bits, basta comparar los bits con los de un umbral (por ejemplo, 25.0 = `1103626240`).
+- **Poca salud (0.2.0-dev.4):** con menos de **25 puntos** de salud las barras se quedan visibles. Como los float positivos se ordenan igual que sus bits, se comparan los bits de la salud con los de 25.0 (`1103626240`). El umbral es en puntos, no en porcentaje: con la salud máxima ampliada (hasta 176), 25 puntos son menos del 25 %.
 
 ## Paso 2: arma + munición (0.2.0-dev.2) ✅
 
