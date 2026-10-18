@@ -1,0 +1,4 @@
+# El codigo fuente se edita en Windows con Sanny Builder
+*.txt text eol=crlf
+*.md text eol=lf
+*.cs binary

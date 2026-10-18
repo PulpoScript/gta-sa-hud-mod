@@ -1,0 +1,564 @@
+{$CLEO .cs}
+{$USE CLEO+}
+
+// #####################################################################
+//  MiMod — Control del HUD para GTA San Andreas PC 1.0 US
+//  Requiere: CLEO 4.4 + plugin CLEO+. Compilado con Sanny Builder 4.
+// #####################################################################
+//
+//  CONTROLES
+//    F11        Enciende / apaga el mod (TEMPORAL, solo para testing).
+//    Shift + 0  Cambia de modo: 1 -> 2 -> 3 -> 1 (muestra "Modo N").
+//    Modo 1 (manual), cada tecla alterna mostrar / ocultar:
+//      Shift + 1  Radar
+//      Shift + 2  Icono de arma + munición
+//      Shift + 3  Barras de salud + blindaje
+//      Shift + 4  Dinero
+//      Shift + 5  Hora
+//    Modos 2 y 3: solo el selector; su lógica aún no existe.
+//
+//  ESTRUCTURA DE CADA ELEMENTO DEL HUD (patrón común)
+//    1. Tecla            -> cambia la variable "pedido por el usuario".
+//    2. Estado deseado   -> se calcula cada frame: oculto solo si el mod
+//                           está activo Y el usuario lo pidió.
+//    3. Aplicar          -> se compara "deseado" con "ya aplicado" y solo
+//                           se toca el juego cuando son distintos.
+//    Así, al apagar el mod (F11) el estado deseado pasa a "visible" y
+//    todo se restaura solo, sin código extra.
+//
+//  TÉCNICAS USADAS PARA OCULTAR
+//    - Opcode del juego:  radar (0581: display_radar).
+//    - Parche "ret":      escribir 0xC3 (195) en el primer byte de una
+//                         función cdecl de CHud para que salga sin dibujar.
+//                         Se restaura escribiendo su byte original.
+//    - Parche NOP:        sustituir una instrucción "call" de 5 bytes por
+//                         5 x 0x90 (no hacer nada). Usado en el dinero.
+//    - Dato del juego:    poner a 0 un flag bool (hora).
+//
+//  PROTECCIÓN AL CARGAR PARTIDA
+//    CLEO reinicia el script al cargar, pero los parches siguen en
+//    memoria. Al arrancar se lee cada dirección:
+//      - byte original conocido -> elemento disponible.
+//      - byte del parche         -> quedó de antes; se restaura.
+//      - cualquier otro valor    -> no se toca y se avisa en pantalla
+//                                   (ejecutable distinto a 1.0 US).
+//
+//  DIRECCIONES (1.0 US) — fuentes: plugin-sdk, gta-reversed
+//    CHud::DrawWeaponIcon   0x58D7D0  original 161 (0xA1)
+//    CHud::DrawAmmo         0x5893B0  original 83  (0x53)
+//    CHud::RenderHealthBar  0x589270  original 131 (0x83)
+//    CHud::RenderArmorBar   0x5890A0  original 131 (0x83)
+//    Dinero (call PrintString) 0x58F607, 5 bytes E8 F4 B0 18 00
+//    CHud::bDrawClock       0xBAA400  bool, 1 = visible
+//
+//  NOTA DE SINTAXIS (Sanny Builder 4)
+//    read_memory / write_memory / add_one_off_sound se escriben en la
+//    forma del descompilador de SB4. Lo que va entre { } es solo una
+//    etiqueta (comentario). NO usar la forma antigua "0A8D: x = ...":
+//    SB4 no reordena los parámetros y el script crashea.
+// #####################################################################
+
+
+// =====================================================================
+//  VARIABLES
+//  Convención por elemento: "pedido" (tecla), "deseado" (calculado),
+//  "aplicado" (lo que ya se escribió en el juego).
+//  Libres: 10@, 31@.
+// =====================================================================
+0@ = 0      // mod activo (0 = apagado, 1 = encendido)
+
+// [MODO]
+19@ = 1     // modo actual (1 = manual, 2, 3) — Shift+0 cambia
+
+// [RADAR]
+1@ = 0      // pedido: radar oculto (Shift+1)
+2@ = 0      // deseado: 1 = oculto
+3@ = 0      // aplicado: 1 = oculto en el juego
+
+// [ICONO DE ARMA + MUNICIÓN]
+4@ = 0      // pedido: arma oculta (Shift+2)
+7@ = 0      // deseado: 1 = oculto
+5@ = 0      // aplicado: 1 = oculto en el juego
+6@ = 0      // byte leído al arrancar en CHud::DrawWeaponIcon (0x58D7D0)
+8@ = 0      // icono disponible (1 = byte original verificado: 161)
+9@ = 0      // byte leído al arrancar en CHud::DrawAmmo (0x5893B0)
+11@ = 0     // munición disponible (1 = byte original verificado: 83)
+
+// [SALUD + BLINDAJE]
+12@ = 0     // pedido: barras ocultas (Shift+3)
+13@ = 0     // deseado: 1 = oculto
+14@ = 0     // aplicado: 1 = oculto en el juego
+15@ = 0     // byte leído al arrancar en CHud::RenderHealthBar (0x589270)
+16@ = 0     // salud disponible (1 = byte original verificado: 131)
+17@ = 0     // byte leído al arrancar en CHud::RenderArmorBar (0x5890A0)
+18@ = 0     // blindaje disponible (1 = byte original verificado: 131)
+
+// [DINERO]
+20@ = 0     // 4 bytes leídos al arrancar en 0x58F607
+21@ = 0     // 1 byte leído al arrancar en 0x58F60B
+22@ = 0     // dinero disponible (1 = llamada original verificada)
+23@ = 0     // pedido: dinero oculto (Shift+4)
+24@ = 0     // deseado: 1 = oculto
+25@ = 0     // aplicado: 1 = oculto en el juego
+
+// [HORA]
+26@ = 0     // pedido: hora oculta (Shift+5)
+27@ = 1     // valor de CHud::bDrawClock guardado al ocultar (para restaurar)
+28@ = 0     // deseado: 1 = oculto
+29@ = 0     // aplicado: 1 = oculto en el juego
+30@ = 0     // byte leído al arrancar en 0xBAA400
+
+// =====================================================================
+//  INICIO: verificar bytes originales antes de parchear
+//  Se espera 3 s para que la partida termine de cargar.
+// =====================================================================
+wait 3000
+
+// ---- [ICONO DE ARMA] original 161 (0xA1), parche 195 (0xC3 = ret) ----
+6@ = read_memory 0x58D7D0 {size} 1 {vp} False
+if 6@ == 195                       // parche que quedó de antes: restaurar
+then
+    write_memory 0x58D7D0 {size} 1 {value} 161 {vp} True
+    6@ = 161
+end
+if 6@ == 161                       // original confirmado: disponible
+then
+    8@ = 1
+else                               // ejecutable desconocido: no tocar
+    0ACE: show_formatted_text_box "Icono de arma: byte inesperado %d, desactivado" 6@
+end
+
+// ---- [MUNICIÓN] original 83 (0x53), parche 195 (0xC3 = ret) ----
+9@ = read_memory 0x5893B0 {size} 1 {vp} False
+if 9@ == 195                       // parche que quedó de antes: restaurar
+then
+    write_memory 0x5893B0 {size} 1 {value} 83 {vp} True
+    9@ = 83
+end
+if 9@ == 83                        // original confirmado: disponible
+then
+    11@ = 1
+else                               // ejecutable desconocido: no tocar
+    0ACE: show_formatted_text_box "Municion: byte inesperado %d, desactivado" 9@
+end
+
+// ---- [SALUD] original 131 (0x83), parche 195 (0xC3 = ret) ----
+15@ = read_memory 0x589270 {size} 1 {vp} False
+if 15@ == 195                      // parche que quedó de antes: restaurar
+then
+    write_memory 0x589270 {size} 1 {value} 131 {vp} True
+    15@ = 131
+end
+if 15@ == 131                      // original confirmado: disponible
+then
+    16@ = 1
+else                               // ejecutable desconocido: no tocar
+    0ACE: show_formatted_text_box "Salud: byte inesperado %d, desactivado" 15@
+end
+
+// ---- [BLINDAJE] original 131 (0x83), parche 195 (0xC3 = ret) ----
+17@ = read_memory 0x5890A0 {size} 1 {vp} False
+if 17@ == 195                      // parche que quedó de antes: restaurar
+then
+    write_memory 0x5890A0 {size} 1 {value} 131 {vp} True
+    17@ = 131
+end
+if 17@ == 131                      // original confirmado: disponible
+then
+    18@ = 1
+else                               // ejecutable desconocido: no tocar
+    0ACE: show_formatted_text_box "Blindaje: byte inesperado %d, desactivado" 17@
+end
+
+// ---- [DINERO] ----
+// Original: E8 F4 B0 18 00 = call CFont::PrintString (0x71A700).
+//   Leído como 4 bytes en 0x58F607 = 414250216 (0x18B0F4E8)
+//   y 1 byte en 0x58F60B = 0.
+// Parche: 90 90 90 90 90 = 4 bytes -1869574000 (0x90909090) + 1 byte 144.
+20@ = read_memory 0x58F607 {size} 4 {vp} False
+21@ = read_memory 0x58F60B {size} 1 {vp} False
+if and                             // parche que quedó de antes: restaurar
+    20@ == -1869574000
+    21@ == 144
+then
+    write_memory 0x58F607 {size} 4 {value} 414250216 {vp} True
+    write_memory 0x58F60B {size} 1 {value} 0 {vp} True
+    20@ = 414250216
+    21@ = 0
+end
+if and                             // original confirmado: disponible
+    20@ == 414250216
+    21@ == 0
+then
+    22@ = 1
+else                               // ejecutable desconocido: no tocar
+    0ACE: show_formatted_text_box "Dinero: bytes inesperados %d %d, desactivado" 20@ 21@
+end
+
+// ---- [HORA] ----
+// CHud::bDrawClock (0xBAA400) es un dato, no código. El juego lo inicia
+// en 1. Si está en 0 al arrancar, quedó oculto antes de cargar: se pone 1.
+30@ = read_memory 0xBAA400 {size} 1 {vp} False
+if 30@ == 0
+then
+    write_memory 0xBAA400 {size} 1 {value} 1 {vp} False
+end
+
+// =====================================================================
+//  BUCLE PRINCIPAL (se ejecuta una vez por frame)
+// =====================================================================
+while true
+    wait 0
+
+    // ===== TESTING: toggle con F11 (BORRAR en versión final) =====
+    // Enciende / apaga el mod. En la versión final se borra este bloque
+    // y se pone 0@ = 1 en VARIABLES.
+    if 0AB0: key_pressed 0x7A                  // F11
+    then
+        if 0@ == 0
+        then
+            0@ = 1
+            add_one_off_sound 0.0 {y} 0.0 {z} 0.0 {soundId} 1058
+            03E5: text_box 'CHEAT1'            // "Truco activado"
+        else
+            0@ = 0
+            add_one_off_sound 0.0 {y} 0.0 {z} 0.0 {soundId} 1058
+            0ACE: show_formatted_text_box "Truco desactivado"
+        end
+        while 0AB0: key_pressed 0x7A           // antirrebote: esperar a soltar
+            wait 0
+        end
+    end
+    // ===== FIN TESTING =====
+
+    // =================================================================
+    //  [MODO] Shift + 0 — cambia de modo: 1 -> 2 -> 3 -> 1
+    //  Solo con el mod activo. Anuncia el modo nuevo en pantalla.
+    // =================================================================
+
+    // ---- Tecla ----
+    if 0@ == 1
+    then
+        if and
+            0AB0: key_pressed 0x10   // Shift
+            0AB0: key_pressed 0x30   // tecla 0
+        then
+            if 19@ == 1
+            then
+                19@ = 2
+            else
+                if 19@ == 2
+                then
+                    19@ = 3
+                else
+                    19@ = 1
+                end
+            end
+            add_one_off_sound 0.0 {y} 0.0 {z} 0.0 {soundId} 1058
+            0ACE: show_formatted_text_box "Modo %d" 19@
+            while 0AB0: key_pressed 0x30       // antirrebote
+                wait 0
+            end
+        end
+    end
+
+    // =================================================================
+    //  [RADAR] Shift + 1 — Modo 1, paso 1
+    //  Técnica: opcode del juego 0581: display_radar.
+    // =================================================================
+
+    // ---- Tecla: alterna el pedido del usuario ----
+    if 0@ == 1
+    then
+        if and
+            0AB0: key_pressed 0x10   // Shift
+            0AB0: key_pressed 0x31   // tecla 1
+        then
+            if 1@ == 0
+            then
+                1@ = 1
+            else
+                1@ = 0
+            end
+            while 0AB0: key_pressed 0x31       // antirrebote
+                wait 0
+            end
+        end
+    end
+
+    // ---- Estado deseado: oculto solo si mod activo y pedido ----
+    2@ = 0
+    if 0@ == 1
+    then
+        if 1@ == 1
+        then
+            2@ = 1
+        end
+    end
+
+    // ---- Aplicar solo si cambió ----
+    if and
+        2@ == 1
+        3@ == 0
+    then
+        0581: display_radar 0    // ocultar
+        3@ = 1
+    end
+
+    if and
+        2@ == 0
+        3@ == 1
+    then
+        0581: display_radar 1    // mostrar
+        3@ = 0
+    end
+
+    // =================================================================
+    //  [ICONO DE ARMA + MUNICIÓN] Shift + 2 — Modo 1, paso 2
+    //  Técnica: parche "ret" (0xC3) al inicio de CHud::DrawWeaponIcon
+    //  (0x58D7D0) y de CHud::DrawAmmo (0x5893B0). Ambas cdecl.
+    //  Cada parte solo se toca si se verificó al arrancar (8@, 11@).
+    // =================================================================
+
+    // ---- Tecla: alterna el pedido del usuario ----
+    if 0@ == 1
+    then
+        if and
+            0AB0: key_pressed 0x10   // Shift
+            0AB0: key_pressed 0x32   // tecla 2
+        then
+            if 4@ == 0
+            then
+                4@ = 1
+            else
+                4@ = 0
+            end
+            while 0AB0: key_pressed 0x32       // antirrebote
+                wait 0
+            end
+        end
+    end
+
+    // ---- Estado deseado: oculto solo si mod activo y pedido ----
+    7@ = 0
+    if 0@ == 1
+    then
+        if 4@ == 1
+        then
+            7@ = 1
+        end
+    end
+
+    // ---- Aplicar solo si cambió: ocultar ----
+    if and
+        7@ == 1
+        5@ == 0
+    then
+        if 8@ == 1
+        then
+            write_memory 0x58D7D0 {size} 1 {value} 195 {vp} True   // icono: ret
+        end
+        if 11@ == 1
+        then
+            write_memory 0x5893B0 {size} 1 {value} 195 {vp} True   // munición: ret
+        end
+        5@ = 1
+    end
+
+    // ---- Aplicar solo si cambió: mostrar (restaurar originales) ----
+    if and
+        7@ == 0
+        5@ == 1
+    then
+        if 8@ == 1
+        then
+            write_memory 0x58D7D0 {size} 1 {value} 161 {vp} True   // icono: 0xA1
+        end
+        if 11@ == 1
+        then
+            write_memory 0x5893B0 {size} 1 {value} 83 {vp} True    // munición: 0x53
+        end
+        5@ = 0
+    end
+
+    // =================================================================
+    //  [SALUD + BLINDAJE] Shift + 3 — Modo 1, paso 3
+    //  Técnica: parche "ret" (0xC3) al inicio de CHud::RenderHealthBar
+    //  (0x589270) y de CHud::RenderArmorBar (0x5890A0). Ambas cdecl.
+    //  Cada parte solo se toca si se verificó al arrancar (16@, 18@).
+    // =================================================================
+
+    // ---- Tecla: alterna el pedido del usuario ----
+    if 0@ == 1
+    then
+        if and
+            0AB0: key_pressed 0x10   // Shift
+            0AB0: key_pressed 0x33   // tecla 3
+        then
+            if 12@ == 0
+            then
+                12@ = 1
+            else
+                12@ = 0
+            end
+            while 0AB0: key_pressed 0x33       // antirrebote
+                wait 0
+            end
+        end
+    end
+
+    // ---- Estado deseado: oculto solo si mod activo y pedido ----
+    13@ = 0
+    if 0@ == 1
+    then
+        if 12@ == 1
+        then
+            13@ = 1
+        end
+    end
+
+    // ---- Aplicar solo si cambió: ocultar ----
+    if and
+        13@ == 1
+        14@ == 0
+    then
+        if 16@ == 1
+        then
+            write_memory 0x589270 {size} 1 {value} 195 {vp} True   // salud: ret
+        end
+        if 18@ == 1
+        then
+            write_memory 0x5890A0 {size} 1 {value} 195 {vp} True   // blindaje: ret
+        end
+        14@ = 1
+    end
+
+    // ---- Aplicar solo si cambió: mostrar (restaurar originales) ----
+    if and
+        13@ == 0
+        14@ == 1
+    then
+        if 16@ == 1
+        then
+            write_memory 0x589270 {size} 1 {value} 131 {vp} True   // salud: 0x83
+        end
+        if 18@ == 1
+        then
+            write_memory 0x5890A0 {size} 1 {value} 131 {vp} True   // blindaje: 0x83
+        end
+        14@ = 0
+    end
+
+    // =================================================================
+    //  [DINERO] Shift + 4 — Modo 1, paso 4
+    //  Técnica: parche NOP. Se sustituye la llamada a CFont::PrintString
+    //  en 0x58F607 (dentro de CHud::DrawPlayerInfo) por 5 x 0x90.
+    //  Solo si se verificó al arrancar (22@).
+    // =================================================================
+
+    // ---- Tecla: alterna el pedido del usuario ----
+    if 0@ == 1
+    then
+        if and
+            0AB0: key_pressed 0x10   // Shift
+            0AB0: key_pressed 0x34   // tecla 4
+        then
+            if 23@ == 0
+            then
+                23@ = 1
+            else
+                23@ = 0
+            end
+            while 0AB0: key_pressed 0x34       // antirrebote
+                wait 0
+            end
+        end
+    end
+
+    // ---- Estado deseado: oculto solo si mod activo, pedido y verificado ----
+    24@ = 0
+    if 0@ == 1
+    then
+        if and
+            23@ == 1
+            22@ == 1
+        then
+            24@ = 1
+        end
+    end
+
+    // ---- Aplicar solo si cambió: ocultar ----
+    if and
+        24@ == 1
+        25@ == 0
+    then
+        write_memory 0x58F607 {size} 4 {value} -1869574000 {vp} True   // 90 90 90 90
+        write_memory 0x58F60B {size} 1 {value} 144 {vp} True           // 90
+        25@ = 1
+    end
+
+    // ---- Aplicar solo si cambió: mostrar (restaurar llamada original) ----
+    if and
+        24@ == 0
+        25@ == 1
+    then
+        write_memory 0x58F607 {size} 4 {value} 414250216 {vp} True     // E8 F4 B0 18
+        write_memory 0x58F60B {size} 1 {value} 0 {vp} True             // 00
+        25@ = 0
+    end
+
+    // =================================================================
+    //  [HORA] Shift + 5 — Modo 1, paso 5
+    //  Técnica: dato del juego. CHud::bDrawClock (0xBAA400), bool.
+    //  0 = oculto. Es memoria de datos: se escribe con vp False.
+    // =================================================================
+
+    // ---- Tecla: alterna el pedido del usuario ----
+    if 0@ == 1
+    then
+        if and
+            0AB0: key_pressed 0x10   // Shift
+            0AB0: key_pressed 0x35   // tecla 5
+        then
+            if 26@ == 0
+            then
+                26@ = 1
+            else
+                26@ = 0
+            end
+            while 0AB0: key_pressed 0x35       // antirrebote
+                wait 0
+            end
+        end
+    end
+
+    // ---- Estado deseado: oculto solo si mod activo y pedido ----
+    28@ = 0
+    if 0@ == 1
+    then
+        if 26@ == 1
+        then
+            28@ = 1
+        end
+    end
+
+    // ---- Aplicar solo si cambió: ocultar (guardar valor actual) ----
+    if and
+        28@ == 1
+        29@ == 0
+    then
+        27@ = read_memory 0xBAA400 {size} 1 {vp} False
+        write_memory 0xBAA400 {size} 1 {value} 0 {vp} False
+        29@ = 1
+    end
+
+    // ---- Aplicar solo si cambió: mostrar (restaurar valor guardado) ----
+    if and
+        28@ == 0
+        29@ == 1
+    then
+        write_memory 0xBAA400 {size} 1 {value} 27@ {vp} False
+        29@ = 0
+    end
+
+end
