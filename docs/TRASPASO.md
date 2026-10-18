@@ -23,19 +23,22 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 |---|---|
 | Modo 1 (manual, Shift + 1 a 5) | ✅ Probado en el juego |
 | Selector de modos (Shift + 0) | ✅ Probado: cambia y anuncia el modo |
-| HUD de fábrica al salir del Modo 1 y **recuerdo** de las elecciones al volver | ⚠️ **Programado, sin probar** |
+| HUD de fábrica al salir del Modo 1 y **recuerdo** de las elecciones al volver | ✅ Probado |
+| Versión **0.1.0** en cabecera y mensajes de F11; sin sonido doble | ⚠️ Programado, sin probar |
 | Modos 2 y 3 | ⏳ Sin definir: preguntar al autor qué deben hacer |
 | Script de exploración (`experimentos/explorar_hud.txt`) | ⚠️ Escrito, sin compilar ni probar |
 | Radar cuadrado / rectangular y mover elementos | 🔎 Investigado, ver [INVESTIGACION.md](INVESTIGACION.md) |
 
-### Problema abierto con la última prueba
+### Decisiones tomadas
 
-El autor probó la versión que reiniciaba el HUD al cambiar de modo y vio que **los elementos seguían ocultos en el Modo 2**. El código revisado era correcto, y ese comportamiento coincide con la versión anterior del script. Es muy probable que el juego siguiera ejecutando el `MiMod.cs` antiguo (ya pasó una vez con el dinero). Para descartarlo, el mensaje del selector ahora dice **"UI - Modo N"**: si al cambiar de modo sale solo "Modo N", se está ejecutando un `.cs` viejo.
+- **Solo 3 modos.** Se probó un Modo 4 con radar cuadrado (parche `ret` en `CRadar::DrawRadarMask` `0x585700`, byte original **85**; el mapa se veía cuadrado, pero el aro seguía redondo) y el autor decidió descartarlo. Nunca se subió a GitHub.
+- **Versiones:** ver [VERSIONES.md](VERSIONES.md). La actual es 0.1.0; el Modo 2 se desarrollará como `0.2.0-dev.N`.
+- **CLEO o ASI:** las versiones 0.x siguen en CLEO. Ver [CLEO-VS-ASI.md](CLEO-VS-ASI.md).
 
 ## Próximos pasos, en orden
 
-1. **Probar la versión actual** (`docs/PRUEBAS.md`, M4–M7). Antes, borrar `MiMod.cs` de `CLEO\` y poner el `UI.cs` recién compilado.
-2. Preguntar al autor **qué debe hacer el Modo 2** y construirlo paso a paso. Su regla se añade al cálculo del *estado deseado* de cada elemento (ver [ARQUITECTURA.md](ARQUITECTURA.md)).
+1. **Probar la 0.1.0** (`docs/PRUEBAS.md`, M1–M3: un solo sonido y versión en pantalla).
+2. Preguntar al autor **qué debe hacer el Modo 2** (el HUD aparecerá según condiciones de la partida y del input del jugador) y construirlo paso a paso. Sigue la guía "Cómo añadir un modo" de [ARQUITECTURA.md](ARQUITECTURA.md) y las marcas `PUNTO DE EXTENSIÓN` del código. Hay solo 2 variables libres.
 3. Si quiere modificar el radar o la posición de elementos: compilar `experimentos/explorar_hud.txt`, **descompilarlo primero** (usa `gosub`, `+=` y `not ... >`, que todavía no se han verificado en SB4) y pasarlo en el juego.
 
 ## Lecciones clave (no repetir errores)

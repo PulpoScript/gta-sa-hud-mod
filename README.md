@@ -2,7 +2,7 @@
 
 Script CLEO para **GTA San Andreas PC 1.0 US** que permite mostrar y ocultar a voluntad cada parte de la interfaz (HUD): radar, arma, barras, dinero y hora.
 
-> **Estado:** en desarrollo. El Modo 1 (manual) está completo y probado en el juego. Los Modos 2 y 3 solo tienen el selector; su lógica aún no existe. Todavía no hay ninguna versión publicada (release).
+> **Versión actual: 0.1.0 (beta).** **Estado:** en desarrollo. El Modo 1 (manual) está completo y probado en el juego. Los Modos 2 y 3 solo tienen el selector; su lógica aún no existe. Todavía no hay ninguna versión publicada (release).
 
 ## Contenido
 
@@ -69,7 +69,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 - [x] Paso 5: hora
 - [x] Selector de modos (Shift + 0), con reinicio del HUD al cambiar
 - [x] Shift + 1 a 5 limitados al Modo 1
-- [ ] Probar en el juego el recuerdo del Modo 1 al cambiar de modo (programado)
+- [x] El Modo 1 recuerda sus elecciones al cambiar de modo
 - [x] Restauración automática si se carga partida con elementos ocultos
 
 ### Pendientes
@@ -91,6 +91,8 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 | [docs/SANNY-BUILDER-4.md](docs/SANNY-BUILDER-4.md) | Sintaxis que funciona, errores conocidos y cómo verificar una compilación |
 | [docs/INVESTIGACION.md](docs/INVESTIGACION.md) | Hora, forma del radar y cómo mover o redimensionar elementos: qué está verificado y qué falta |
 | [docs/TRASPASO.md](docs/TRASPASO.md) | Resumen para retomar el proyecto en una sesión nueva |
+| [docs/VERSIONES.md](docs/VERSIONES.md) | Esquema de numeración de versiones y plan hasta la 1.0.0 |
+| [docs/CLEO-VS-ASI.md](docs/CLEO-VS-ASI.md) | Comparación entre seguir en CLEO o pasar a un plugin ASI |
 | [docs/PRUEBAS.md](docs/PRUEBAS.md) | Lista de pruebas en el juego y resultados esperados |
 | [docs/HISTORIAL.md](docs/HISTORIAL.md) | Cómo se resolvió cada paso, incluidos los problemas encontrados |
 | [CHANGELOG.md](CHANGELOG.md) | Registro de cambios |
@@ -113,6 +115,8 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
     ├── SANNY-BUILDER-4.md
     ├── INVESTIGACION.md
     ├── TRASPASO.md
+    ├── VERSIONES.md
+    ├── CLEO-VS-ASI.md
     ├── PRUEBAS.md
     └── HISTORIAL.md
 ```

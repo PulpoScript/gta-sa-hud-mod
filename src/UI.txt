@@ -3,7 +3,9 @@
 
 // #####################################################################
 //  UI — Control del HUD para GTA San Andreas PC 1.0 US
+//  Versión: 0.1.0 (beta) — Modo 1 completo. Historial: CHANGELOG.md
 //  Requiere: CLEO 4.4 + plugin CLEO+. Compilado con Sanny Builder 4.
+//  Repositorio: https://github.com/PulpoScript/gta-sa-hud-mod
 // #####################################################################
 //
 //  CONTROLES
@@ -19,6 +21,21 @@
 //      Shift + 4  Dinero
 //      Shift + 5  Hora
 //    Modos 2 y 3: solo el selector; su lógica aún no existe.
+//
+//  MAPA DEL CÓDIGO (buscar las etiquetas entre corchetes)
+//    VARIABLES ................ qué guarda cada variable (ver docs/VARIABLES.md)
+//    INICIO ................... verificación de bytes originales al cargar
+//    BUCLE PRINCIPAL
+//      TESTING F11 ............ encender / apagar el mod
+//      [MODO] ................. selector Shift + 0
+//      [RADAR] ................ Shift + 1
+//      [ICONO DE ARMA + MUNICIÓN] Shift + 2
+//      [SALUD + BLINDAJE] ..... Shift + 3
+//      [DINERO] ............... Shift + 4
+//      [HORA] ................. Shift + 5
+//    Cada elemento tiene tres bloques: "Tecla", "Estado deseado" y
+//    "Aplicar". Los Modos 2 y 3 solo deben tocar "Estado deseado"
+//    (ver las marcas "PUNTO DE EXTENSIÓN" y docs/ARQUITECTURA.md).
 //
 //  ESTRUCTURA DE CADA ELEMENTO DEL HUD (patrón común)
 //    1. Tecla            -> cambia la variable "pedido por el usuario".
@@ -221,12 +238,12 @@ while true
         if 0@ == 0
         then
             0@ = 1
-            add_one_off_sound 0.0 {y} 0.0 {z} 0.0 {soundId} 1058
-            03E5: text_box 'CHEAT1'            // "Truco activado"
+            // Sin add_one_off_sound: el cuadro de texto ya hace su propio
+            // "bip"; con los dos sonaban dos sonidos a la vez.
+            0ACE: show_formatted_text_box "UI v0.1.0 activado"
         else
             0@ = 0
-            add_one_off_sound 0.0 {y} 0.0 {z} 0.0 {soundId} 1058
-            0ACE: show_formatted_text_box "Truco desactivado"
+            0ACE: show_formatted_text_box "UI v0.1.0 desactivado"
         end
         while 0AB0: key_pressed 0x7A           // antirrebote: esperar a soltar
             wait 0
@@ -261,7 +278,7 @@ while true
                     19@ = 1
                 end
             end
-            add_one_off_sound 0.0 {y} 0.0 {z} 0.0 {soundId} 1058
+            // El cuadro de texto ya suena: no se añade otro sonido.
             0ACE: show_formatted_text_box "UI - Modo %d" 19@   // "UI -" identifica este script (evita confundirlo con MiMod.cs)
             while 0AB0: key_pressed 0x30       // antirrebote
                 wait 0
@@ -296,6 +313,9 @@ while true
     end
 
     // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
+    // PUNTO DE EXTENSIÓN (Modos 2 y 3): la regla de cada modo se añade
+    // aquí, con su propio "if 19@ == 2" que ponga el deseado a 1 cuando
+    // corresponda. No tocar "Tecla" ni "Aplicar".
     2@ = 0
     if and
         0@ == 1
@@ -353,6 +373,9 @@ while true
     end
 
     // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
+    // PUNTO DE EXTENSIÓN (Modos 2 y 3): la regla de cada modo se añade
+    // aquí, con su propio "if 19@ == 2" que ponga el deseado a 1 cuando
+    // corresponda. No tocar "Tecla" ni "Aplicar".
     7@ = 0
     if and
         0@ == 1
@@ -425,6 +448,9 @@ while true
     end
 
     // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
+    // PUNTO DE EXTENSIÓN (Modos 2 y 3): la regla de cada modo se añade
+    // aquí, con su propio "if 19@ == 2" que ponga el deseado a 1 cuando
+    // corresponda. No tocar "Tecla" ni "Aplicar".
     13@ = 0
     if and
         0@ == 1
@@ -497,6 +523,9 @@ while true
     end
 
     // ---- Estado deseado: oculto solo si mod activo, en Modo 1, pedido y verificado ----
+    // PUNTO DE EXTENSIÓN (Modos 2 y 3): la regla de cada modo se añade
+    // aquí, con su propio "if 19@ == 2" que ponga el deseado a 1 cuando
+    // corresponda. No tocar "Tecla" ni "Aplicar".
     24@ = 0
     if and
         0@ == 1
@@ -558,6 +587,9 @@ while true
     end
 
     // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
+    // PUNTO DE EXTENSIÓN (Modos 2 y 3): la regla de cada modo se añade
+    // aquí, con su propio "if 19@ == 2" que ponga el deseado a 1 cuando
+    // corresponda. No tocar "Tecla" ni "Aplicar".
     28@ = 0
     if and
         0@ == 1

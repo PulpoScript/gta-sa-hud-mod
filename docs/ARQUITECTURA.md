@@ -100,6 +100,44 @@ Las variables de **disponible** (`8@`, `11@`, `16@`, `18@` y `22@`) protegen cad
 
 **Para añadir un modo:** su regla se suma al cálculo del *estado deseado* de cada elemento (por ejemplo, `deseado = 1` si `19@ == 2` y se cumple su condición). La parte que escribe en memoria no cambia.
 
+## Cómo añadir un modo (guía para el Modo 2 y el 3)
+
+Cada elemento del HUD tiene tres bloques en `src/UI.txt`: **Tecla**, **Estado deseado** y **Aplicar**. Un modo nuevo **solo toca "Estado deseado"**, en el lugar marcado `PUNTO DE EXTENSIÓN`. La parte que escribe en memoria ya está hecha y probada.
+
+Plantilla para un elemento (ejemplo con el radar):
+
+```
+    // ---- Estado deseado ... ----
+    2@ = 0
+    if and                 // Modo 1 (ya existe)
+        0@ == 1
+        19@ == 1
+    then
+        if 1@ == 1
+        then
+            2@ = 1
+        end
+    end
+    if and                 // Modo 2 (nuevo)
+        0@ == 1
+        19@ == 2
+    then
+        // condición del Modo 2: si se cumple, ocultar
+        if <condición>
+        then
+            2@ = 1
+        end
+    end
+```
+
+Reglas:
+
+- **Deseado = 1 significa oculto.** Si ninguna regla lo pone a 1, el elemento se ve.
+- **Cada modo, en su propio `if 19@ == N`.** Así los modos no se mezclan.
+- **Las condiciones se evalúan en cada frame.** Para que un elemento aparezca unos segundos tras una acción del jugador, hace falta un temporizador (`32@` y `33@` son temporizadores automáticos de CLEO que cuentan milisegundos).
+- **Variables:** solo quedan `10@` y `31@` libres (ver [VARIABLES.md](VARIABLES.md)). Si el Modo 2 necesita más, ver [CLEO-VS-ASI.md](CLEO-VS-ASI.md).
+- **Las condiciones nuevas se verifican antes de usarlas**, como las direcciones: cada opcode nuevo se descompila la primera vez.
+
 ## Modo de pruebas (F11)
 
-El bloque marcado con `// ===== TESTING ... =====` enciende y apaga el mod (`0@`). Existe solo para probar. En la versión final se borra ese bloque y se pone `0@ = 1` en la sección de variables.
+El bloque marcado con `// ===== TESTING ... =====` enciende y apaga el mod (`0@`) y muestra "UI v0.1.0 activado / desactivado" con la versión cargada. No usa `add_one_off_sound`, porque el cuadro de texto ya suena por sí solo y con los dos sonaban dos sonidos a la vez. Existe solo para probar. En la versión final se borra ese bloque y se pone `0@ = 1` en la sección de variables.
