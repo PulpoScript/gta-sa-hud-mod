@@ -32,6 +32,8 @@ Las primeras versiones (`0.x`) siguen en CLEO. Este documento compara CLEO con u
 
 Este mod **se queda en CLEO** como prototipo: sirve para probar y pulir ideas rápido. El mod definitivo se hará más adelante como un **proyecto ASI aparte**, aprovechando lo aprendido aquí.
 
+**Actualización (2026-10-18):** el Modo 3 (mover elementos) no se hará en CLEO. El mod CLEO se queda con los Modos 1 y 2, y el Modo 3 será el primer paso del mod ASI independiente.
+
 ## Qué instalar para hacer mods ASI
 
 ### Imprescindible

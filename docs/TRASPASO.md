@@ -36,11 +36,12 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 
 ### Decisiones tomadas
 
-- **Solo 3 modos.** Se probó un Modo 4 con radar cuadrado (parche `ret` en `CRadar::DrawRadarMask` `0x585700`, byte original **85**; el mapa se veía cuadrado, pero el aro seguía redondo) y el autor decidió descartarlo. Nunca se subió a GitHub.
+- **El Modo 3 sale del mod CLEO (decisión del 2026-10-18).** El mod CLEO se queda con **2 modos** (Shift + 0 alterna 1 ↔ 2). El Modo 3 (mover elementos) será un **mod ASI independiente**, primer paso del proyecto ASI definitivo, con su propio mostrar y ocultar. No se usarán los dos a la vez. La investigación de posiciones (pasos 1 y 2 de abajo) se reutiliza en el ASI.
+- **Antes: solo 3 modos.** Se probó un Modo 4 con radar cuadrado (parche `ret` en `CRadar::DrawRadarMask` `0x585700`, byte original **85**; el mapa se veía cuadrado, pero el aro seguía redondo) y el autor decidió descartarlo. Nunca se subió a GitHub.
 - **Versiones:** ver [VERSIONES.md](VERSIONES.md). La actual es **0.2.0**; el Modo 3 se desarrollará como `0.3.0-dev.N`.
 - **CLEO o ASI:** este mod se queda en CLEO. Sirve de **prototipo** para materializar y pulir ideas; el mod definitivo se hará más adelante como un proyecto ASI aparte. Ver [CLEO-VS-ASI.md](CLEO-VS-ASI.md).
 
-## Plan del Modo 3 (acordado con el autor)
+## Plan del Modo 3 (versión CLEO, sustituida por el ASI; se conserva por la investigación)
 
 - **Comportamiento:** el mismo que el Modo 2 (aparecer cuando pasa algo, ocultarse al rato), pero con **hora, dinero, barras de salud y blindaje, estrellas (nuevas) e icono de arma en otra posición**, sin solaparse. Referencia: la posición de la hora.
 - **Mantener "." 0,8 s:** todo el HUD **en su posición de fábrica**.
@@ -53,8 +54,9 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 ## Próximos pasos, en orden
 
 1. **Probar la 0.1.0** (`docs/PRUEBAS.md`, M1–M3: un solo sonido y versión en pantalla).
-2. **Modo 3:** seguir el plan de arriba. En `UI.txt` no queda ninguna variable libre (ver [VARIABLES.md](VARIABLES.md)). Sigue la guía "Cómo añadir un modo" de [ARQUITECTURA.md](ARQUITECTURA.md) y las marcas `PUNTO DE EXTENSIÓN` del código. Variables: se reutilizan las de verificación del arranque (ver [VARIABLES.md](VARIABLES.md)). No quedan temporizadores de CLEO (`32@` dinero, `33@` arma); desde la salud se usa el reloj del juego (`0xB7CB84`). Persistentes libres: ninguno.
-3. Si quiere modificar el radar o la posición de elementos: compilar `experimentos/explorar_hud.txt`, **descompilarlo primero** (usa `gosub`, `+=` y `not ... >`, que todavía no se han verificado en SB4) y pasarlo en el juego.
+2. **Mod CLEO a 2 modos:** quitar el Modo 3 de `src/UI.txt` (Shift + 0 alterna 1 ↔ 2, cabecera y textos), actualizar README y `docs/`, y plan de versiones hacia la `1.0.0` (falta quitar F11). Ver [VERSIONES.md](VERSIONES.md).
+3. **Mod ASI (Modo 3):** guiar al autor para instalar Visual Studio 2022 + plugin-sdk ([CLEO-VS-ASI.md](CLEO-VS-ASI.md), "Qué instalar"), crear el proyecto (¿repositorio aparte?: preguntar) y empezar por un `.asi` mínimo que cargue y avise en pantalla.
+4. **Pendiente del autor:** lista de `.asi` (junto a `gta_sa.exe` y en `scripts\`) y los 4 `.cs` que cargaba CLEO. Sirve para saber qué mod panorámico redirige el arma X y la munición X; el ASI tendrá que convivir con él.
 
 ## Lecciones clave (no repetir errores)
 
