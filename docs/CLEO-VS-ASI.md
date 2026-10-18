@@ -28,8 +28,28 @@ Las primeras versiones (`0.x`) siguen en CLEO. Este documento compara CLEO con u
 - **Para mover elementos, cambiar su forma o dibujar un HUD propio, ASI es claramente mejor.** En CLEO cada uno de esos cambios es un parche frágil; en ASI es código normal.
 - **Recomendación:** terminar los Modos 2 y 3 en CLEO (versiones `0.x`) y, si después se quiere personalizar posiciones o formas, empezar una versión **2.0 en ASI**. La lógica de estados del mod (pedido → deseado → aplicado) se traslada tal cual a C++.
 
-## Qué haría falta para pasar a ASI
+## Qué instalar para hacer mods ASI
 
-1. Visual Studio (Community es gratis) con soporte de C++.
-2. plugin-sdk configurado para GTA SA.
-3. Compilar en el PC del autor. Claude puede escribir el código, pero no compilarlo ni probarlo desde la sesión, igual que ahora.
+### Imprescindible
+
+| Herramienta | Para qué | Notas |
+|---|---|---|
+| **Visual Studio 2022 Community** (gratis) | Compilar el código C++ en un `.asi` | En el instalador, marca la carga de trabajo **"Desarrollo para el escritorio con C++"** (incluye el compilador MSVC y el SDK de Windows) |
+| **Git para Windows** | Descargar plugin-sdk y trabajar con el repositorio | También sirve GitHub Desktop |
+| **[plugin-sdk](https://github.com/DK22Pac/plugin-sdk)** | Las clases y funciones del juego ya preparadas para C++ | Trae un asistente para crear proyectos de plugin. Hay que compilar una vez su librería para SA (`plugin_sa`) y definir la variable de entorno `PLUGIN_SDK_DIR` |
+| **ASI Loader** | Que el juego cargue el `.asi` | **Ya lo tienes:** modloader carga archivos `.asi`. Si no, Ultimate ASI Loader de ThirteenAG |
+
+### Muy recomendable
+
+| Herramienta | Para qué |
+|---|---|
+| **Ghidra** (gratis) o IDA Free | Abrir `gta_sa.exe` y **verificar direcciones** uno mismo: la parte que hoy depende de fuentes externas |
+| **x32dbg** o **Cheat Engine** | Ver y depurar la memoria del juego mientras está en marcha |
+
+### Cómo sería el flujo de trabajo
+
+1. Claude escribe el código C++ en el repositorio.
+2. El autor lo descarga, lo compila en Visual Studio y copia el `.asi` resultante a la carpeta de modloader.
+3. El autor prueba en el juego y cuenta el resultado, igual que ahora.
+
+Claude no puede compilar ni probar desde la sesión, igual que con CLEO.

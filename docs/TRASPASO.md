@@ -12,7 +12,7 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 ## Cómo quiere trabajar el autor
 
 - Decir qué es seguro y qué no. **No afirmar opcodes ni direcciones sin verificarlos.**
-- Código completo y listo para pegar, con comentarios por secciones.
+- Código completo y listo para pegar, con comentarios por secciones. **Ponerlo en el chat, en un bloque de código, no como archivo adjunto**: el autor lo copia directamente a Sanny Builder.
 - Para cada prueba: qué probar y qué resultado esperar, en una tabla corta.
 - Respuestas cortas a las pruebas: "funciona" o qué falló. **No pedirle diagnósticos largos** salvo que algo falle sin explicación.
 - Mantener el repositorio documentado (README, `docs/`, CHANGELOG) con cada cambio.
