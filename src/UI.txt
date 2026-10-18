@@ -8,8 +8,9 @@
 //
 //  CONTROLES
 //    F11        Enciende / apaga el mod (TEMPORAL, solo para testing).
-//    Shift + 0  Cambia de modo: 1 -> 2 -> 3 -> 1 (muestra "Modo N").
+//    Shift + 0  Cambia de modo: 1 -> 2 -> 3 -> 1 (muestra "UI - Modo N").
 //               Al cambiar, el HUD vuelve a su estado de fábrica.
+//               El Modo 1 recuerda sus elecciones al volver a él.
 //    Modo 1 (manual), cada tecla alterna mostrar / ocultar
 //    (Shift + 1 a 5 solo funcionan en el Modo 1):
 //      Shift + 1  Radar
@@ -22,7 +23,7 @@
 //  ESTRUCTURA DE CADA ELEMENTO DEL HUD (patrón común)
 //    1. Tecla            -> cambia la variable "pedido por el usuario".
 //    2. Estado deseado   -> se calcula cada frame: oculto solo si el mod
-//                           está activo Y el usuario lo pidió.
+//                           está activo, el modo es el 1 Y el usuario lo pidió.
 //    3. Aplicar          -> se compara "deseado" con "ya aplicado" y solo
 //                           se toca el juego cuando son distintos.
 //    Así, al apagar el mod (F11) el estado deseado pasa a "visible" y
@@ -237,6 +238,9 @@ while true
     //  [MODO] Shift + 0 — cambia de modo: 1 -> 2 -> 3 -> 1
     //  Solo con el mod activo. Al cambiar, el HUD vuelve a su estado de
     //  fábrica (todo visible) y se anuncia el modo nuevo en pantalla.
+    //  Las elecciones del Modo 1 (pedidos) NO se borran: el estado deseado
+    //  de cada elemento exige 19@ == 1, así que fuera del Modo 1 todo se
+    //  muestra, y al volver al Modo 1 se reaplica lo que estaba oculto.
     // =================================================================
 
     // ---- Tecla ----
@@ -257,15 +261,8 @@ while true
                     19@ = 1
                 end
             end
-            // HUD a estado de fábrica: se borran los pedidos del Modo 1.
-            // Las secciones de cada elemento restauran lo oculto este mismo frame.
-            1@ = 0      // radar
-            4@ = 0      // arma + munición
-            12@ = 0     // salud + blindaje
-            23@ = 0     // dinero
-            26@ = 0     // hora
             add_one_off_sound 0.0 {y} 0.0 {z} 0.0 {soundId} 1058
-            0ACE: show_formatted_text_box "Modo %d" 19@
+            0ACE: show_formatted_text_box "UI - Modo %d" 19@   // "UI -" identifica este script (evita confundirlo con MiMod.cs)
             while 0AB0: key_pressed 0x30       // antirrebote
                 wait 0
             end
@@ -298,9 +295,11 @@ while true
         end
     end
 
-    // ---- Estado deseado: oculto solo si mod activo y pedido ----
+    // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
     2@ = 0
-    if 0@ == 1
+    if and
+        0@ == 1
+        19@ == 1
     then
         if 1@ == 1
         then
@@ -353,9 +352,11 @@ while true
         end
     end
 
-    // ---- Estado deseado: oculto solo si mod activo y pedido ----
+    // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
     7@ = 0
-    if 0@ == 1
+    if and
+        0@ == 1
+        19@ == 1
     then
         if 4@ == 1
         then
@@ -423,9 +424,11 @@ while true
         end
     end
 
-    // ---- Estado deseado: oculto solo si mod activo y pedido ----
+    // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
     13@ = 0
-    if 0@ == 1
+    if and
+        0@ == 1
+        19@ == 1
     then
         if 12@ == 1
         then
@@ -493,9 +496,11 @@ while true
         end
     end
 
-    // ---- Estado deseado: oculto solo si mod activo, pedido y verificado ----
+    // ---- Estado deseado: oculto solo si mod activo, en Modo 1, pedido y verificado ----
     24@ = 0
-    if 0@ == 1
+    if and
+        0@ == 1
+        19@ == 1
     then
         if and
             23@ == 1
@@ -552,9 +557,11 @@ while true
         end
     end
 
-    // ---- Estado deseado: oculto solo si mod activo y pedido ----
+    // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
     28@ = 0
-    if 0@ == 1
+    if and
+        0@ == 1
+        19@ == 1
     then
         if 26@ == 1
         then

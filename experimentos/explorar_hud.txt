@@ -1,0 +1,101 @@
+{$CLEO .cs}
+
+// #####################################################################
+//  EXPLORAR HUD — script de SOLO LECTURA (no modifica nada del juego)
+// #####################################################################
+//
+//  Para qué sirve: obtener del ejecutable real los datos necesarios
+//  para cambiar la forma del radar y la escala / posición de elementos
+//  del HUD (ver docs/INVESTIGACION.md). Ninguna línea escribe memoria.
+//
+//  Uso:
+//    1. Compilar con Sanny Builder 4 -> explorar_hud.cs
+//    2. Descompilar y comprobar que cada read_memory tenga la dirección
+//       (o la variable 10@ / 11@ / 13@) primero, luego {size}.
+//    3. Quitar UI.cs de CLEO\ (para no mezclar) y poner explorar_hud.cs.
+//    4. Cargar partida y anotar (o capturar) cada mensaje. Hay uno cada
+//       6 segundos; el último dice "Fin".
+//    5. Borrar explorar_hud.cs de CLEO\ y volver a poner UI.cs.
+//
+//  Qué muestra:
+//    - Primer byte de CRadar::DrawRadarMask (0x585700) y de
+//      CRadar::LimitRadarPoint (0x5832F0).
+//    - Para cada instrucción de escala del HUD (lista de WidescreenFix):
+//        op    = 2 bytes de la instrucción (3544 = D8 0D = fmul [mem])
+//        ptr   = dirección del float que usa
+//        valor = ese float en bits (986500301 = 1/640, 991054117 = 1/448)
+//      El float solo se lee si ptr está dentro del ejecutable
+//      (0x800000 - 0xCFFFFF); si no, valor = 0.
+// #####################################################################
+
+wait 5000
+
+// ---- Radar: funciones que lo hacen redondo ----
+0@ = read_memory 0x585700 {size} 1 {vp} False   // CRadar::DrawRadarMask
+1@ = read_memory 0x5832F0 {size} 1 {vp} False   // CRadar::LimitRadarPoint
+0ACE: show_formatted_text_box "Radar: mascara %d  limite %d" 0@ 1@
+wait 6000
+
+// ---- Escalas del HUD (dirección de la instrucción en 10@) ----
+10@ = 0x58EB3F      // Hora, ancho
+gosub @Leer
+0ACE: show_formatted_text_box "Hora X: op %d ptr %d valor %d" 12@ 13@ 14@
+wait 6000
+
+10@ = 0x58EB29      // Hora, alto
+gosub @Leer
+0ACE: show_formatted_text_box "Hora Y: op %d ptr %d valor %d" 12@ 13@ 14@
+wait 6000
+
+10@ = 0x58F55C      // Dinero, ancho
+gosub @Leer
+0ACE: show_formatted_text_box "Dinero X: op %d ptr %d valor %d" 12@ 13@ 14@
+wait 6000
+
+10@ = 0x58F546      // Dinero, alto
+gosub @Leer
+0ACE: show_formatted_text_box "Dinero Y: op %d ptr %d valor %d" 12@ 13@ 14@
+wait 6000
+
+10@ = 0x5892CA      // Barras, ancho
+gosub @Leer
+0ACE: show_formatted_text_box "Barras X: op %d ptr %d valor %d" 12@ 13@ 14@
+wait 6000
+
+10@ = 0x589346      // Barras, alto
+gosub @Leer
+0ACE: show_formatted_text_box "Barras Y: op %d ptr %d valor %d" 12@ 13@ 14@
+wait 6000
+
+10@ = 0x58A441      // Radar (plano), ancho
+gosub @Leer
+0ACE: show_formatted_text_box "Radar X: op %d ptr %d valor %d" 12@ 13@ 14@
+wait 6000
+
+10@ = 0x58A473      // Radar (plano), alto
+gosub @Leer
+0ACE: show_formatted_text_box "Radar Y: op %d ptr %d valor %d" 12@ 13@ 14@
+wait 6000
+
+0ACE: show_formatted_text_box "Fin de la exploracion"
+0A93: end_custom_thread
+
+
+// ---------------------------------------------------------------------
+//  Leer: lee la instrucción en 10@.
+//  Devuelve 12@ = 2 bytes de opcode, 13@ = puntero (4 bytes en 10@ + 2),
+//  14@ = float apuntado (en bits) o 0 si el puntero no es del ejecutable.
+// ---------------------------------------------------------------------
+:Leer
+12@ = read_memory 10@ {size} 2 {vp} False
+11@ = 10@
+11@ += 2
+13@ = read_memory 11@ {size} 4 {vp} False
+14@ = 0
+if and
+    13@ > 0x7FFFFF
+    not 13@ > 0xCFFFFF
+then
+    14@ = read_memory 13@ {size} 4 {vp} False
+end
+return

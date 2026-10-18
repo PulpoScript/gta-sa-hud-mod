@@ -39,7 +39,7 @@ Aún no hay archivos compilados publicados, así que hay que compilar el script.
 | Tecla | Acción |
 |---|---|
 | **F11** | Enciende o apaga el mod. *Temporal, solo para pruebas; se eliminará en la versión final.* |
-| **Shift + 0** | Cambia de modo: 1 → 2 → 3 → 1. Muestra "Modo N" en pantalla y devuelve el HUD a su estado de fábrica (todo visible). |
+| **Shift + 0** | Cambia de modo: 1 → 2 → 3 → 1. Muestra "UI - Modo N" en pantalla y devuelve el HUD a su estado de fábrica (todo visible). |
 | **Shift + 1** | Solo en Modo 1: mostrar u ocultar el **radar** |
 | **Shift + 2** | Solo en Modo 1: mostrar u ocultar el **icono de arma y la munición** |
 | **Shift + 3** | Solo en Modo 1: mostrar u ocultar las **barras de salud y blindaje** |
@@ -56,7 +56,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 | 2 | Por definir | ⏳ Solo selector |
 | 3 | Por definir | ⏳ Solo selector |
 
-**Al cambiar de modo**, el HUD vuelve a su estado de fábrica (todo visible) y el nuevo modo empieza desde cero. Las elecciones del Modo 1 no se conservan: al volver a él, todo está visible.
+**Al cambiar de modo**, el HUD vuelve a su estado de fábrica (todo visible) y el nuevo modo empieza desde cero. **El Modo 1 recuerda sus elecciones:** al volver a él, se oculta otra vez lo que tenías oculto.
 
 ## Estado del proyecto
 
@@ -69,11 +69,14 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 - [x] Paso 5: hora
 - [x] Selector de modos (Shift + 0), con reinicio del HUD al cambiar
 - [x] Shift + 1 a 5 limitados al Modo 1
+- [ ] Probar en el juego el recuerdo del Modo 1 al cambiar de modo (programado)
 - [x] Restauración automática si se carga partida con elementos ocultos
 
 ### Pendientes
 
 - [ ] Definir y programar el Modo 2
+- [ ] Pasar `experimentos/explorar_hud.txt` (solo lectura) para los datos de radar y escalas
+- [ ] Radar cuadrado o rectangular y reubicar elementos (ver [INVESTIGACION.md](docs/INVESTIGACION.md))
 - [ ] Definir y programar el Modo 3
 - [ ] Versión final: quitar F11 y arrancar con el mod activo (`0@ = 1`)
 - [ ] Publicar la primera versión (release)
@@ -86,6 +89,8 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 | [docs/DIRECCIONES.md](docs/DIRECCIONES.md) | Direcciones de memoria, bytes originales y fuentes de verificación |
 | [docs/VARIABLES.md](docs/VARIABLES.md) | Para qué sirve cada variable local (`0@` a `31@`) |
 | [docs/SANNY-BUILDER-4.md](docs/SANNY-BUILDER-4.md) | Sintaxis que funciona, errores conocidos y cómo verificar una compilación |
+| [docs/INVESTIGACION.md](docs/INVESTIGACION.md) | Hora, forma del radar y cómo mover o redimensionar elementos: qué está verificado y qué falta |
+| [docs/TRASPASO.md](docs/TRASPASO.md) | Resumen para retomar el proyecto en una sesión nueva |
 | [docs/PRUEBAS.md](docs/PRUEBAS.md) | Lista de pruebas en el juego y resultados esperados |
 | [docs/HISTORIAL.md](docs/HISTORIAL.md) | Cómo se resolvió cada paso, incluidos los problemas encontrados |
 | [CHANGELOG.md](CHANGELOG.md) | Registro de cambios |
@@ -99,11 +104,15 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 ├── LICENSE              Licencia MIT
 ├── src/
 │   └── UI.txt           Código fuente (Sanny Builder 4)
+├── experimentos/
+│   └── explorar_hud.txt Script de solo lectura para investigar el HUD
 └── docs/
     ├── ARQUITECTURA.md
     ├── DIRECCIONES.md
     ├── VARIABLES.md
     ├── SANNY-BUILDER-4.md
+    ├── INVESTIGACION.md
+    ├── TRASPASO.md
     ├── PRUEBAS.md
     └── HISTORIAL.md
 ```

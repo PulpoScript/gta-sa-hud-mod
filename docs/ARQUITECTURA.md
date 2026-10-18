@@ -31,11 +31,11 @@ Cada elemento del HUD (radar, arma, barras, dinero y hora) es una sección indep
 | Variable | Significado |
 |---|---|
 | **pedido** | Lo que el usuario eligió con su tecla (1 = ocultar). |
-| **deseado** | Se recalcula cada frame: `1` solo si **el mod está activo** *y* el usuario lo pidió. |
+| **deseado** | Se recalcula cada frame: `1` solo si **el mod está activo**, **el modo es el 1** *y* el usuario lo pidió. |
 | **aplicado** | Lo que ya se escribió en el juego. |
 
 1. **Tecla:** con el mod activo, Shift + número alterna el *pedido*. Después se espera a que se suelte la tecla (antirrebote).
-2. **Estado deseado:** `deseado = (mod activo) Y (pedido)`.
+2. **Estado deseado:** `deseado = (mod activo) Y (Modo 1) Y (pedido)`.
 3. **Aplicar solo si cambió:**
    - `deseado = 1` y `aplicado = 0` → ocultar y `aplicado = 1`.
    - `deseado = 0` y `aplicado = 1` → mostrar y `aplicado = 0`.
@@ -90,7 +90,11 @@ Las variables de **disponible** (`8@`, `11@`, `16@`, `18@` y `22@`) protegen cad
 
 `19@` guarda el modo (1, 2 o 3). Con el mod activo, Shift + 0 lo hace avanzar en ciclo y muestra "Modo N".
 
-**Reinicio al cambiar de modo:** el selector pone a 0 todos los *pedidos* del Modo 1 (`1@`, `4@`, `12@`, `23@` y `26@`). En ese mismo frame, cada sección calcula *deseado = 0* y restaura lo que estuviera oculto. Así el HUD queda en su estado de fábrica y el nuevo modo empieza desde cero.
+**HUD de fábrica al cambiar de modo:** el *estado deseado* de cada elemento del Modo 1 exige `19@ == 1`. Al pasar a otro modo, todos los *deseado* valen 0 y cada sección restaura lo oculto en ese mismo frame.
+
+**Recuerdo del Modo 1:** los *pedidos* (`1@`, `4@`, `12@`, `23@` y `26@`) **no se borran**. Al volver al Modo 1, los *deseado* vuelven a valer 1 donde corresponda y se oculta otra vez lo que estaba elegido.
+
+**Identificación:** el mensaje del selector es "UI - Modo N". Si sale solo "Modo N", el juego está ejecutando un `.cs` antiguo.
 
 **Teclas del Modo 1:** la parte "Tecla" de cada elemento exige `0@ == 1` **y** `19@ == 1`. En los Modos 2 y 3, Shift + 1 a 5 no hacen nada.
 

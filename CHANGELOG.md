@@ -13,9 +13,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). A
 - Aviso en pantalla y desactivación del elemento afectado si el ejecutable no es 1.0 US.
 - Documentación completa en `docs/`.
 - Licencia MIT.
+- `experimentos/explorar_hud.txt`: script de solo lectura para investigar el radar y las escalas del HUD.
+- `docs/INVESTIGACION.md` (posición, tamaño y forma del HUD) y `docs/TRASPASO.md` (resumen para retomar el proyecto).
 
 ### Cambiado
 
-- Al cambiar de modo con Shift + 0, el HUD vuelve a su estado de fábrica (todo visible).
+- Al cambiar de modo con Shift + 0, el HUD vuelve a su estado de fábrica (todo visible). El Modo 1 recuerda sus elecciones y las reaplica al volver.
+- El mensaje del selector es ahora "UI - Modo N", para distinguir este script de versiones antiguas.
 - Shift + 1 a 5 solo funcionan en el Modo 1.
 - El código fuente se llama ahora `src/UI.txt` y se compila como `UI.cs`. Hay que borrar el `MiMod.cs` antiguo de `CLEO\` para no tener dos copias.

@@ -23,10 +23,11 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 |---|---|---|
 | M1 | F11 | Sonido y "Truco activado" |
 | M2 | F11 otra vez | Sonido y "Truco desactivado"; todo el HUD visible |
-| M3 | Shift + 0 (×3) | "Modo 2", "Modo 3", "Modo 1" |
+| M3 | Shift + 0 (×3) | "UI - Modo 2", "UI - Modo 3", "UI - Modo 1" (si sale solo "Modo N", el `.cs` es antiguo) |
 | M4 | Modo 1: ocultar varios elementos → Shift + 0 | "Modo 2" y todo el HUD vuelve a verse |
 | M5 | En Modo 2 o 3: Shift + 1 a 5 | No pasa nada |
-| M6 | Volver al Modo 1 | Todo visible; Shift + 1 a 5 funcionan de nuevo |
+| M6 | Volver al Modo 1 | **Se vuelve a ocultar lo que estaba elegido** en M4 |
+| M7 | En Modo 1, Shift + 1 a 5 | Funcionan con normalidad |
 
 ## Modo 1: un elemento cada vez (con el mod activo)
 
@@ -51,4 +52,5 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | Fecha | Versión | Resultado |
 |---|---|---|
 | 2026-10 | Modo 1 + selector | A1–A2, M1–M3, E1–E5, R1 y R3 verificados por el autor |
-| 2026-10 | Reinicio al cambiar de modo | Pendiente: M4–M6 |
+| 2026-10 | Reinicio al cambiar de modo | El autor vio elementos ocultos en el Modo 2; probablemente se ejecutaba el `.cs` antiguo (ver TRASPASO.md) |
+| 2026-10 | Recuerdo del Modo 1 | Pendiente: M3–M7 |
