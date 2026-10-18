@@ -14,7 +14,6 @@ Todas corresponden a **GTA San Andreas PC 1.0 US**. En otras versiones del ejecu
 | Blindaje | `CHud::RenderArmorBar` | `0x5890A0` | 5804192 | función cdecl | `131` (`0x83`) | `195` |
 | Dinero | `call CFont::PrintString` dentro de `CHud::DrawPlayerInfo` | `0x58F607` | 5830151 | instrucción, 5 bytes | `E8 F4 B0 18 00` | `90 90 90 90 90` |
 | Hora | `CHud::bDrawClock` | `0xBAA400` | 12231680 | `bool` (dato) | `1` | `0` |
-
 | Dinero del jugador (lectura, Modo 2) | `CPlayerInfo::m_nMoney` de `CWorld::Players[0]` | `0xB7CE50` | 12045904 | `int` (dato) | — | solo lectura |
 
 El radar no usa memoria: se controla con el opcode `0581: display_radar`.
