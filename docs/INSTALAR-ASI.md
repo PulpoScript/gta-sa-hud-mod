@@ -45,9 +45,23 @@ Es la librería que trae las clases del juego (`CHud`, `CRadar`, `CPed`…) ya p
    - En "Variables de usuario", pulsa **Nueva**: nombre `PLUGIN_SDK_DIR`, valor `C:\dev\plugin-sdk`.
 4. Crea también `GTA_SA_DIR` con la carpeta del juego (la que contiene `gta_sa.exe`). Así, al compilar, el `.asi` se copiará solo allí.
 5. Cierra y vuelve a abrir el Símbolo del sistema para que las variables se apliquen.
-6. Genera la solución de Visual Studio y compila la librería de San Andreas. Sigue el README de plugin-sdk: dentro de `C:\dev\plugin-sdk\tools\` hay un script de **premake** que crea la solución (`.sln`) para VS 2022. Ábrela y compila solo el proyecto **`plugin_sa`** en **Release**.
+6. **Reinicia el PC** para que Visual Studio vea las variables. Si no, falla con `RenderWare SDK not found`.
+7. Genera la solución:
+   ```
+   cd /d E:\dev\plugin-sdk\tools\premake
+   premake5.exe vs2022
+   ```
+   Tarda casi un minuto y termina con `Done`. Crea `plugin.sln` en la raíz de plugin-sdk. Las advertencias de `x32` y `gmake2` no importan.
+8. Abre `plugin.sln`, elige **Release**, y en el Explorador de soluciones (`Ctrl + Alt + L`) haz clic derecho en **Plugin_SA → Compilar**.
 
-Comprobación: la compilación termina con **"1 correcto"** y aparece un archivo `plugin.lib` dentro de `C:\dev\plugin-sdk\output\lib\` (o una carpeta parecida).
+Comprobación: `Compilación: 1 correcto, 0 erróneo`. Tarda menos de un minuto.
+
+Errores ya vistos:
+
+| Error | Solución |
+|---|---|
+| `No se pueden encontrar las herramientas de compilación para Visual Studio 2022 (v143)` | Visual Studio Installer → Modificar → Componentes individuales → marcar **MSVC v143 – VS 2022 C++ x64/x86** |
+| `RenderWare SDK not found` | Reiniciar el PC (Visual Studio no veía `PLUGIN_SDK_DIR`) |
 
 ## 4. Cargador de ASI
 

@@ -55,7 +55,7 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 
 1. **Probar la 0.1.0** (`docs/PRUEBAS.md`, M1–M3: un solo sonido y versión en pantalla).
 2. **Mod CLEO a 2 modos:** quitar el Modo 3 de `src/UI.txt` (Shift + 0 alterna 1 ↔ 2, cabecera y textos), actualizar README y `docs/`, y plan de versiones hacia la `1.0.0` (falta quitar F11). Ver [VERSIONES.md](VERSIONES.md).
-3. **Mod ASI (Modo 3):** el autor sigue [INSTALAR-ASI.md](INSTALAR-ASI.md), crear el proyecto (¿repositorio aparte?: preguntar) y empezar por un `.asi` mínimo que cargue y avise en pantalla.
+3. **Mod ASI (Modo 3):** ✅ entorno listo (2026-10-18): VS Community 2026 + MSVC v143, plugin-sdk en `E:\dev\plugin-sdk`, `GTA_SA_DIR` = `E:\GTA_SA_1.0\GTA_SA_1.0`, `Plugin_SA` compila en Release. Siguiente: crear el proyecto (¿repositorio aparte?: preguntar) y empezar por un `.asi` mínimo que cargue y avise en pantalla.
 4. **Pendiente del autor:** lista de `.asi` (junto a `gta_sa.exe` y en `scripts\`) y los 4 `.cs` que cargaba CLEO. Sirve para saber qué mod panorámico redirige el arma X y la munición X; el ASI tendrá que convivir con él.
 
 ## Lecciones clave (no repetir errores)
