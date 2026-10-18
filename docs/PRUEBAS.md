@@ -48,6 +48,11 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | D3 | Cambiar al Modo 1 o 3 | El dinero se ve siempre (salvo que el Modo 1 lo tenga oculto) |
 | D4 | Cargar partida en el Modo 2 | El dinero se ve unos 5 s y se oculta |
 
+| W1 | En el Modo 2, esperar 5 s sin tocar armas | El icono del arma desaparece |
+| W2 | Cambiar de arma (rueda o Q/E) | Aparece el icono y se oculta a los 5 s |
+| W3 | Recoger un arma o munición, o usar un truco de armas | Aparece el icono |
+| W4 | Disparar o recargar | Aparece el icono mientras disparas |
+
 ## Restauración
 
 | # | Acción | Resultado esperado |
@@ -64,3 +69,5 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | 2026-10 | Reinicio al cambiar de modo | El autor vio elementos ocultos en el Modo 2; probablemente se ejecutaba el `.cs` antiguo (ver TRASPASO.md) |
 | 2026-10 | Recuerdo del Modo 1 | M3–M7 verificados por el autor (ciclo 1→2→3→1 y recuerdo del Modo 1) |
 | 2026-10 | 0.1.0: un solo sonido y versión en pantalla | Pendiente: M1–M3 |
+| 2026-10 | 0.2.0-dev.1: dinero en Modo 2 | D1–D3 verificados por el autor; 5 s aprobados |
+| 2026-10 | 0.2.0-dev.2: arma en Modo 2 | Pendiente: W1–W4 |

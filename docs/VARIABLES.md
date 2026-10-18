@@ -37,6 +37,16 @@ Los scripts CLEO tienen variables locales `0@` a `31@`. Así se usan:
 | `30@` | Hora | verificación | Byte leído al arrancar en `0xBAA400` |
 | `31@` | Modo 2 | temporal | Diferencia de dinero en el frame actual |
 
-Libres: **ninguna**. Para más elementos del Modo 2 habrá que compartir variables y temporizadores o dividir el mod en varios scripts (ver [MODO2.md](MODO2.md)).
+Libres: **ninguna**, pero las variables de verificación del arranque se reutilizan en el bucle:
 
-`32@` y `33@` son temporizadores de CLEO: suben solos, en milisegundos. `32@` = tiempo desde el último cambio de dinero (Modo 2). `33@` está libre.
+| Variable | Al arrancar | Después (Modo 2, subrutina `FirmaArmas`) |
+|---|---|---|
+| `6@` | byte del icono | puntero al jugador (temporal) |
+| `9@` | byte de la munición | valor leído (temporal) |
+| `15@` | byte de la salud | cursor de ranuras (temporal) |
+| `17@` | byte del blindaje | dirección de munición (temporal) |
+| `20@` | 4 bytes del dinero | firma actual de las armas |
+| `21@` | 1 byte del dinero | contador de ranuras (temporal) |
+| `30@` | flag de la hora | firma de las armas del frame anterior |
+
+`32@` y `33@` son temporizadores de CLEO: suben solos, en milisegundos. `32@` = tiempo desde el último cambio de dinero y `33@` = tiempo desde el último cambio en las armas (Modo 2). En el descompilado aparecen como `TIMERA` y `TIMERB`.

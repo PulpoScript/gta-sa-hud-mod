@@ -3,8 +3,8 @@
 
 // #####################################################################
 //  UI — Control del HUD para GTA San Andreas PC 1.0 US
-//  Versión: 0.2.0-dev.1 (beta) — Modo 1 completo; Modo 2 en desarrollo
-//  (paso 1: dinero). Historial: CHANGELOG.md
+//  Versión: 0.2.0-dev.2 (beta) — Modo 1 completo; Modo 2 en desarrollo
+//  (paso 1: dinero ✓, paso 2: arma). Historial: CHANGELOG.md
 //  Requiere: CLEO 4.4 + plugin CLEO+. Compilado con Sanny Builder 4.
 //  Repositorio: https://github.com/PulpoScript/gta-sa-hud-mod
 // #####################################################################
@@ -22,7 +22,9 @@
 //      Shift + 4  Dinero
 //      Shift + 5  Hora
 //    Modo 2 (dinámico): cada elemento aparece solo cuando pasa algo.
-//      Hecho: dinero (se muestra 5 s al ganar o perder dinero).
+//      Dinero: se muestra 5 s al ganar o perder dinero.
+//      Arma + munición: se muestra 5 s al cambiar de arma, conseguir un
+//      arma o munición, disparar o recargar.
 //    Modo 3: solo el selector; su lógica aún no existe.
 //
 //  MAPA DEL CÓDIGO (buscar las etiquetas entre corchetes)
@@ -36,6 +38,7 @@
 //      [SALUD + BLINDAJE] ..... Shift + 3
 //      [DINERO] ............... Shift + 4
 //      [HORA] ................. Shift + 5
+//    SUBRUTINAS (al final) .... FirmaArmas
 //    Cada elemento tiene tres bloques: "Tecla", "Estado deseado" y
 //    "Aplicar". Los Modos 2 y 3 solo deben tocar "Estado deseado"
 //    (ver las marcas "PUNTO DE EXTENSIÓN" y docs/ARQUITECTURA.md).
@@ -86,7 +89,9 @@
 //  VARIABLES
 //  Convención por elemento: "pedido" (tecla), "deseado" (calculado),
 //  "aplicado" (lo que ya se escribió en el juego).
-//  Libres: ninguna (10@ y 31@: Modo 2, dinero). 32@ es un temporizador.
+//  Libres: ninguna. Las variables de verificación del INICIO (6@, 9@,
+//  15@, 17@, 20@, 21@, 30@) solo se usan al arrancar y después se
+//  reutilizan en el Modo 2 (ver [MODO 2]). 32@ y 33@ son temporizadores.
 // =====================================================================
 0@ = 0      // mod activo (0 = apagado, 1 = encendido)
 
@@ -136,6 +141,11 @@
 31@ = 0     // temporal: diferencia de dinero en este frame
 //  32@ = temporizador de CLEO (sube solo, en milisegundos): tiempo
 //        desde el último cambio de dinero.
+//  33@ = temporizador: tiempo desde el último cambio en las armas.
+//  Reutilizadas tras el INICIO (subrutina FirmaArmas):
+//    20@ = firma actual del inventario    30@ = firma del frame anterior
+//    6@ = puntero del jugador   15@ = cursor   17@ = dirección
+//    9@ = valor leído           21@ = contador de ranuras
 
 // =====================================================================
 //  INICIO: verificar bytes originales antes de parchear
@@ -239,6 +249,12 @@ end
 10@ = read_memory 0xB7CE50 {size} 4 {vp} False
 32@ = 0                            // al cargar, el dinero se ve 5 s
 
+// Firma inicial de las armas (desde aquí 6@, 9@, 15@, 17@, 20@, 21@ y
+// 30@ dejan de ser variables de verificación).
+gosub @FirmaArmas
+0085: 30@ = 20@                    // copia entera @ = @
+33@ = 0                            // al cargar, el arma se ve 5 s
+
 // =====================================================================
 //  BUCLE PRINCIPAL (se ejecuta una vez por frame)
 // =====================================================================
@@ -255,10 +271,10 @@ while true
             0@ = 1
             // Sin add_one_off_sound: el cuadro de texto ya hace su propio
             // "bip"; con los dos sonaban dos sonidos a la vez.
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.1 activado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.2 activado"
         else
             0@ = 0
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.1 desactivado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.2 desactivado"
         end
         while 0AB0: key_pressed 0x7A           // antirrebote: esperar a soltar
             wait 0
@@ -387,6 +403,19 @@ while true
         end
     end
 
+    // ---- Modo 2: detectar cambios en las armas (en cualquier modo) ----
+    // Firma = ranura en la mano + tipo y munición total de las 13
+    // ranuras. Si cambia, se reinicia 33@. Mismo método que el dinero.
+    gosub @FirmaArmas
+    0062: 20@ -= 30@               // diferencia con el frame anterior
+    if 20@ == 0
+    then
+        20@ = 0                    // sin cambios: nada que hacer
+    else
+        33@ = 0                    // cambió: reiniciar el temporizador
+        005A: 30@ += 20@           // guardar la firma actual
+    end
+
     // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
     // PUNTO DE EXTENSIÓN (Modos 2 y 3): la regla de cada modo se añade
     // aquí, con su propio "if 19@ == 2" que ponga el deseado a 1 cuando
@@ -397,6 +426,16 @@ while true
         19@ == 1
     then
         if 4@ == 1
+        then
+            7@ = 1
+        end
+    end
+    // Modo 2: oculto salvo durante 5 s tras un cambio en las armas.
+    if and
+        0@ == 1
+        19@ == 2
+    then
+        if 33@ > 5000
         then
             7@ = 1
         end
@@ -662,3 +701,42 @@ while true
     end
 
 end
+
+
+// =====================================================================
+//  SUBRUTINAS (solo se llega a ellas con gosub)
+// =====================================================================
+
+// ---- FirmaArmas ----
+// Devuelve en 20@ una "firma" del inventario del jugador: ranura del arma
+// en la mano + tipo y munición total de las 13 ranuras. Si cambia algo
+// (otra arma, arma nueva, munición, disparo), la firma cambia.
+// Datos (plugin-sdk, VALIDATE_OFFSET), todo de solo lectura:
+//   CWorld::Players[0].m_pPed = puntero en 0xB7CD98
+//   CPed + 0x718 = m_nSelectedWepSlot (1 byte, ranura en la mano)
+//   CPed + 0x5A0 = m_aWeapons[13], cada CWeapon ocupa 0x1C bytes:
+//     +0x0 = tipo de arma, +0xC = munición total
+// Usa como temporales: 6@, 9@, 15@, 17@, 21@.
+:FirmaArmas
+20@ = 0
+6@ = read_memory 0xB7CD98 {size} 4 {vp} False   // puntero al jugador
+if 6@ > 0                                        // sin jugador: firma 0
+then
+    0085: 15@ = 6@
+    15@ += 0x718
+    20@ = read_memory 15@ {size} 1 {vp} False   // ranura en la mano
+    0085: 15@ = 6@
+    15@ += 0x5A0                                 // primera ranura
+    21@ = 13
+    while 21@ > 0
+        9@ = read_memory 15@ {size} 4 {vp} False // tipo de arma
+        005A: 20@ += 9@
+        0085: 17@ = 15@
+        17@ += 0xC
+        9@ = read_memory 17@ {size} 4 {vp} False // munición total
+        005A: 20@ += 9@
+        15@ += 0x1C                              // siguiente ranura
+        21@ -= 1
+    end
+end
+return
