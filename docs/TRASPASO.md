@@ -46,7 +46,9 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 - **Mantener "." 0,8 s:** todo el HUD **en su posición de fábrica**.
 - **Técnica elegida por el autor:** parchear las coordenadas del juego (no dibujar elementos propios). Investigación y direcciones candidatas en [INVESTIGACION.md](INVESTIGACION.md), sección 5: **ninguna verificada todavía**.
 - **Dos scripts:** `UI.cs` sigue mandando (F11, Shift + 0, ".", mostrar y ocultar; en el Modo 3 oculta igual que en el Modo 2). `UI_Modo3.cs` (nuevo, `src/UI_Modo3.txt`) solo mueve las coordenadas en el Modo 3 y restaura las de fábrica al salir o al mantener ".". Se comunican con variables compartidas de CLEO 4 (`0AB3`/`0AB4`, **sin verificar en SB4**).
-- **Primeros pasos:** (1) prueba mínima de `0AB3`/`0AB4` y descompilar; (2) script de solo lectura para verificar las direcciones candidatas; (3) el autor describe dónde quiere cada elemento respecto a la hora.
+- **Primeros pasos:** (1) ✅ variables compartidas probadas en el juego (`set_cleo_shared_var {varId} 50 {value} 0@` y `0@ = get_cleo_shared_var {varId} 50`); (2) ✅ direcciones candidatas leídas con `experimentos/verificar_posiciones.txt` (resultados en el CHANGELOG, sección "Sin publicar"); (3) el autor describe dónde quiere cada elemento respecto a la hora.
+- **Resultado del paso 2:** cada dirección candidata es el **operando** (puntero de 4 bytes) de un `fmul`/`fld`. Los floats se comparten entre elementos, así que se cambia el puntero, nunca el float. Iguales a 640 × 448 y a 1920 × 1080.
+- **Pendiente:** `0x58F92F` (arma X) y `0x58F9F7` (munición X) apuntan fuera del ejecutable (`0x6EC38794`, `0x6EC387A8`): algún ASI (¿WidescreenFix o SilentPatch?) ya los ha redirigido. Preguntado al autor: lista de `.asi` (junto a `gta_sa.exe` y en `scripts\`) y qué 4 `.cs` cargaba CLEO durante la prueba. `0x58F9DC` vale 20: probablemente es la Y del icono, no de la munición.
 
 ## Próximos pasos, en orden
 
