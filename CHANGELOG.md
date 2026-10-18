@@ -4,6 +4,21 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). N
 
 ## [Sin publicar]
 
+## [0.2.0] - 2026-10-18 (beta)
+
+### Añadido
+
+- **Modo 2 (dinámico) completo y probado.** Cada elemento aparece solo cuando pasa algo:
+  - Dinero: 5 s al ganar o perder dinero.
+  - Arma + munición: 5 s al cambiar de arma, conseguir arma o munición, o disparar.
+  - Salud + blindaje: 5 s al recibir daño o al subir; fijas con salud por debajo de 25.
+  - Radar: en vehículo, con nivel de búsqueda o al esprintar; se oculta 8 s después.
+  - Hora: solo con la tecla ".".
+  - Tecla ".": toque corto → hora 5 s; mantener 0,8 s → todo el HUD, que se oculta 3 s después de soltar.
+  - Al entrar en el Modo 2 se ve todo unos 3 s.
+
+### Pasos de desarrollo
+
 ### Documentación
 
 - Créditos completos de las fuentes consultadas (`docs/CREDITOS.md`) y aviso legal en el README.

@@ -1,5 +1,7 @@
 # Modo 2: HUD dinámico
 
+> **Estado: completo y probado en la versión 0.2.0.**
+
 **Idea:** la información no está siempre en pantalla. Cada elemento aparece cuando aporta algo (un cambio, un peligro, una acción) y se va al rato. La inspiración es GTA V y RDR2, pero con un estilo propio, no una copia.
 
 Se construye **un elemento cada vez**, en versiones `0.2.0-dev.N` (ver [VERSIONES.md](VERSIONES.md)).
@@ -18,11 +20,11 @@ Cada elemento usa un **temporizador**: un "evento" lo reinicia, y el elemento se
 | 2 | **Arma + munición** | Se obtiene o cambia de arma, o se recoge munición | También al **apuntar, disparar o recargar** (como GTA V), y con poca munición | ✅ `0.2.0-dev.2`, probado (cambiar, conseguir, munición y disparar; recargar no cambia la munición total y apuntar queda pendiente) |
 | 3 | **Salud + blindaje** | Se recibe daño o se regeneran | Que **se queden fijas con poca salud** (por ejemplo, < 25 %), como aviso | ✅ `0.2.0-dev.3` probado (daño y subida). ✅ `0.2.0-dev.4`: fijas con salud < 25, probado |
 | 4 | **Radar** | Se oculta tras X tiempo quieto o en la misma zona; se muestra conduciendo | Decidido: visible **en vehículo**, **con nivel de búsqueda** o **al esprintar**; se oculta **8 s** después | ✅ `0.2.0-dev.5`, probado |
-| 5 | **Hora** | Decidido tras probar: **solo con la tecla "."** (toque corto: hora 5 s). Ni con el dinero ni al cambiar la hora del juego | — | ⚠️ `0.2.0-dev.7`, sin probar |
+| 5 | **Hora** | Decidido tras probar: **solo con la tecla "."** (toque corto: hora 5 s). Ni con el dinero ni al cambiar la hora del juego | — | ✅ `0.2.0-dev.7`, probado |
 
 ## Ideas generales (para decidir más adelante)
 
-- ✅ **Tecla de consulta "."** (`0.2.0-dev.7`): **toque corto** (menos de 2 s) → la hora 5 s; **mantener 2 s o más** → todo el HUD mientras siga pulsada, y se oculta a los 3 s de soltarla.
+- ✅ **Tecla de consulta "."** (`0.2.0-dev.8`): **toque corto** (menos de 0,8 s) → la hora 5 s; **mantener 0,8 s o más** → todo el HUD mientras siga pulsada, y se oculta a los 3 s de soltarla.
 - ✅ **Al entrar en el Modo 2** (decidido, `0.2.0-dev.6`): se ve todo unos 3 s y luego se va ocultando.
 - **Tiempos distintos por elemento**: por ejemplo, dinero 5 s, salud 8 s.
 - **Aparición gradual**: el juego no permite atenuar elementos con estos parches (solo mostrar u ocultar). Sería una mejora para la versión ASI.
@@ -30,7 +32,7 @@ Cada elemento usa un **temporizador**: un "evento" lo reinicia, y el elemento se
 ## Paso 5 (revisado): hora con la tecla "." (0.2.0-dev.7)
 
 - **Cambio tras probar la 0.2.0-dev.6:** el autor no quiere la hora vinculada al dinero ni que aparezca al cambiar la hora del juego. Se quitó esa lógica.
-- **Tecla ".":** toque corto (menos de 2 s) → al soltar, la hora se ve 5 s. Mantener 2 s o más → todo el HUD (subrutina `MostrarTodo3s` en cada frame) y la hora; al soltar, todo se oculta a los 3 s.
+- **Tecla ".":** toque corto (menos de 0,8 s; 2 s en la dev.7) → al soltar, la hora se ve 5 s. Mantener 0,8 s o más → todo el HUD (subrutina `MostrarTodo3s` en cada frame) y la hora; al soltar, todo se oculta a los 3 s.
 - **Variable `18@` (codificada por signo):** `> 0` = tecla pulsada desde ese momento (ms); `< 0` = no pulsada y la hora se muestra desde el momento `-18@`; `0` = hora oculta. Así una sola variable guarda el estado de la tecla y el de la hora.
 - **Entrada al Modo 2:** la hora también se ve 3 s (`18@ = -(ahora − 2000)`).
 

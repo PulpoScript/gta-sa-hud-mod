@@ -140,4 +140,4 @@ Reglas:
 
 ## Modo de pruebas (F11)
 
-El bloque marcado con `// ===== TESTING ... =====` enciende y apaga el mod (`0@`) y muestra "UI v0.1.0 activado / desactivado" con la versión cargada. No usa `add_one_off_sound`, porque el cuadro de texto ya suena por sí solo y con los dos sonaban dos sonidos a la vez. Existe solo para probar. En la versión final se borra ese bloque y se pone `0@ = 1` en la sección de variables.
+El bloque marcado con `// ===== TESTING ... =====` enciende y apaga el mod (`0@`) y muestra "UI v0.2.0 activado / desactivado" con la versión cargada. No usa `add_one_off_sound`, porque el cuadro de texto ya suena por sí solo y con los dos sonaban dos sonidos a la vez. Existe solo para probar. En la versión final se borra ese bloque y se pone `0@ = 1` en la sección de variables.

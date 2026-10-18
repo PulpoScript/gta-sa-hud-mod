@@ -21,8 +21,8 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 
 | # | Acción | Resultado esperado |
 |---|---|---|
-| M1 | F11 | **Un solo** sonido y "UI v0.1.0 activado" |
-| M2 | F11 otra vez | "UI v0.1.0 desactivado"; todo el HUD visible |
+| M1 | F11 | **Un solo** sonido y "UI v0.2.0 activado" |
+| M2 | F11 otra vez | "UI v0.2.0 desactivado"; todo el HUD visible |
 | M3 | Shift + 0 (×3) | "UI - Modo 2", "UI - Modo 3", "UI - Modo 1" (si sale solo "Modo N", el `.cs` es antiguo) |
 | M4 | Modo 1: ocultar varios elementos → Shift + 0 | "Modo 2" y todo el HUD vuelve a verse |
 | M5 | En Modo 2 o 3: Shift + 1 a 5 | No pasa nada |
@@ -70,7 +70,7 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 
 | C-1 | Entrar en el Modo 2 (Shift + 0) | Se ve todo unos 3 s y luego se oculta |
 | C-2 | Toque corto de "." | Al soltar, aparece **solo la hora** 5 s |
-| C-3 | Mantener "." 2 s | A los 2 s aparece todo; al soltar, se oculta a los 3 s |
+| C-3 | Mantener "." 0,8 s | A los 0,8 s aparece todo; al soltar, se oculta a los 3 s |
 | C-4 | Ganar o gastar dinero / cambio de hora del juego | Solo el dinero / nada; la hora no aparece |
 | C-5 | En el Modo 1 o 3, pulsar "." | No pasa nada |
 
@@ -96,4 +96,5 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | 2026-10 | 0.2.0-dev.4: aviso de poca salud | H5–H6 verificados por el autor |
 | 2026-10 | 0.2.0-dev.5: radar en Modo 2 | R-1 a R-7 verificados por el autor |
 | 2026-10 | 0.2.0-dev.6: hora, consulta y entrada al modo | Probada; el autor pidió desvincular la hora del dinero |
-| 2026-10 | 0.2.0-dev.7: hora con la tecla "." | Pendiente: C-1 a C-5 |
+| 2026-10 | 0.2.0-dev.7: hora con la tecla "." | Verificado por el autor; pidió acortar la pulsación larga |
+| 2026-10 | 0.2.0-dev.8 / 0.2.0: pulsación larga de 0,8 s | C-1 a C-5 verificados por el autor. **Modo 2 completo** |

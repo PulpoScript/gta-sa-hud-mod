@@ -3,9 +3,8 @@
 
 // #####################################################################
 //  UI — Control del HUD para GTA San Andreas PC 1.0 US
-//  Versión: 0.2.0-dev.8 (beta) — Modo 1 completo; Modo 2 en desarrollo
-//  (dinero ✓, arma ✓, salud ✓, radar ✓, paso 5: hora con la tecla "." y
-//  entrada al modo). Historial: CHANGELOG.md
+//  Versión: 0.2.0 (beta) — Modos 1 y 2 completos; Modo 3 por definir
+//  Historial: CHANGELOG.md
 //  Requiere: CLEO 4.4 + plugin CLEO+. Compilado con Sanny Builder 4.
 //  Repositorio: https://github.com/PulpoScript/gta-sa-hud-mod
 //  Créditos: datos de plugin-sdk, gta-reversed, WidescreenFixesPack,
@@ -303,10 +302,10 @@ while true
             0@ = 1
             // Sin add_one_off_sound: el cuadro de texto ya hace su propio
             // "bip"; con los dos sonaban dos sonidos a la vez.
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.8 activado"
+            0ACE: show_formatted_text_box "UI v0.2.0 activado"
         else
             0@ = 0
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.8 desactivado"
+            0ACE: show_formatted_text_box "UI v0.2.0 desactivado"
         end
         while 0AB0: key_pressed 0x7A           // antirrebote: esperar a soltar
             wait 0

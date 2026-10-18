@@ -49,6 +49,14 @@ Shift + 0 hace avanzar `19@` en ciclo y anuncia "Modo N". En la primera versión
 
 **Cambio:** el autor pidió que el Modo 1 recuerde sus elecciones. Ahora los *pedidos* no se borran: el *estado deseado* exige `19@ == 1`, de modo que fuera del Modo 1 todo se muestra y al volver se reaplica lo elegido.
 
+## Modo 2 (0.2.0)
+
+Se hizo elemento por elemento (`0.2.0-dev.1` a `dev.8`): dinero, arma, salud, aviso de poca salud, radar y hora. Detalle en [MODO2.md](MODO2.md).
+
+- **Sin variables ni temporizadores libres:** se reutilizaron las variables de verificación del arranque, se unieron los indicadores "verificado" por parejas y se usó el reloj del juego (`0xB7CB84`) en lugar de temporizadores de CLEO.
+- **SB4:** las operaciones entre dos variables necesitan el opcode explícito (`0062`, `005A`, `0085`); sin él da el error 0014.
+- **Cambios tras probar:** la hora se vinculaba al dinero y a la hora del juego (dev.6); el autor prefirió que solo saliera con la tecla "." (dev.7). La pulsación larga bajó de 2 s a 0,8 s (dev.8).
+
 ## Lecciones generales
 
 - **No inventar teorías sin evidencia:** descompilar resolvió en un paso lo que no se explicaba mirando el código.

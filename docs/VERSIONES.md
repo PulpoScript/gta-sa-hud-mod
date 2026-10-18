@@ -32,9 +32,9 @@ Las versiones `-dev` no se publican como release: son estados intermedios en Git
 | `0.2.0-dev.4` | Modo 2: aviso de poca salud | ✅ Probado |
 | `0.2.0-dev.5` | Modo 2, paso 4: radar | ✅ Probado |
 | `0.2.0-dev.6` | Modo 2, paso 5: hora, tecla de consulta y entrada al modo | 🔁 Probada; el autor pidió cambiar la hora |
-| `0.2.0-dev.7` | Modo 2: hora solo con la tecla "." (toque / mantener) | ⚠️ Sin probar |
-| `0.2.0-dev.N` | Resto de elementos del Modo 2 | ⏳ |
-| `0.2.0` | Modo 2 completo | ⏳ |
+| `0.2.0-dev.7` | Modo 2: hora solo con la tecla "." (toque / mantener) | ✅ Probado |
+| `0.2.0-dev.8` | Pulsación larga de "." a 0,8 s | ✅ Probado |
+| `0.2.0` | Modo 2 completo | ✅ Probado |
 | `0.3.0` | Modo 3 completo | ⏳ |
 | `1.0.0` | Versión final: sin F11, mod activo al arrancar, primera release pública | ⏳ |
 
@@ -43,7 +43,7 @@ Las versiones `-dev` no se publican como release: son estados intermedios en Git
 Al cambiar de versión hay que actualizar **los tres sitios a la vez**:
 
 1. Cabecera de `src/UI.txt`: línea `Versión: ...`.
-2. Mensajes de F11 en `src/UI.txt`: `"UI v0.1.0 activado"` y `"UI v0.1.0 desactivado"`. Así se ve en el juego qué versión está cargada.
+2. Mensajes de F11 en `src/UI.txt`: `"UI v0.2.0 activado"` y `"UI v0.2.0 desactivado"`. Así se ve en el juego qué versión está cargada.
 3. `CHANGELOG.md`: nueva sección con la versión y la fecha.
 
 Cuando una versión se publique como release, se creará también una etiqueta de git con el mismo nombre (por ejemplo, `v1.0.0`).

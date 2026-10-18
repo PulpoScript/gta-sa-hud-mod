@@ -29,7 +29,7 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 | Selector de modos (Shift + 0) | ✅ Probado: cambia y anuncia el modo |
 | HUD de fábrica al salir del Modo 1 y **recuerdo** de las elecciones al volver | ✅ Probado |
 | Versión **0.1.0** en cabecera y mensajes de F11; sin sonido doble | ⚠️ Programado, sin probar |
-| Modo 2 (dinámico) | 🚧 Concepto en [MODO2.md](MODO2.md). Dinero ✅ (`0.2.0-dev.1`). Arma ✅ (`0.2.0-dev.2`). Salud ✅ (`0.2.0-dev.3`). Aviso de poca salud ✅ (`0.2.0-dev.4`). Radar ✅ (`0.2.0-dev.5`). Hora con la tecla "." (toque = hora, mantener = todo) y entrada al modo ⚠️ (`0.2.0-dev.7`, sin probar). Si se confirma, publicar `0.2.0` |
+| Modo 2 (dinámico) | 🚧 Concepto en [MODO2.md](MODO2.md). Dinero ✅ (`0.2.0-dev.1`). Arma ✅ (`0.2.0-dev.2`). Salud ✅ (`0.2.0-dev.3`). Aviso de poca salud ✅ (`0.2.0-dev.4`). Radar ✅ (`0.2.0-dev.5`). Hora con la tecla "." (toque = hora, mantener 0,8 s = todo) y entrada al modo ✅ (`0.2.0-dev.8`). **Completo en la `0.2.0`** |
 | Modo 3 | ⏳ Sin definir |
 | Script de exploración (`experimentos/explorar_hud.txt`) | ⚠️ Escrito, sin compilar ni probar |
 | Radar cuadrado / rectangular y mover elementos | 🔎 Investigado, ver [INVESTIGACION.md](INVESTIGACION.md) |
@@ -37,13 +37,13 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 ### Decisiones tomadas
 
 - **Solo 3 modos.** Se probó un Modo 4 con radar cuadrado (parche `ret` en `CRadar::DrawRadarMask` `0x585700`, byte original **85**; el mapa se veía cuadrado, pero el aro seguía redondo) y el autor decidió descartarlo. Nunca se subió a GitHub.
-- **Versiones:** ver [VERSIONES.md](VERSIONES.md). La actual es 0.1.0; el Modo 2 se desarrollará como `0.2.0-dev.N`.
+- **Versiones:** ver [VERSIONES.md](VERSIONES.md). La actual es **0.2.0**; el Modo 3 se desarrollará como `0.3.0-dev.N`.
 - **CLEO o ASI:** este mod se queda en CLEO. Sirve de **prototipo** para materializar y pulir ideas; el mod definitivo se hará más adelante como un proyecto ASI aparte. Ver [CLEO-VS-ASI.md](CLEO-VS-ASI.md).
 
 ## Próximos pasos, en orden
 
 1. **Probar la 0.1.0** (`docs/PRUEBAS.md`, M1–M3: un solo sonido y versión en pantalla).
-2. Seguir con el **Modo 2** elemento por elemento según [MODO2.md](MODO2.md), ayudando al autor a pulir el concepto con ideas (inspirado en GTA V y RDR2, sin copiarlos). Sigue la guía "Cómo añadir un modo" de [ARQUITECTURA.md](ARQUITECTURA.md) y las marcas `PUNTO DE EXTENSIÓN` del código. Variables: se reutilizan las de verificación del arranque (ver [VARIABLES.md](VARIABLES.md)). No quedan temporizadores de CLEO (`32@` dinero, `33@` arma); desde la salud se usa el reloj del juego (`0xB7CB84`). Persistentes libres: ninguno.
+2. **Definir el Modo 3** con el autor (ayudarle con ideas). Variables y temporizadores: no queda ninguno libre; habrá que reutilizar las del Modo 2 o compartirlas (ver [VARIABLES.md](VARIABLES.md)). Sigue la guía "Cómo añadir un modo" de [ARQUITECTURA.md](ARQUITECTURA.md) y las marcas `PUNTO DE EXTENSIÓN` del código. Variables: se reutilizan las de verificación del arranque (ver [VARIABLES.md](VARIABLES.md)). No quedan temporizadores de CLEO (`32@` dinero, `33@` arma); desde la salud se usa el reloj del juego (`0xB7CB84`). Persistentes libres: ninguno.
 3. Si quiere modificar el radar o la posición de elementos: compilar `experimentos/explorar_hud.txt`, **descompilarlo primero** (usa `gosub`, `+=` y `not ... >`, que todavía no se han verificado en SB4) y pasarlo en el juego.
 
 ## Lecciones clave (no repetir errores)

@@ -2,7 +2,7 @@
 
 Script CLEO para **GTA San Andreas PC 1.0 US** que permite mostrar y ocultar a voluntad cada parte de la interfaz (HUD): radar, arma, barras, dinero y hora.
 
-> **Versión actual: 0.1.0 (beta).** **Estado:** en desarrollo. El Modo 1 (manual) está completo y probado en el juego. Los Modos 2 y 3 solo tienen el selector; su lógica aún no existe. Todavía no hay ninguna versión publicada (release).
+> **Versión actual: 0.2.0 (beta).** **Estado:** en desarrollo. Los Modos 1 (manual) y 2 (dinámico) están completos y probados en el juego. El Modo 3 solo tiene el selector; su lógica aún no existe. Todavía no hay ninguna versión publicada (release).
 
 ## Contenido
 
@@ -43,7 +43,7 @@ Aún no hay archivos compilados publicados, así que hay que compilar el script.
 |---|---|
 | **F11** | Enciende o apaga el mod. *Temporal, solo para pruebas; se eliminará en la versión final.* |
 | **Shift + 0** | Cambia de modo: 1 → 2 → 3 → 1. Muestra "UI - Modo N" en pantalla y devuelve el HUD a su estado de fábrica (todo visible). |
-| **"."** | Solo en Modo 2: **toque corto** muestra la hora 5 s; **mantener 2 s** muestra todo el HUD |
+| **"."** | Solo en Modo 2: **toque corto** muestra la hora 5 s; **mantener 0,8 s** muestra todo el HUD |
 | **Shift + 1** | Solo en Modo 1: mostrar u ocultar el **radar** |
 | **Shift + 2** | Solo en Modo 1: mostrar u ocultar el **icono de arma y la munición** |
 | **Shift + 3** | Solo en Modo 1: mostrar u ocultar las **barras de salud y blindaje** |
@@ -57,7 +57,7 @@ Al apagar el mod con F11, todo lo oculto vuelve a mostrarse.
 | Modo | Nombre | Estado |
 |---|---|---|
 | 1 | Manual | ✅ Completo: cada elemento se alterna con Shift + número |
-| 2 | Dinámico: cada elemento aparece solo cuando pasa algo ([concepto](docs/MODO2.md)) | 🚧 En desarrollo: dinero hecho (sin probar) |
+| 2 | Dinámico: cada elemento aparece solo cuando pasa algo ([concepto](docs/MODO2.md)) | ✅ Completo: dinero, arma, salud, radar y hora con la tecla "." |
 | 3 | Por definir | ⏳ Solo selector |
 
 **Al cambiar de modo**, el HUD vuelve a su estado de fábrica (todo visible) y el nuevo modo empieza desde cero. **El Modo 1 recuerda sus elecciones:** al volver a él, se oculta otra vez lo que tenías oculto.
