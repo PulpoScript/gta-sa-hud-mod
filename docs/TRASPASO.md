@@ -40,10 +40,18 @@ Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva
 - **Versiones:** ver [VERSIONES.md](VERSIONES.md). La actual es **0.2.0**; el Modo 3 se desarrollará como `0.3.0-dev.N`.
 - **CLEO o ASI:** este mod se queda en CLEO. Sirve de **prototipo** para materializar y pulir ideas; el mod definitivo se hará más adelante como un proyecto ASI aparte. Ver [CLEO-VS-ASI.md](CLEO-VS-ASI.md).
 
+## Plan del Modo 3 (acordado con el autor)
+
+- **Comportamiento:** el mismo que el Modo 2 (aparecer cuando pasa algo, ocultarse al rato), pero con **hora, dinero, barras de salud y blindaje, estrellas (nuevas) e icono de arma en otra posición**, sin solaparse. Referencia: la posición de la hora.
+- **Mantener "." 0,8 s:** todo el HUD **en su posición de fábrica**.
+- **Técnica elegida por el autor:** parchear las coordenadas del juego (no dibujar elementos propios). Investigación y direcciones candidatas en [INVESTIGACION.md](INVESTIGACION.md), sección 5: **ninguna verificada todavía**.
+- **Dos scripts:** `UI.cs` sigue mandando (F11, Shift + 0, ".", mostrar y ocultar; en el Modo 3 oculta igual que en el Modo 2). `UI_Modo3.cs` (nuevo, `src/UI_Modo3.txt`) solo mueve las coordenadas en el Modo 3 y restaura las de fábrica al salir o al mantener ".". Se comunican con variables compartidas de CLEO 4 (`0AB3`/`0AB4`, **sin verificar en SB4**).
+- **Primeros pasos:** (1) prueba mínima de `0AB3`/`0AB4` y descompilar; (2) script de solo lectura para verificar las direcciones candidatas; (3) el autor describe dónde quiere cada elemento respecto a la hora.
+
 ## Próximos pasos, en orden
 
 1. **Probar la 0.1.0** (`docs/PRUEBAS.md`, M1–M3: un solo sonido y versión en pantalla).
-2. **Definir el Modo 3** con el autor (ayudarle con ideas). Variables y temporizadores: no queda ninguno libre; habrá que reutilizar las del Modo 2 o compartirlas (ver [VARIABLES.md](VARIABLES.md)). Sigue la guía "Cómo añadir un modo" de [ARQUITECTURA.md](ARQUITECTURA.md) y las marcas `PUNTO DE EXTENSIÓN` del código. Variables: se reutilizan las de verificación del arranque (ver [VARIABLES.md](VARIABLES.md)). No quedan temporizadores de CLEO (`32@` dinero, `33@` arma); desde la salud se usa el reloj del juego (`0xB7CB84`). Persistentes libres: ninguno.
+2. **Modo 3:** seguir el plan de arriba. En `UI.txt` no queda ninguna variable libre (ver [VARIABLES.md](VARIABLES.md)). Sigue la guía "Cómo añadir un modo" de [ARQUITECTURA.md](ARQUITECTURA.md) y las marcas `PUNTO DE EXTENSIÓN` del código. Variables: se reutilizan las de verificación del arranque (ver [VARIABLES.md](VARIABLES.md)). No quedan temporizadores de CLEO (`32@` dinero, `33@` arma); desde la salud se usa el reloj del juego (`0xB7CB84`). Persistentes libres: ninguno.
 3. Si quiere modificar el radar o la posición de elementos: compilar `experimentos/explorar_hud.txt`, **descompilarlo primero** (usa `gosub`, `+=` y `not ... >`, que todavía no se han verificado en SB4) y pasarlo en el juego.
 
 ## Lecciones clave (no repetir errores)

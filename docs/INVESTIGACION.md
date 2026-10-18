@@ -81,6 +81,49 @@ Las constantes `32.0`, `22.0`, `89.0`, etc. están en la memoria del ejecutable,
 
 Ocultar el elemento original (como ya hacemos) y dibujar uno propio donde se quiera, con textos y rectángulos de CLEO o CLEO+. Así se controla la posición, el color y el comportamiento sin parchear el motor. Es la vía más flexible para "otra parte de la pantalla con otro comportamiento". Su coste: hay que reproducir cada elemento (por ejemplo, una barra de salud con `CPed + 0x540`).
 
+## 5. Investigación para el Modo 3 (mover elementos)
+
+Objetivo: mover hora, dinero, barras, estrellas e icono de arma **parcheando sus coordenadas**, sin dibujarlos de nuevo.
+
+### Cómo se calcula la posición
+
+Cada coordenada es `constante (en unidades 640 × 448) × escala × resolución`. La escala es **compartida por todo el HUD y los menús**:
+
+| Dirección | Valor | Uso |
+|---|---|---|
+| `0x859520` | 1/640 (`0x3ACCCCCD`) | Escala X de **todo** el HUD. **No escribir nunca** |
+| `0x859524` | 1/448 (`0x3B124925`) | Escala Y de **todo** el HUD. **No escribir nunca** |
+
+Las constantes de posición (`32.0`, `22.0`, `89.0`…) seguramente también se comparten entre muchos elementos. **Técnica segura** (la de WidescreenFix): no tocar la constante, sino el **puntero** dentro de la instrucción (`instrucción + 2`), y hacerlo apuntar a un float propio reservado con `0AC8`. Las posiciones se recalculan cada frame, así que el cambio se ve al instante.
+
+### Candidatas a puntero de posición (SIN VERIFICAR)
+
+Sacadas de listas de foros (ugbase.eu, blast.hk) de las que solo se vieron fragmentos. Algunas encajan con las instrucciones de WidescreenFix, pero **hay que verificarlas en el juego** antes de escribir nada: leer los 4 bytes del operando (debe ser una dirección de `.rdata`) y el float al que apunta (debe ser el valor esperado).
+
+| Elemento | X | Y |
+|---|---|---|
+| Dinero | `0x58F5FC` | `0x58F5DC` |
+| Salud | `0x58EE87` | `0x58EE68` |
+| Blindaje | `0x58EF59` | `0x58EF3A` |
+| Oxígeno | `0x58F11F` | — |
+| Estrellas | `0x58DD0F` | `0x58DDFC` |
+| Icono de arma | `0x58F927` o `0x58F92F` (las listas no coinciden) | — |
+| Munición | `0x58F9F7` | `0x58F9DC` |
+| Hora | **no encontrada** (cerca de `0x58EC0C` / `0x58EBF9`) | |
+
+### Posiciones de fábrica (verificadas, gta-reversed)
+
+- **Hora:** X = ancho − 32, Y = 22, alineada a la derecha.
+- **Dinero:** X = ancho − 32, Y = 89. Sube 12 unidades si la salud máxima es menor de 101 (`GetYPosBasedOnHealth`, `0x588B60`).
+- **Icono de arma:** X = ancho − (32 + ancho × 0.17343046), Y = 20, tamaño 47 × 58.
+- **Munición:** X = X del icono + 23.5, Y = 63.
+- **Barras:** salud de 109 × 9 (el largo depende de la salud máxima); blindaje y oxígeno de 62 × 9.
+- Las X e Y de salud, blindaje y estrellas no están reconstruidas en gta-reversed.
+
+### Siguiente paso
+
+Un script de **solo lectura** que muestre, para cada candidata, el puntero leído y el float al que apunta. Con eso se confirma qué dirección es cada coordenada y su valor original. Solo después se escribe algo.
+
 ## Recomendación de orden
 
 1. Pasar `experimentos/explorar_hud.txt` y anotar los valores.

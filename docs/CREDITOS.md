@@ -21,6 +21,8 @@ Este mod **no descubre nada nuevo**: se apoya en el trabajo de la comunidad de m
 | [WidescreenFixesPack](https://github.com/ThirteenAG/WidescreenFixesPack) (`GTASA.WidescreenFix`) | ThirteenAG | Lista de instrucciones donde el juego aplica la escala de cada elemento del HUD y del radar | [INVESTIGACION.md](INVESTIGACION.md) y `experimentos/explorar_hud.txt` |
 | [GTAForums](https://gtaforums.com/) | Silent | Truco para ocultar el dinero sustituyendo la llamada en `0x58F607` por NOPs | Dinero (Modo 1, paso 4) |
 | [GTAForums: color del radardisc](https://gtaforums.com/topic/908566-sa-how-can-you-change-the-color-of-the-radardisc-from-addresses/) | Usuarios del hilo | Referencia a `CHud::DrawRadar` (`0x58A330`) | Investigación del radar |
+| [MTA:SA](https://github.com/multitheftauto/mtasa-blue) (`Client/game_sa/CHudSA.cpp`) | Equipo de Multi Theft Auto | Constantes compartidas de escala del HUD (`0x859520` = 1/640, `0x859524` = 1/448) y puntos de llamada de dibujo de cada elemento | Investigación del Modo 3 (posiciones) |
+| [ugbase.eu: GTA SA memories](https://ugbase.eu/threads/gta-sa-memories.11170/) y [blast.hk 61958](https://www.blast.hk/threads/61958/) | Usuarios de los foros | Listas de direcciones de posición del HUD (dinero, salud, blindaje, estrellas, arma). **Sin verificar:** solo se vieron fragmentos | Investigación del Modo 3 (candidatas a verificar) |
 | [GTAMods Wiki: Memory Addresses (SA)](https://gtamods.com/wiki/Memory_Addresses_(SA)) | Comunidad de GTAMods | Contraste de la dirección del dinero del jugador (`0xB7CE50`) | Modo 2 (dinero) |
 
 ## Otros recursos
