@@ -7,7 +7,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). N
 ### Modo 3 (en preparación)
 
 - Verificado en el juego: las variables compartidas de CLEO 4 funcionan entre dos scripts (`set_cleo_shared_var` / `get_cleo_shared_var`, índice 50). Prueba en `experimentos/compartida_*.txt`.
-- `experimentos/verificar_posiciones.txt`: lectura de las direcciones candidatas de posición del HUD (sin probar).
+- `experimentos/verificar_posiciones.txt` probado en el juego. Cada dirección es el **operando** (puntero) de su instrucción; valor de fábrica entre paréntesis:
+  - `fmul`: dinero X `0x58F5FC` → `0x85950C` (32), dinero Y `0x58F5DC` → `0x866C88` (89), salud X `0x58EE87` → `0x86535C` (141), salud Y `0x58EE68` → `0x866CA8` (77), blindaje X `0x58EF59` → `0x866B78` (94), blindaje Y `0x58EF3A` → `0x862D38` (48), oxígeno X `0x58F11F` → `0x866B78` (94), estrellas X `0x58DD0F` → `0x863210` (29), arma X `0x58F927` → `0x85950C` (32).
+  - `fld`: estrellas Y `0x58DDFC` → `0x866C5C` (114); `0x58F9DC` → `0x858BA4` (20; ¿Y del icono y no de la munición?).
+  - `0x58F92F` y munición X `0x58F9F7` son `fmul` pero apuntan fuera del ejecutable (`0x6EC38794`, `0x6EC387A8`): otro mod (ASI) ya los ha redirigido.
+  - Los floats se comparten (94 = blindaje y oxígeno; 32 = dinero y arma): se cambia el puntero, nunca el float.
 
 ## [0.2.0] - 2026-10-18 (beta)
 
