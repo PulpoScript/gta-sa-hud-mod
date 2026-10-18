@@ -1,0 +1,25 @@
+{$CLEO .cs}
+
+// #####################################################################
+//  PRUEBA DE VARIABLE COMPARTIDA — RECEPTOR (no toca memoria del juego)
+// #####################################################################
+//
+//  Lee la variable compartida 50 que escribe compartida_emisor.cs y la
+//  muestra en pantalla cada 2 segundos.
+//
+//  Resultado esperado: "Compartida 50 = N", con N subiendo de 2 en 2
+//  (100, 102, 104...). Si siempre sale 0, la comunicación no funciona.
+//
+//  SIN VERIFICAR: el nombre del comando en SB4. Al descompilar debe
+//  aparecer el resultado (0@) a la izquierda del "=" y el índice (50)
+//  como único parámetro a la derecha.
+//  Si no compila, avisar: se probará con la forma "0AB4: 50 0@".
+// #####################################################################
+
+wait 3000
+
+while true
+    0@ = get_cleo_shared_var {varId} 50
+    0ACE: show_formatted_text_box "Compartida 50 = %d" 0@
+    wait 2000
+end

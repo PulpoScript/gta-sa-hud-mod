@@ -1,0 +1,27 @@
+{$CLEO .cs}
+
+// #####################################################################
+//  PRUEBA DE VARIABLE COMPARTIDA — EMISOR (no toca memoria del juego)
+// #####################################################################
+//
+//  Para qué sirve: comprobar que dos scripts CLEO se pueden pasar un
+//  número con 0AB3 / 0AB4 (variables compartidas de CLEO 4). Es la base
+//  de la comunicación entre UI.cs y el futuro UI_Modo3.cs.
+//  Va junto con compartida_receptor.txt.
+//
+//  Este script escribe en la variable compartida 50 un contador que
+//  empieza en 100 y sube 1 cada segundo.
+//
+//  SIN VERIFICAR: el nombre del comando en SB4. Al descompilar debe
+//  aparecer el índice (50) PRIMERO y el valor (0@) DESPUÉS.
+//  Si no compila, avisar: se probará con la forma "0AB3: 50 0@".
+// #####################################################################
+
+wait 3000
+0@ = 100
+
+while true
+    set_cleo_shared_var {varId} 50 {value} 0@
+    wait 1000
+    0@ += 1
+end
