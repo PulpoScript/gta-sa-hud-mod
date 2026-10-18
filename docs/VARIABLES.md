@@ -12,17 +12,17 @@ Los scripts CLEO tienen variables locales `0@` a `31@`. Así se usan:
 | `5@` | Arma | aplicado | 1 = oculto en el juego |
 | `6@` | Arma | verificación | Byte leído al arrancar en `0x58D7D0` |
 | `7@` | Arma | deseado | 1 = debe estar oculto |
-| `8@` | Arma | disponible | Icono verificado (original 161) |
+| `8@` | Arma | disponible | Icono **y** munición verificados (originales 161 y 83) |
 | `9@` | Arma | verificación | Byte leído al arrancar en `0x5893B0` |
 | `10@` | Modo 2 | dinero | Dinero del frame anterior, para detectar cambios |
-| `11@` | Arma | disponible | Munición verificada (original 83) |
+| `11@` | Modo 2 | radar | Momento (reloj del juego, ms) del último motivo para ver el radar |
 | `12@` | Barras | pedido | El usuario pidió ocultar las barras (Shift + 3) |
 | `13@` | Barras | deseado | 1 = deben estar ocultas |
 | `14@` | Barras | aplicado | 1 = ocultas en el juego |
 | `15@` | Barras | verificación | Byte leído al arrancar en `0x589270` |
-| `16@` | Barras | disponible | Salud verificada (original 131) |
+| `16@` | Barras | disponible | Salud **y** blindaje verificados (originales 131 y 131) |
 | `17@` | Barras | verificación | Byte leído al arrancar en `0x5890A0` |
-| `18@` | Barras | disponible | Blindaje verificado (original 131) |
+| `18@` | — | — | **Libre** |
 | `19@` | Modo | estado | Modo actual (1, 2, 3) |
 | `20@` | Dinero | verificación | 4 bytes leídos al arrancar en `0x58F607` |
 | `21@` | Dinero | verificación | 1 byte leído al arrancar en `0x58F60B` |
@@ -37,7 +37,7 @@ Los scripts CLEO tienen variables locales `0@` a `31@`. Así se usan:
 | `30@` | Hora | verificación | Byte leído al arrancar en `0xBAA400` |
 | `31@` | Modo 2 | salud | Firma de salud + blindaje del frame anterior |
 
-Libres: **ninguna**, pero las variables de verificación del arranque se reutilizan en el bucle:
+Libres: **`18@`**. Además, las variables de verificación del arranque se reutilizan en el bucle:
 
 | Variable | Al arrancar | Después (Modo 2, subrutina `FirmaArmas`) |
 |---|---|---|

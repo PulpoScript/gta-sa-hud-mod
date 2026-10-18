@@ -17,7 +17,7 @@ Cada elemento usa un **temporizador**: un "evento" lo reinicia, y el elemento se
 | 1 | **Dinero** | Se gana o se pierde dinero | Mostrar también en tiendas. La hora podría ir con el dinero, como un bloque de "estado" | ✅ `0.2.0-dev.1`, probado (5 s aprobados) |
 | 2 | **Arma + munición** | Se obtiene o cambia de arma, o se recoge munición | También al **apuntar, disparar o recargar** (como GTA V), y con poca munición | ✅ `0.2.0-dev.2`, probado (cambiar, conseguir, munición y disparar; recargar no cambia la munición total y apuntar queda pendiente) |
 | 3 | **Salud + blindaje** | Se recibe daño o se regeneran | Que **se queden fijas con poca salud** (por ejemplo, < 25 %), como aviso | ✅ `0.2.0-dev.3` probado (daño y subida). ✅ `0.2.0-dev.4`: fijas con salud < 25, probado |
-| 4 | **Radar** | Se oculta tras X tiempo quieto o en la misma zona; se muestra conduciendo | Mostrar también con **nivel de búsqueda**, al correr o al tener un objetivo de misión | ⏳ |
+| 4 | **Radar** | Se oculta tras X tiempo quieto o en la misma zona; se muestra conduciendo | Decidido: visible **en vehículo**, **con nivel de búsqueda** o **al esprintar**; se oculta **8 s** después | ⚠️ `0.2.0-dev.5`, sin probar |
 | 5 | **Hora** | Por definir | Junto con el dinero, o solo al "consultar" | ⏳ |
 
 ## Ideas generales (para decidir más adelante)
@@ -27,7 +27,18 @@ Cada elemento usa un **temporizador**: un "evento" lo reinicia, y el elemento se
 - **Tiempos distintos por elemento**: por ejemplo, dinero 5 s, salud 8 s.
 - **Aparición gradual**: el juego no permite atenuar elementos con estos parches (solo mostrar u ocultar). Sería una mejora para la versión ASI.
 
-## Paso 3: salud + blindaje (0.2.0-dev.3)
+## Paso 4: radar (0.2.0-dev.5)
+
+- **Decisiones del autor:** 8 s; a pie solo cuenta **esprintar** (caminar o correr no lo muestran); también se muestra con **nivel de búsqueda**. "Estar en la misma zona" queda cubierto por "8 s sin motivo".
+- **Datos** (plugin-sdk, solo lectura):
+  - Vehículo: `bInVehicle` = bit 0 del byte en jugador + `0x46D` (indicadores de `CPed` desde `0x46C`; `bInVehicle` es el noveno).
+  - Esprintar: jugador + `0x534` = `m_nMoveState`; `7` = `PEDMOVE_SPRINT`.
+  - Búsqueda: jugador + `0x480` → `CPlayerData*`; `+0x0` → `CWanted*`; `+0x2C` = `m_nWantedLevel`.
+- **Tiempo:** cada motivo guarda en `11@` el reloj del juego; el radar se oculta si `ahora − 11@ > 8000`.
+- **Variables:** para tener `11@`, los indicadores "verificado" de icono + munición se unieron en `8@`, y los de salud + blindaje en `16@`. `18@` queda libre.
+- **Opcode nuevo:** `08B7: test 9@ bit 0` (comprobar un bit). Hay que verificarlo en el descompilado.
+
+## Paso 3: salud + blindaje (0.2.0-dev.3) ✅
 
 - **Datos** (plugin-sdk, solo lectura): salud en jugador + `0x540` y blindaje en jugador + `0x548`, ambos `float`.
 - **Firma:** la subrutina `FirmaSalud` suma los bits de los dos float. Cualquier cambio (daño, curación, chaleco) la cambia.

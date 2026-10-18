@@ -60,6 +60,14 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | H5 | Bajar de 25 de salud (barra casi vacía) | Las barras **se quedan visibles** aunque pasen 5 s |
 | H6 | Curarse por encima de 25 | A los 5 s se ocultan otra vez |
 
+| R-1 | En el Modo 2, quedarse quieto 8 s | El radar desaparece |
+| R-2 | Caminar o correr (sin esprintar) | El radar sigue oculto |
+| R-3 | Esprintar | Aparece y se oculta 8 s después de dejar de esprintar |
+| R-4 | Subir a un vehículo | Aparece y se mantiene mientras estés dentro (también parado) |
+| R-5 | Bajar del vehículo | Se oculta a los 8 s |
+| R-6 | Conseguir nivel de búsqueda | Visible mientras dure la búsqueda |
+| R-7 | Modo 1: Shift + 2 y Shift + 3 | Siguen ocultando arma y barras (indicadores unidos) |
+
 ## Restauración
 
 | # | Acción | Resultado esperado |
@@ -80,3 +88,4 @@ Si a los 3 s sale "byte inesperado", el ejecutable no es 1.0 US: ese elemento qu
 | 2026-10 | 0.2.0-dev.2: arma en Modo 2 | W1–W4 verificados por el autor |
 | 2026-10 | 0.2.0-dev.3: salud en Modo 2 | H1–H4 verificados por el autor |
 | 2026-10 | 0.2.0-dev.4: aviso de poca salud | H5–H6 verificados por el autor |
+| 2026-10 | 0.2.0-dev.5: radar en Modo 2 | Pendiente: R-1 a R-7 |

@@ -3,8 +3,8 @@
 
 // #####################################################################
 //  UI — Control del HUD para GTA San Andreas PC 1.0 US
-//  Versión: 0.2.0-dev.4 (beta) — Modo 1 completo; Modo 2 en desarrollo
-//  (dinero ✓, arma ✓, salud ✓ + aviso de poca salud). Historial: CHANGELOG.md
+//  Versión: 0.2.0-dev.5 (beta) — Modo 1 completo; Modo 2 en desarrollo
+//  (dinero ✓, arma ✓, salud ✓, paso 4: radar). Historial: CHANGELOG.md
 //  Requiere: CLEO 4.4 + plugin CLEO+. Compilado con Sanny Builder 4.
 //  Repositorio: https://github.com/PulpoScript/gta-sa-hud-mod
 //  Créditos: datos de plugin-sdk, gta-reversed, WidescreenFixesPack,
@@ -30,6 +30,8 @@
 //      arma o munición, o disparar.
 //      Salud + blindaje: se muestran 5 s al recibir daño o al subir, y
 //      se quedan fijas mientras la salud esté por debajo de 25.
+//      Radar: visible dentro de un vehículo, con nivel de búsqueda o al
+//      esprintar; se oculta 8 s después de la última de esas situaciones.
 //    Modo 3: solo el selector; su lógica aún no existe.
 //
 //  MAPA DEL CÓDIGO (buscar las etiquetas entre corchetes)
@@ -94,7 +96,7 @@
 //  VARIABLES
 //  Convención por elemento: "pedido" (tecla), "deseado" (calculado),
 //  "aplicado" (lo que ya se escribió en el juego).
-//  Libres: ninguna. Las variables de verificación del INICIO (6@, 9@,
+//  Libres: 18@. Las variables de verificación del INICIO (6@, 9@,
 //  15@, 17@, 20@, 21@, 30@) solo se usan al arrancar y después se
 //  reutilizan en el Modo 2 (ver [MODO 2]). 32@ y 33@ son temporizadores.
 // =====================================================================
@@ -113,18 +115,18 @@
 7@ = 0      // deseado: 1 = oculto
 5@ = 0      // aplicado: 1 = oculto en el juego
 6@ = 0      // byte leído al arrancar en CHud::DrawWeaponIcon (0x58D7D0)
-8@ = 0      // icono disponible (1 = byte original verificado: 161)
+8@ = 0      // icono + munición disponibles (1 = bytes originales verificados: 161 y 83)
 9@ = 0      // byte leído al arrancar en CHud::DrawAmmo (0x5893B0)
-11@ = 0     // munición disponible (1 = byte original verificado: 83)
+11@ = 0     // (Modo 2) momento del último motivo para ver el radar, en ms
 
 // [SALUD + BLINDAJE]
 12@ = 0     // pedido: barras ocultas (Shift+3)
 13@ = 0     // deseado: 1 = oculto
 14@ = 0     // aplicado: 1 = oculto en el juego
 15@ = 0     // byte leído al arrancar en CHud::RenderHealthBar (0x589270)
-16@ = 0     // salud disponible (1 = byte original verificado: 131)
+16@ = 0     // salud + blindaje disponibles (1 = bytes originales verificados: 131 y 131)
 17@ = 0     // byte leído al arrancar en CHud::RenderArmorBar (0x5890A0)
-18@ = 0     // blindaje disponible (1 = byte original verificado: 131)
+18@ = 0     // libre
 
 // [DINERO]
 20@ = 0     // 4 bytes leídos al arrancar en 0x58F607
@@ -145,6 +147,7 @@
 10@ = 0     // dinero del frame anterior (para detectar cambios)
 31@ = 0     // firma de salud + blindaje del frame anterior
 //  27@ = momento (reloj del juego, ms) del último cambio de salud/blindaje
+//  11@ = momento (reloj del juego, ms) del último motivo para ver el radar
 //  32@ = temporizador de CLEO (sube solo, en milisegundos): tiempo
 //        desde el último cambio de dinero.
 //  33@ = temporizador: tiempo desde el último cambio en las armas.
@@ -183,10 +186,11 @@ then
     write_memory 0x5893B0 {size} 1 {value} 83 {vp} True
     9@ = 83
 end
-if 9@ == 83                        // original confirmado: disponible
+if 9@ == 83                        // original confirmado: sigue disponible
 then
-    11@ = 1
-else                               // ejecutable desconocido: no tocar
+    9@ = 83
+else                               // ejecutable desconocido: no tocar icono ni munición
+    8@ = 0
     0ACE: show_formatted_text_box "Municion: byte inesperado %d, desactivado" 9@
 end
 
@@ -211,10 +215,11 @@ then
     write_memory 0x5890A0 {size} 1 {value} 131 {vp} True
     17@ = 131
 end
-if 17@ == 131                      // original confirmado: disponible
+if 17@ == 131                      // original confirmado: sigue disponible
 then
-    18@ = 1
-else                               // ejecutable desconocido: no tocar
+    17@ = 131
+else                               // ejecutable desconocido: no tocar salud ni blindaje
+    16@ = 0
     0ACE: show_formatted_text_box "Blindaje: byte inesperado %d, desactivado" 17@
 end
 
@@ -268,6 +273,7 @@ gosub @FirmaArmas
 gosub @FirmaSalud
 0085: 31@ = 9@
 27@ = read_memory 0xB7CB84 {size} 4 {vp} False   // al cargar, se ven 5 s
+0085: 11@ = 27@                    // al cargar, el radar se ve 8 s
 
 // =====================================================================
 //  BUCLE PRINCIPAL (se ejecuta una vez por frame)
@@ -285,10 +291,10 @@ while true
             0@ = 1
             // Sin add_one_off_sound: el cuadro de texto ya hace su propio
             // "bip"; con los dos sonaban dos sonidos a la vez.
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.4 activado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.5 activado"
         else
             0@ = 0
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.4 desactivado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.5 desactivado"
         end
         while 0AB0: key_pressed 0x7A           // antirrebote: esperar a soltar
             wait 0
@@ -371,6 +377,58 @@ while true
             2@ = 1
         end
     end
+    // Modo 2: visible dentro de un vehículo, con nivel de búsqueda o al
+    // esprintar. Cada una de esas situaciones guarda "ahora" en 11@; el
+    // radar se oculta cuando pasan más de 8 s desde la última.
+    if and
+        0@ == 1
+        19@ == 2
+    then
+        21@ = read_memory 0xB7CB84 {size} 4 {vp} False   // ahora (ms)
+        6@ = read_memory 0xB7CD98 {size} 4 {vp} False    // puntero al jugador
+        if 6@ > 0
+        then
+            // Dentro de un vehículo: bInVehicle = bit 0 del byte CPed + 0x46D
+            0085: 15@ = 6@
+            15@ += 0x46D
+            9@ = read_memory 15@ {size} 1 {vp} False
+            if 08B7: test 9@ bit 0
+            then
+                0085: 11@ = 21@
+            end
+            // Esprintando: CPed + 0x534 = m_nMoveState, 7 = PEDMOVE_SPRINT
+            0085: 15@ = 6@
+            15@ += 0x534
+            9@ = read_memory 15@ {size} 4 {vp} False
+            if 9@ == 7
+            then
+                0085: 11@ = 21@
+            end
+            // Nivel de búsqueda: CPed + 0x480 -> CPlayerData, +0x0 -> CWanted,
+            // CWanted + 0x2C = m_nWantedLevel
+            0085: 15@ = 6@
+            15@ += 0x480
+            9@ = read_memory 15@ {size} 4 {vp} False    // CPlayerData*
+            if 9@ > 0
+            then
+                17@ = read_memory 9@ {size} 4 {vp} False // CWanted*
+                if 17@ > 0
+                then
+                    17@ += 0x2C
+                    9@ = read_memory 17@ {size} 4 {vp} False   // nivel de búsqueda
+                    if 9@ > 0
+                    then
+                        0085: 11@ = 21@
+                    end
+                end
+            end
+        end
+        0062: 21@ -= 11@           // tiempo desde el último motivo
+        if 21@ > 8000
+        then
+            2@ = 1
+        end
+    end
 
     // ---- Aplicar solo si cambió ----
     if and
@@ -393,7 +451,7 @@ while true
     //  [ICONO DE ARMA + MUNICIÓN] Shift + 2 — Modo 1, paso 2
     //  Técnica: parche "ret" (0xC3) al inicio de CHud::DrawWeaponIcon
     //  (0x58D7D0) y de CHud::DrawAmmo (0x5893B0). Ambas cdecl.
-    //  Cada parte solo se toca si se verificó al arrancar (8@, 11@).
+    //  Solo se tocan si ambos se verificaron al arrancar (8@).
     // =================================================================
 
     // ---- Tecla: alterna el pedido del usuario (solo en Modo 1) ----
@@ -463,9 +521,6 @@ while true
         if 8@ == 1
         then
             write_memory 0x58D7D0 {size} 1 {value} 195 {vp} True   // icono: ret
-        end
-        if 11@ == 1
-        then
             write_memory 0x5893B0 {size} 1 {value} 195 {vp} True   // munición: ret
         end
         5@ = 1
@@ -479,9 +534,6 @@ while true
         if 8@ == 1
         then
             write_memory 0x58D7D0 {size} 1 {value} 161 {vp} True   // icono: 0xA1
-        end
-        if 11@ == 1
-        then
             write_memory 0x5893B0 {size} 1 {value} 83 {vp} True    // munición: 0x53
         end
         5@ = 0
@@ -491,7 +543,7 @@ while true
     //  [SALUD + BLINDAJE] Shift + 3 — Modo 1, paso 3
     //  Técnica: parche "ret" (0xC3) al inicio de CHud::RenderHealthBar
     //  (0x589270) y de CHud::RenderArmorBar (0x5890A0). Ambas cdecl.
-    //  Cada parte solo se toca si se verificó al arrancar (16@, 18@).
+    //  Solo se tocan si ambos se verificaron al arrancar (16@).
     // =================================================================
 
     // ---- Tecla: alterna el pedido del usuario (solo en Modo 1) ----
@@ -579,9 +631,6 @@ while true
         if 16@ == 1
         then
             write_memory 0x589270 {size} 1 {value} 195 {vp} True   // salud: ret
-        end
-        if 18@ == 1
-        then
             write_memory 0x5890A0 {size} 1 {value} 195 {vp} True   // blindaje: ret
         end
         14@ = 1
@@ -595,9 +644,6 @@ while true
         if 16@ == 1
         then
             write_memory 0x589270 {size} 1 {value} 131 {vp} True   // salud: 0x83
-        end
-        if 18@ == 1
-        then
             write_memory 0x5890A0 {size} 1 {value} 131 {vp} True   // blindaje: 0x83
         end
         14@ = 0
