@@ -22,7 +22,7 @@ Los scripts CLEO tienen variables locales `0@` a `31@`. Así se usan:
 | `15@` | Barras | verificación | Byte leído al arrancar en `0x589270` |
 | `16@` | Barras | disponible | Salud **y** blindaje verificados (originales 131 y 131) |
 | `17@` | Barras | verificación | Byte leído al arrancar en `0x5890A0` |
-| `18@` | Modo 2 | hora | Hora del juego del frame anterior (para detectar el cambio de hora) |
+| `18@` | Modo 2 | tecla "." y hora | `> 0`: tecla pulsada desde ese momento (ms); `< 0`: hora visible desde el momento `-18@`; `0`: hora oculta |
 | `19@` | Modo | estado | Modo actual (1, 2, 3) |
 | `20@` | Dinero | verificación | 4 bytes leídos al arrancar en `0x58F607` |
 | `21@` | Dinero | verificación | 1 byte leído al arrancar en `0x58F60B` |

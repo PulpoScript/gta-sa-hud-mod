@@ -43,7 +43,7 @@ Aún no hay archivos compilados publicados, así que hay que compilar el script.
 |---|---|
 | **F11** | Enciende o apaga el mod. *Temporal, solo para pruebas; se eliminará en la versión final.* |
 | **Shift + 0** | Cambia de modo: 1 → 2 → 3 → 1. Muestra "UI - Modo N" en pantalla y devuelve el HUD a su estado de fábrica (todo visible). |
-| **"."** (mantener) | Solo en Modo 2: consultar todo el HUD mientras se mantiene pulsada |
+| **"."** | Solo en Modo 2: **toque corto** muestra la hora 5 s; **mantener 2 s** muestra todo el HUD |
 | **Shift + 1** | Solo en Modo 1: mostrar u ocultar el **radar** |
 | **Shift + 2** | Solo en Modo 1: mostrar u ocultar el **icono de arma y la munición** |
 | **Shift + 3** | Solo en Modo 1: mostrar u ocultar las **barras de salud y blindaje** |

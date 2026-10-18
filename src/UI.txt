@@ -3,8 +3,8 @@
 
 // #####################################################################
 //  UI — Control del HUD para GTA San Andreas PC 1.0 US
-//  Versión: 0.2.0-dev.6 (beta) — Modo 1 completo; Modo 2 en desarrollo
-//  (dinero ✓, arma ✓, salud ✓, radar ✓, paso 5: hora, consulta y
+//  Versión: 0.2.0-dev.7 (beta) — Modo 1 completo; Modo 2 en desarrollo
+//  (dinero ✓, arma ✓, salud ✓, radar ✓, paso 5: hora con la tecla "." y
 //  entrada al modo). Historial: CHANGELOG.md
 //  Requiere: CLEO 4.4 + plugin CLEO+. Compilado con Sanny Builder 4.
 //  Repositorio: https://github.com/PulpoScript/gta-sa-hud-mod
@@ -33,11 +33,11 @@
 //      se quedan fijas mientras la salud esté por debajo de 25.
 //      Radar: visible dentro de un vehículo, con nivel de búsqueda o al
 //      esprintar; se oculta 8 s después de la última de esas situaciones.
-//      Hora: se ve junto con el dinero. Al pasar una hora del juego,
-//      dinero y hora aparecen 5 s.
+//      Hora: solo con la tecla ".".
 //      Al entrar en el Modo 2 se ve todo unos 3 s y luego se va ocultando.
-//    Tecla "." (Modo 2): consulta. Mientras se mantiene pulsada se ve todo
-//      el HUD; al soltarla, se oculta a los 3 s.
+//    Tecla "." (Modo 2): consulta.
+//      Toque corto (menos de 2 s): al soltar, se ve la hora 5 s.
+//      Mantener 2 s o más: se ve todo el HUD; al soltar, se oculta a los 3 s.
 //    Modo 3: solo el selector; su lógica aún no existe.
 //
 //  MAPA DEL CÓDIGO (buscar las etiquetas entre corchetes)
@@ -133,7 +133,7 @@
 15@ = 0     // byte leído al arrancar en CHud::RenderHealthBar (0x589270)
 16@ = 0     // salud + blindaje disponibles (1 = bytes originales verificados: 131 y 131)
 17@ = 0     // byte leído al arrancar en CHud::RenderArmorBar (0x5890A0)
-18@ = 0     // (Modo 2) hora del juego del frame anterior
+18@ = 0     // (Modo 2) tecla "." y hora: ver [MODO 2]
 
 // [DINERO]
 20@ = 0     // 4 bytes leídos al arrancar en 0x58F607
@@ -155,8 +155,10 @@
 31@ = 0     // firma de salud + blindaje del frame anterior
 //  27@ = momento (reloj del juego, ms) del último cambio de salud/blindaje
 //  11@ = momento (reloj del juego, ms) del último motivo para ver el radar
-//  18@ = hora del juego del frame anterior (CClock::ms_nGameClockHours,
-//        1 byte en 0xB70153, plugin-sdk). Al cambiar, se reinicia 32@.
+//  18@ = tecla "." y hora, según el signo:
+//        > 0  la tecla está pulsada desde ese momento (ms)
+//        < 0  no está pulsada; la hora se muestra desde el momento -18@
+//        = 0  no está pulsada y la hora está oculta
 //  32@ = temporizador de CLEO (sube solo, en milisegundos): tiempo
 //        desde el último cambio de dinero.
 //  33@ = temporizador: tiempo desde el último cambio en las armas.
@@ -283,7 +285,7 @@ gosub @FirmaSalud
 0085: 31@ = 9@
 27@ = read_memory 0xB7CB84 {size} 4 {vp} False   // al cargar, se ven 5 s
 0085: 11@ = 27@                    // al cargar, el radar se ve 8 s
-18@ = read_memory 0xB70153 {size} 1 {vp} False   // hora del juego actual
+18@ = 0                            // tecla "." sin pulsar, hora oculta
 
 // =====================================================================
 //  BUCLE PRINCIPAL (se ejecuta una vez por frame)
@@ -301,10 +303,10 @@ while true
             0@ = 1
             // Sin add_one_off_sound: el cuadro de texto ya hace su propio
             // "bip"; con los dos sonaban dos sonidos a la vez.
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.6 activado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.7 activado"
         else
             0@ = 0
-            0ACE: show_formatted_text_box "UI v0.2.0-dev.6 desactivado"
+            0ACE: show_formatted_text_box "UI v0.2.0-dev.7 desactivado"
         end
         while 0AB0: key_pressed 0x7A           // antirrebote: esperar a soltar
             wait 0
@@ -343,6 +345,11 @@ while true
             if 19@ == 2
             then
                 gosub @MostrarTodo3s
+                // La hora, también 3 s: 18@ = -(ahora - 2000)
+                21@ = read_memory 0xB7CB84 {size} 4 {vp} False
+                21@ -= 2000
+                18@ = 0
+                0062: 18@ -= 21@
             end
             // El cuadro de texto ya suena: no se añade otro sonido.
             0ACE: show_formatted_text_box "UI - Modo %d" 19@   // "UI -" identifica este script (evita confundirlo con MiMod.cs)
@@ -354,16 +361,42 @@ while true
 
     // =================================================================
     //  [CONSULTA] Tecla "." (0xBE, VK_OEM_PERIOD) — solo en el Modo 2
-    //  Mientras se mantiene pulsada, todo el HUD se ve. Se consigue
-    //  dejando los tiempos de cada elemento "a 3 s de ocultarse" en cada
-    //  frame, así que al soltarla todo se oculta a los 3 s.
+    //  Toque corto (menos de 2 s): al soltar, la hora se ve 5 s.
+    //  Mantener 2 s o más: todo el HUD se ve mientras siga pulsada (los
+    //  tiempos de cada elemento quedan "a 3 s de ocultarse" en cada frame);
+    //  al soltar, todo se oculta a los 3 s, la hora incluida.
+    //  18@ guarda el estado (ver VARIABLES, [MODO 2]).
     // =================================================================
     if and
         0@ == 1
         19@ == 2
-        0AB0: key_pressed 0xBE   // tecla "."
     then
-        gosub @MostrarTodo3s
+        21@ = read_memory 0xB7CB84 {size} 4 {vp} False   // ahora (ms)
+        if 0AB0: key_pressed 0xBE                       // tecla "."
+        then
+            if 18@ > 0                                   // ya estaba pulsada
+            then
+                0062: 21@ -= 18@                         // tiempo pulsada
+                if 21@ > 2000                            // pulsación larga
+                then
+                    gosub @MostrarTodo3s
+                end
+            else                                         // recién pulsada
+                0085: 18@ = 21@
+            end
+        else
+            if 18@ > 0                                   // se acaba de soltar
+            then
+                0085: 9@ = 21@
+                0062: 9@ -= 18@                          // tiempo que estuvo pulsada
+                if 9@ > 2000
+                then
+                    21@ -= 2000                          // larga: hora 3 s más
+                end                                      // corta: hora 5 s
+                18@ = 0
+                0062: 18@ -= 21@                         // 18@ = -(inicio de la hora)
+            end
+        end
     end
 
     // =================================================================
@@ -796,19 +829,6 @@ while true
         end
     end
 
-    // ---- Modo 2: detectar el cambio de hora del juego (en cualquier modo) ----
-    // Al pasar una hora se reinicia el temporizador del dinero (32@), así
-    // que dinero y hora aparecen juntos 5 s, como un bloque de "estado".
-    9@ = read_memory 0xB70153 {size} 1 {vp} False   // hora del juego
-    0062: 9@ -= 18@                // diferencia con el frame anterior
-    if 9@ == 0
-    then
-        9@ = 0                     // misma hora: nada que hacer
-    else
-        32@ = 0                    // nueva hora: mostrar dinero y hora
-        005A: 18@ += 9@            // guardar la hora actual
-    end
-
     // ---- Estado deseado: oculto solo si mod activo, en Modo 1, y pedido ----
     // PUNTO DE EXTENSIÓN (Modos 2 y 3): la regla de cada modo se añade
     // aquí, con su propio "if 19@ == 2" que ponga el deseado a 1 cuando
@@ -823,15 +843,36 @@ while true
             28@ = 1
         end
     end
-    // Modo 2: la hora va con el dinero: oculta cuando el dinero lleva
-    // más de 5 s sin cambios (32@ > 5000).
+    // Modo 2: la hora solo se ve con la tecla "." (ver [CONSULTA]):
+    //   18@ > 0: pulsada; visible si lleva más de 2 s (pulsación larga)
+    //   18@ < 0: visible 5 s desde el momento -18@
+    //   18@ = 0: oculta
     if and
         0@ == 1
         19@ == 2
     then
-        if 32@ > 5000
+        28@ = 1
+        21@ = read_memory 0xB7CB84 {size} 4 {vp} False   // ahora (ms)
+        if 18@ > 0
         then
-            28@ = 1
+            0062: 21@ -= 18@                             // tiempo pulsada
+            if 21@ > 2000
+            then
+                28@ = 0
+            end
+        else
+            if 18@ == 0
+            then
+                28@ = 1
+            else
+                005A: 21@ += 18@                         // tiempo desde que se muestra
+                if 21@ > 5000
+                then
+                    28@ = 1
+                else
+                    28@ = 0
+                end
+            end
         end
     end
 
@@ -918,11 +959,12 @@ return
 // ---- MostrarTodo3s ----
 // Deja todos los elementos del Modo 2 visibles durante unos 3 s, poniendo
 // sus tiempos "a 3 s de ocultarse":
-//   dinero y hora (32@, oculta a 5000) -> 32@ = 2000
+//   dinero (32@, oculta a 5000)        -> 32@ = 2000
 //   arma (33@, oculta a 5000)          -> 33@ = 2000
 //   salud (27@ = momento, oculta a 5000) -> 27@ = ahora - 2000
 //   radar (11@ = momento, oculta a 8000) -> 11@ = ahora - 5000
-// Se usa al entrar en el Modo 2 y, en cada frame, con la tecla "." pulsada.
+// Se usa al entrar en el Modo 2 y, en cada frame, con la tecla "." pulsada
+// más de 2 s. La hora no se toca aquí: va aparte con 18@.
 // Usa como temporal: 21@.
 :MostrarTodo3s
 32@ = 2000

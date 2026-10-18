@@ -31,7 +31,8 @@ Las versiones `-dev` no se publican como release: son estados intermedios en Git
 | `0.2.0-dev.3` | Modo 2, paso 3: salud + blindaje | ✅ Probado |
 | `0.2.0-dev.4` | Modo 2: aviso de poca salud | ✅ Probado |
 | `0.2.0-dev.5` | Modo 2, paso 4: radar | ✅ Probado |
-| `0.2.0-dev.6` | Modo 2, paso 5: hora, tecla de consulta y entrada al modo | ⚠️ Sin probar |
+| `0.2.0-dev.6` | Modo 2, paso 5: hora, tecla de consulta y entrada al modo | 🔁 Probada; el autor pidió cambiar la hora |
+| `0.2.0-dev.7` | Modo 2: hora solo con la tecla "." (toque / mantener) | ⚠️ Sin probar |
 | `0.2.0-dev.N` | Resto de elementos del Modo 2 | ⏳ |
 | `0.2.0` | Modo 2 completo | ⏳ |
 | `0.3.0` | Modo 3 completo | ⏳ |

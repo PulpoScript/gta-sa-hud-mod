@@ -8,7 +8,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). N
 
 - Créditos completos de las fuentes consultadas (`docs/CREDITOS.md`) y aviso legal en el README.
 
-### 0.2.0-dev.6 — Modo 2, paso 5: hora, consulta y entrada al modo
+### 0.2.0-dev.7 — Modo 2: hora solo con la tecla "."
+
+- La hora ya no va con el dinero ni aparece al cambiar la hora del juego.
+- Tecla ".": toque corto → hora 5 s; mantener 2 s → todo el HUD.
+
+### 0.2.0-dev.6 — Modo 2, paso 5: hora, consulta y entrada al modo (sustituida)
 
 - En el Modo 2, la hora se ve junto con el dinero, y ambos aparecen 5 s al pasar una hora del juego.
 - Tecla de consulta ".": mientras se mantiene pulsada se ve todo el HUD.
