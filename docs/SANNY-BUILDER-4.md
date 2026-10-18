@@ -51,7 +51,7 @@ Opcodes con la forma antigua que **sí** compilan bien, porque sus parámetros y
 
 ## Otras reglas
 
-- **Operaciones entre dos variables** (`31@ -= 10@`) también dan el error 0014, porque SB4 no sabe su tipo. Solución: escribir el opcode del tipo entero: `0062: 31@ -= 10@` (resta) y `005A: 10@ += 31@` (suma). Tienen dos parámetros en orden, así que no hay riesgo de desorden.
+- **Operaciones entre dos variables** (`31@ -= 10@`) también dan el error 0014, porque SB4 no sabe su tipo. Solución: escribir el opcode del tipo entero: `0062: 31@ -= 10@` (resta) y `005A: 10@ += 31@` (suma). Tienen dos parámetros en orden, así que no hay riesgo de desorden. Verificado: se descompilan como `sub_int_lvar_from_int_lvar 31@ -= 10@` y `add_int_lvar_to_int_lvar 10@ += 31@`. El temporizador `32@` aparece como `TIMERA`.
 - **No comparar dos variables entre sí** (`if not 2@ == 3@` da el error 0014). Se compara una variable con un número y se combinan condiciones con `if and`.
 - `03E5: text_box 'CHEAT1'` muestra "Truco activado". **`'CHEAT2'` no es "desactivado"**: es el texto del truco de armas. Para textos propios se usa `0ACE: show_formatted_text_box "..."`.
 - Los valores de 4 bytes que pasan de `0x7FFFFFFF` se escriben como entero con signo (`0x90909090` → `-1869574000`).
