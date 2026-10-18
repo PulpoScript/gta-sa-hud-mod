@@ -1,0 +1,138 @@
+{$CLEO .cs}
+
+// #####################################################################
+//  VERIFICAR POSICIONES — script de SOLO LECTURA (no modifica nada)
+// #####################################################################
+//
+//  Para qué sirve: comprobar las direcciones candidatas de posición del
+//  HUD para el Modo 3 (docs/INVESTIGACION.md, sección 5). Las listas de
+//  los foros no dejan claro si cada dirección es la instrucción o su
+//  operando, así que se leen las dos interpretaciones.
+//
+//  Uso:
+//    1. Compilar con Sanny Builder 4 -> verificar_posiciones.cs
+//    2. Quitar UI.cs y los .cs de prueba de CLEO\ y poner este.
+//    3. Cargar partida y capturar cada mensaje (uno cada 6 s, 13 en
+//       total; el último dice "Fin").
+//    4. Borrar verificar_posiciones.cs de CLEO\ y volver a poner UI.cs.
+//
+//  Cada mensaje: "Nombre: a b c | d e f"
+//    a = 2 bytes en dirección - 2 (instrucción, si la dirección es el operando)
+//    b = 4 bytes en la dirección (puntero)
+//    c = float al que apunta b, en bits (0 si b no es del ejecutable)
+//    d = 2 bytes en la dirección (instrucción, si la dirección es la instrucción)
+//    e = 4 bytes en dirección + 2 (puntero)
+//    f = float al que apunta e, en bits (0 si e no es del ejecutable)
+//  Un puntero se considera del ejecutable si está entre 0x800000 y
+//  0xCFFFFF; si no, no se lee.
+// #####################################################################
+
+wait 5000
+
+10@ = 0x58F5FC
+gosub @Leer
+0ACE: show_formatted_text_box "Dinero X: %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58F5DC
+gosub @Leer
+0ACE: show_formatted_text_box "Dinero Y: %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58EE87
+gosub @Leer
+0ACE: show_formatted_text_box "Salud X: %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58EE68
+gosub @Leer
+0ACE: show_formatted_text_box "Salud Y: %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58EF59
+gosub @Leer
+0ACE: show_formatted_text_box "Blindaje X: %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58EF3A
+gosub @Leer
+0ACE: show_formatted_text_box "Blindaje Y: %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58F11F
+gosub @Leer
+0ACE: show_formatted_text_box "Oxigeno X: %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58DD0F
+gosub @Leer
+0ACE: show_formatted_text_box "Estrellas X: %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58DDFC
+gosub @Leer
+0ACE: show_formatted_text_box "Estrellas Y: %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58F927
+gosub @Leer
+0ACE: show_formatted_text_box "Arma X (927): %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58F92F
+gosub @Leer
+0ACE: show_formatted_text_box "Arma X (92F): %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58F9F7
+gosub @Leer
+0ACE: show_formatted_text_box "Municion X: %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+10@ = 0x58F9DC
+gosub @Leer
+0ACE: show_formatted_text_box "Municion Y: %d %d %d | %d %d %d" 12@ 13@ 14@ 15@ 16@ 17@
+wait 6000
+
+0ACE: show_formatted_text_box "Fin de la verificacion"
+0A93: end_custom_thread
+
+
+// ---------------------------------------------------------------------
+//  Leer: lee las dos interpretaciones de la dirección en 10@.
+//  Devuelve 12@ 13@ 14@ (10@ es el operando) y 15@ 16@ 17@ (10@ es la
+//  instrucción). Usa 11@ como temporal.
+// ---------------------------------------------------------------------
+:Leer
+// ---- Interpretación 1: 10@ es el operando ----
+0085: 11@ = 10@
+11@ -= 2
+12@ = read_memory 11@ {size} 2 {vp} False
+13@ = read_memory 10@ {size} 4 {vp} False
+14@ = 0
+if 13@ > 0x7FFFFF
+then
+    if 13@ > 0xCFFFFF
+    then
+        14@ = 0
+    else
+        14@ = read_memory 13@ {size} 4 {vp} False
+    end
+end
+
+// ---- Interpretación 2: 10@ es la instrucción ----
+15@ = read_memory 10@ {size} 2 {vp} False
+0085: 11@ = 10@
+11@ += 2
+16@ = read_memory 11@ {size} 4 {vp} False
+17@ = 0
+if 16@ > 0x7FFFFF
+then
+    if 16@ > 0xCFFFFF
+    then
+        17@ = 0
+    else
+        17@ = read_memory 16@ {size} 4 {vp} False
+    end
+end
+return

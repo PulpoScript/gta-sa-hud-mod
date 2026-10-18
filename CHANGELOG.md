@@ -4,6 +4,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). N
 
 ## [Sin publicar]
 
+### Modo 3 (en preparación)
+
+- Verificado en el juego: las variables compartidas de CLEO 4 funcionan entre dos scripts (`set_cleo_shared_var` / `get_cleo_shared_var`, índice 50). Prueba en `experimentos/compartida_*.txt`.
+- `experimentos/verificar_posiciones.txt`: lectura de las direcciones candidatas de posición del HUD (sin probar).
+
 ## [0.2.0] - 2026-10-18 (beta)
 
 ### Añadido
