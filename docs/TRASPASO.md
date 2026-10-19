@@ -1,20 +1,20 @@
 # Traspaso para la próxima sesión
 
-Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva con Claude. Resume dónde quedó el proyecto y qué hacer después.
+Pega este archivo (o su enlace) como primer mensaje al empezar una sesión nueva con el asistente. Resume dónde quedó el proyecto y qué hacer después.
 
 ## Contexto
 
 - Mod CLEO para **GTA San Andreas PC 1.0 US** que controla el HUD. Código: [`src/UI.txt`](../src/UI.txt) (Sanny Builder 4, CLEO 4.4 + CLEO+).
 - Repositorio: https://github.com/PulpoScript/gta-sa-hud-mod (público, licencia MIT, **sin releases**).
 - Idioma de trabajo: **español**. Un paso cada vez, esperando la confirmación del autor antes de seguir.
-- Claude no puede ejecutar el juego ni compilar: el autor compila, prueba y cuenta el resultado.
+- El asistente no puede ejecutar el juego ni compilar: el autor compila, prueba y cuenta el resultado.
 
 ## Cómo quiere trabajar el autor
 
 - Decir qué es seguro y qué no. **No afirmar opcodes ni direcciones sin verificarlos.**
 - Código completo y listo para pegar, con comentarios por secciones. **Ponerlo en el chat, en un bloque de código, no como archivo adjunto**: el autor lo copia directamente a Sanny Builder. **Siempre el código completo**, también cuando el cambio sea pequeño: nunca solo los bloques que cambian.
 - Para cada prueba: qué probar y qué resultado esperar, en una tabla corta.
-- **Respuestas de Claude cortas**, salvo que el autor pida una explicación detallada.
+- **Respuestas del asistente cortas**, salvo que el autor pida una explicación detallada.
 - **Código: el autor lo copia desde GitHub** (Raw de `src/UI.txt`). No pegar el código completo en el chat salvo que lo pida.
 - **Documentación de `docs/` solo al cerrar cada versión** (`0.2.0`, `0.3.0`…). En los pasos `-dev` solo se tocan el código y el CHANGELOG.
 - Respuestas cortas a las pruebas: "funciona" o qué falló. **No pedirle diagnósticos largos** salvo que algo falle sin explicación.

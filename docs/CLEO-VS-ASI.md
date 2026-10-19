@@ -52,8 +52,8 @@ Este mod **se queda en CLEO** como prototipo: sirve para probar y pulir ideas r�
 
 ### Cómo sería el flujo de trabajo
 
-1. Claude escribe el código C++ en el repositorio.
+1. El asistente escribe el código C++ en el repositorio.
 2. El autor lo descarga, lo compila en Visual Studio y copia el `.asi` resultante a la carpeta de modloader.
 3. El autor prueba en el juego y cuenta el resultado, igual que ahora.
 
-Claude no puede compilar ni probar desde la sesión, igual que con CLEO.
+El asistente no puede compilar ni probar desde la sesión, igual que con CLEO.
